@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Affectations</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+}
+
+header {
+  background: #1e293b;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.container {
+  display: flex;
+  height: calc(100vh - 50px);
+}
+
+.sidebar {
+  width: 220px;
+  background: #111827;
+  padding: 15px;
+}
+
+.menu a {
+  display: block;
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+  margin: 5px 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.menu a:hover {
+  background: #2563eb;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+.box {
+  background: #1e293b;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.box-title {
+  background: #2563eb;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.box-content {
+  padding: 15px;
+}
+
+.tag {
+  display: inline-block;
+  background: #22c55e;
+  color: black;
+  padding: 8px 12px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tag:hover {
+  background: red;
+  color: white;
+}
+
+input {
+  padding: 8px;
+  margin: 5px;
+}
+
+button {
+  padding: 8px 15px;
+  background: #3b82f6;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: #2563eb;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>🔵 MODULE OPS</div>
+  <h1>AFFECTATIONS</h1>
+</header>
+
+<div class="container">
+
+  <!-- MENU -->
+  <div class="sidebar">
+    <button onclick="history.back()">← Retour</button>
+
+    <div class="menu">
+      <a onclick="alert('Accueil')">Accueil</a>
+      <a onclick="alert('Planning')">Planning</a>
+      <a onclick="alert('Liste')">Liste de garde</a>
+    </div>
+  </div>
+
+  <!-- CONTENU -->
+  <div class="content">
+
+    <!-- AJOUT PERSONNEL -->
+    <h3>Ajouter un personnel</h3>
+    <input type="text" id="nom" placeholder="Nom">
+    <button onclick="ajouter()">Ajouter</button>
+
+    <!-- LISTE -->
+    <div class="box">
+      <div class="box-title">Personnel disponible</div>
+      <div class="box-content" id="liste">
+        <!-- personnes ici -->
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function ajouter() {
+  let nom = document.getElementById("nom").value;
+
+  if (nom === "") return;
+
+  let tag = document.createElement("span");
+  tag.className = "tag";
+  tag.innerText = nom;
+
+  // SUPPRIMER AU CLIC
+  tag.onclick = function() {
+    this.remove();
+  };
+
+  document.getElementById("liste").appendChild(tag);
+  document.getElementById("nom").value = "";
+}
+</script>
+
+</body>
+</html>
