@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>systeme de service</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+}
+
+/* HEADER */
+header {
+  background: #1e293b;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.logo {
+  font-weight: bold;
+}
+
+/* LAYOUT */
+.container {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+/* LEFT PANEL */
+.left {
+  width: 50%;
+  padding: 20px;
+}
+
+/* RIGHT PANEL (MAP) */
+.right {
+  width: 50%;
+  background: black;
+}
+
+.right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* BUTTONS */
+.btn {
+  background: #3b82f6;
+  border: none;
+  padding: 8px 15px;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+.btn:hover {
+  background: #2563eb;
+}
+
+/* ALERT LIST */
+.alert-box {
+  margin-top: 20px;
+  background: #9ca3af;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🔵 MODULE OPS</div>
+  <h1>prise de service</h1>
+</header>
+
+<div class="container">
+
+  <!-- GAUCHE -->
+  <div class="left">
+    <button class="btn" onclick="history.back()">← Retour au module</button><br>
+ <button class="btn" onclick="creerAlerte()">commencer son service</button>
+
+   <div id="service" class="alert-box">
+  </div>
+    </div>
+  
+<script>
+function priseservice() {
+  let texte = prompt("bon service :");
+
+  if (!texte) return;
+
+  let div = document.createElement("div");
+  div.className = "service";
+  div.innerText = texte;
+
+  // supprimer au clic
+  div.onclick = function() {
+    this.remove();
+  };
+
+  document.getElementById("service").appendChild(div);
+}
+</script>
+  
+</body>
+</html>
