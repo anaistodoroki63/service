@@ -93,11 +93,10 @@ header h1 {
   <!-- GAUCHE -->
   <div class="left">
     <button class="btn" onclick="history.back()">← Retour au module</button><br>
-    <button class="btn">Créer une alerte</button>
+ <button class="btn" onclick="creerAlerte()">Créer une alerte</button>
 
-    <div class="alert-box">
-      Aucune alerte
-    </div>
+   <div id="liste-alertes" class="alert-box">
+  </div>
   </div>
 
   <!-- DROITE (CARTE) -->
@@ -106,6 +105,24 @@ header h1 {
   </div>
 
 </div>
+<script>
+function creerAlerte() {
+  let texte = prompt("Entrer le nom de l'alerte :");
 
+  if (!texte) return;
+
+  let div = document.createElement("div");
+  div.className = "alert-item";
+  div.innerText = texte;
+
+  // supprimer au clic
+  div.onclick = function() {
+    this.remove();
+  };
+
+  document.getElementById("liste-alertes").appendChild(div);
+}
+</script>
+  
 </body>
 </html>
