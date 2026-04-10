@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIS Montmarte</title>
+
+<style>
+body{margin:0;font-family:Arial;background:#1c1c1c;color:#f5f5f5}
+header,footer{background:#111;padding:20px;border-bottom:4px solid #c30000}
+footer{border-top:4px solid #c30000;text-align:center}
+nav ul{list-style:none;padding:0;display:flex;gap:20px;flex-wrap:wrap}
+nav a{color:white;text-decoration:none;font-weight:bold;cursor:pointer}
+nav a:hover{color:#c30000}
+section{padding:60px 20px;max-width:1100px;margin:auto}
+.hero{text-align:center;background:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
+url("https://images.unsplash.com/photo-1581579185169-07c97f4c7b5d") center/cover;padding:100px 20px}
+.hero h2{color:#c30000;font-size:40px}
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.box{background:#2a2a2a;padding:20px;border-left:4px solid #c30000;margin-bottom:20px}
+input,textarea,select{width:100%;padding:10px;margin-bottom:10px;background:#111;border:1px solid #555;color:white}
+button{background:#c30000;border:none;padding:12px;color:white;cursor:pointer}
+button:hover{background:red}
+.hidden{display:none}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.day{background:#222;padding:8px;min-height:80px;border:1px solid #444}
+.day strong{color:#c30000}
+.event{font-size:11px;background:#111;margin-top:4px;padding:3px;border-left:3px solid #c30000}
+.card{background:#2a2a2a;padding:15px;border-radius:8px;border:1px solid #444}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Garage La Plume</h1>
+<nav>
+<ul>
+<li><a onclick="showPage('accueil')">Accueil</a></li>
+<li><a onclick="showPage('services')">Services</a></li>
+<li><a onclick="showPage('recrutement')">Recrutement</a></li>
+<li><a onclick="showPage('contact')">Contact</a></li>
+<li><a onclick="showPage('employe')">Employé</a></li>
+<li><a onclick="showPage('PDS')">Prise de service</a></li>
+<li><a onclick="showPage('bip')">bip</a></li>
+<li id="serverLink" class="hidden"><a onclick="showPage('server')">Server</a></li>
+</ul>
+</nav>
+</header>
+
+<!-- ACCUEIL -->
+<section id="accueil" class="page">
+<div class="hero">
+<h2>Garage Automobile de Confiance</h2>
+<p>Réparation • Entretien • Diagnostic</p>
+</div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="page hidden">
+<h2>Nos Services</h2>
+<div class="services">
+<div class="box"><h3>🔧 Réparation</h3><p>À partir de <strong>3000 €</strong></p></div>
+<div class="box"><h3>🛢 Dépannage</h3><p>Ville 3000 € / Autoroute 5000 €</p></div>
+<div class="box"><h3>💻 Diagnostic</h3><p>2000 €</p></div>
+<div class="box"><h3>🚗 Pré-contrôle</h3><p>2000 €</p></div>
+</div>
+</section>
+
+<!-- RECRUTEMENT -->
+<section id="recrutement" class="page hidden">
+<h2>Rejoignez Notre Équipe</h2>
+
+<div class="box">
+<form id="recruitmentForm">
+<input id="candidateName" placeholder="Nom complet" required>
+<input id="candidateEmail" type="email" placeholder="Email" required>
+<input id="candidatePhone" placeholder="Téléphone" required>
+
+<select id="candidatePosition" required>
+<option value="">Poste souhaité</option>
+<option>Mécanicien</option>
+<option>Carrossier</option>
+<option>Électricien Auto</option>
+<option>Apprenti</option>
+<option>Réceptionnaire</option>
+</select>
+
+<input type="file" id="candidateCv" accept=".pdf" required>
+<textarea id="candidateLetter" placeholder="Lettre de motivation (optionnel)"></textarea>
+<button type="submit">Envoyer ma candidature</button>
+</form>
+</div>
+
+<div id="candidatesPanel" class="hidden box">
+<h3>📋 Candidatures reçues</h3>
+<div id="candidatesList"></div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="page hidden">
+<h2>Contact</h2>
+<div class="box">
+<input placeholder="Nom">
+<input placeholder="Email">
+<textarea placeholder="Message"></textarea>
+<button>Envoyer</button>
+</div>
+</section>
+
+<!-- EMPLOYÉ -->
+<section id="employe" class="page hidden">
+<h2>Espace Employé</h2>
+
+<div id="loginBox" class="box">
+<input id="loginUser" placeholder="Identifiant">
+<input id="loginPass" type="password" placeholder="Mot de passe">
+<button onclick="login()">Connexion</button>
+<p id="msg" style="color:red"></p>
+</div>
+
+<div id="dashboard" class="hidden box">
+<h3 id="roleText"></h3>
+
+<h4>📅 Planning</h4>
+<div id="calendar" class="calendar"></div>
+<input type="date" id="eventDate">
+<input id="eventText" placeholder="Entretien">
+<button onclick="addEvent()">Ajouter</button>
+
+<h4>🕒 Pointeuse</h4>
+<button onclick="pointeuse('Entrée')">Entrée</button>
+<button onclick="pointeuse('Sortie')">Sortie</button>
+<ul id="clockList"></ul>
+
+<button onclick="logout()">Déconnexion</button>
+</div>
+</section>
+
+<!--bip -->
+  <div class="bip-shortcut" style="position: fixed; left: 1023.75px; top: 285.3px; background-color: rgba(224, 224, 224, 0.247); color: white; padding: 10px; border-radius: 5px; cursor: move; z-index: 9999; user-select: none;"><div class="box_bip" id="bip"><div class="ecran_bip" id="ecran"><div>
+    
+  </div><h6 class="heure_message_bip" id="heure_message"></h6>
+  <div class="message_bip" id="message"></div>
+  </div> <div class="menu_bip"><button class="btn_bip_p m-5"></button>
+  </div>
+  </div><span role="img" aria-label="bip" style="cursor: pointer;">📟 Fermer le bip</span></div>
+  
+
+<!-- SERVER -->
+<section id="server" class="page hidden">
+<h2>🖥️ Server Management</h2>
+<div class="box">
+<ul id="serverUserList"></ul>
+</div>
+</section>
+
+<footer>&copy; 2026 Garage La Plume</footer>
+
+<script>
+/* NAV */
+function showPage(id){
+document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+document.getElementById(id).classList.remove("hidden");
+}
+
+/* USERS */
+if(!localStorage.users){
+localStorage.users=JSON.stringify([
+{user:"patron",pass:"patron123",role:"Patron"},
+{user:"jean",pass:"jean123",role:"Employé"},
+{user:"paul",pass:"paul123",role:"Employé"}
+]);
+}
+
+let currentUser=null;
+
+/* LOGIN */
+function login(){
+const users=JSON.parse(localStorage.users);
+const u=users.find(x=>x.user===loginUser.value&&x.pass===loginPass.value);
+if(!u){msg.textContent="Erreur identifiants";return;}
+currentUser=u;
+roleText.textContent=`${u.user} (${u.role})`;
+loginBox.classList.add("hidden");
+dashboard.classList.remove("hidden");
+if(u.role==="Patron"){serverLink.classList.remove("hidden");loadCandidates();}
+}
+
+/* LOGOUT */
+function logout(){
+dashboard.classList.add("hidden");
+loginBox.classList.remove("hidden");
+serverLink.classList.add("hidden");
+currentUser=null;
+}
+
+/* PLANNING */
+function addEvent(){
+const d=JSON.parse(localStorage.events||"{}");
+const k=currentUser.user+"_"+eventDate.value;
+(d[k]=d[k]||[]).push(eventText.value);
+localStorage.events=JSON.stringify(d);
+loadCalendar();
+}
+
+function loadCalendar(){
+calendar.innerHTML="";
+const d=new Date(),days=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+const ev=JSON.parse(localStorage.events||"{}");
+for(let i=1;i<=days;i++){
+const date=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(i).padStart(2,"0")}`;
+const k=currentUser.user+"_"+date;
+const div=document.createElement("div");
+div.className="day";
+div.innerHTML=`<strong>${i}</strong>`;
+(ev[k]||[]).forEach(e=>{const x=document.createElement("div");x.className="event";x.textContent=e;div.appendChild(x);});
+calendar.appendChild(div);
+}
+}
+
+/* POINTEUSE */
+function pointeuse(t){
+const c=JSON.parse(localStorage.clock||"{}");
+(c[currentUser.user]=c[currentUser.user]||[]).push(t+" "+new Date().toLocaleString());
+localStorage.clock=JSON.stringify(c);
+}
+
+/* RECRUTEMENT */
+recruitmentForm.onsubmit=e=>{
+e.preventDefault();
+const c={
+name:candidateName.value,
+email:candidateEmail.value,
+phone:candidatePhone.value,
+position:candidatePosition.value,
+cv:candidateCv.files[0]?.name||"",
+letter:candidateLetter.value,
+date:new Date().toLocaleString()
+};
+const data=JSON.parse(localStorage.candidates||"[]");
+data.push(c);
+localStorage.candidates=JSON.stringify(data);
+alert("Candidature envoyée");
+recruitmentForm.reset();
+};
+
+function loadCandidates(){
+if(!currentUser||currentUser.role!=="Patron")return;
+candidatesPanel.classList.remove("hidden");
+const list=JSON.parse(localStorage.candidates||"[]");
+candidatesList.innerHTML="";
+list.forEach(c=>{
+const d=document.createElement("div");
+d.className="card";
+d.innerHTML=`<strong>${c.name}</strong> - ${c.position}<br>${c.email} | ${c.phone}<br>CV : ${c.cv}`;
+candidatesList.appendChild(d);
+});
+}
+</script>
+
+</body>
+</html>
