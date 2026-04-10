@@ -33,13 +33,11 @@ button:hover{background:red}
 <body>
 
 <header>
-<h1>Garage La Plume</h1>
+<h1>CIS Montmarte</h1>
 <nav>
 <ul>
 <li><a onclick="showPage('accueil')">Accueil</a></li>
 <li><a onclick="showPage('services')">Services</a></li>
-<li><a onclick="showPage('recrutement')">Recrutement</a></li>
-<li><a onclick="showPage('contact')">Contact</a></li>
 <li><a onclick="showPage('employe')">Employé</a></li>
 <li><a onclick="showPage('PDS')">Prise de service</a></li>
 <li><a onclick="showPage('bip')">bip</a></li>
@@ -67,47 +65,6 @@ button:hover{background:red}
 </div>
 </section>
 
-<!-- RECRUTEMENT -->
-<section id="recrutement" class="page hidden">
-<h2>Rejoignez Notre Équipe</h2>
-
-<div class="box">
-<form id="recruitmentForm">
-<input id="candidateName" placeholder="Nom complet" required>
-<input id="candidateEmail" type="email" placeholder="Email" required>
-<input id="candidatePhone" placeholder="Téléphone" required>
-
-<select id="candidatePosition" required>
-<option value="">Poste souhaité</option>
-<option>Mécanicien</option>
-<option>Carrossier</option>
-<option>Électricien Auto</option>
-<option>Apprenti</option>
-<option>Réceptionnaire</option>
-</select>
-
-<input type="file" id="candidateCv" accept=".pdf" required>
-<textarea id="candidateLetter" placeholder="Lettre de motivation (optionnel)"></textarea>
-<button type="submit">Envoyer ma candidature</button>
-</form>
-</div>
-
-<div id="candidatesPanel" class="hidden box">
-<h3>📋 Candidatures reçues</h3>
-<div id="candidatesList"></div>
-</div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" class="page hidden">
-<h2>Contact</h2>
-<div class="box">
-<input placeholder="Nom">
-<input placeholder="Email">
-<textarea placeholder="Message"></textarea>
-<button>Envoyer</button>
-</div>
-</section>
 
 <!-- EMPLOYÉ -->
 <section id="employe" class="page hidden">
@@ -156,7 +113,7 @@ button:hover{background:red}
 </div>
 </section>
 
-<footer>&copy; 2026 Garage La Plume</footer>
+<footer>&copy; 2026 CIS Montmarte</footer>
 
 <script>
 /* NAV */
@@ -196,68 +153,6 @@ serverLink.classList.add("hidden");
 currentUser=null;
 }
 
-/* PLANNING */
-function addEvent(){
-const d=JSON.parse(localStorage.events||"{}");
-const k=currentUser.user+"_"+eventDate.value;
-(d[k]=d[k]||[]).push(eventText.value);
-localStorage.events=JSON.stringify(d);
-loadCalendar();
-}
-
-function loadCalendar(){
-calendar.innerHTML="";
-const d=new Date(),days=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
-const ev=JSON.parse(localStorage.events||"{}");
-for(let i=1;i<=days;i++){
-const date=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(i).padStart(2,"0")}`;
-const k=currentUser.user+"_"+date;
-const div=document.createElement("div");
-div.className="day";
-div.innerHTML=`<strong>${i}</strong>`;
-(ev[k]||[]).forEach(e=>{const x=document.createElement("div");x.className="event";x.textContent=e;div.appendChild(x);});
-calendar.appendChild(div);
-}
-}
-
-/* POINTEUSE */
-function pointeuse(t){
-const c=JSON.parse(localStorage.clock||"{}");
-(c[currentUser.user]=c[currentUser.user]||[]).push(t+" "+new Date().toLocaleString());
-localStorage.clock=JSON.stringify(c);
-}
-
-/* RECRUTEMENT */
-recruitmentForm.onsubmit=e=>{
-e.preventDefault();
-const c={
-name:candidateName.value,
-email:candidateEmail.value,
-phone:candidatePhone.value,
-position:candidatePosition.value,
-cv:candidateCv.files[0]?.name||"",
-letter:candidateLetter.value,
-date:new Date().toLocaleString()
-};
-const data=JSON.parse(localStorage.candidates||"[]");
-data.push(c);
-localStorage.candidates=JSON.stringify(data);
-alert("Candidature envoyée");
-recruitmentForm.reset();
-};
-
-function loadCandidates(){
-if(!currentUser||currentUser.role!=="Patron")return;
-candidatesPanel.classList.remove("hidden");
-const list=JSON.parse(localStorage.candidates||"[]");
-candidatesList.innerHTML="";
-list.forEach(c=>{
-const d=document.createElement("div");
-d.className="card";
-d.innerHTML=`<strong>${c.name}</strong> - ${c.position}<br>${c.email} | ${c.phone}<br>CV : ${c.cv}`;
-candidatesList.appendChild(d);
-});
-}
 </script>
 
 </body>
