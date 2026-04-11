@@ -122,6 +122,10 @@ button:hover {
     <div class="box-content" id="liste"></div>
   </div>
 </div>
+  <div class="box">
+  <div class="box-title">Personnel en service</div>
+  <div class="box-content" id="liste"></div>
+</div>
 
 <!-- PLANNING -->
 <div id="planning" class="section-content" style="display:none;">
@@ -224,6 +228,33 @@ function ajouter() {
   tag.className = "tag";
   tag.innerText = nom;
 
+
+  <script>
+function chargerAgents() {
+  let agents = JSON.parse(localStorage.getItem("agents")) || [];
+
+  let liste = document.getElementById("liste");
+  liste.innerHTML = "";
+
+  agents.forEach((nom, index) => {
+    let tag = document.createElement("span");
+    tag.className = "tag";
+    tag.innerText = nom;
+
+    // supprimer
+    tag.onclick = function() {
+      agents.splice(index, 1);
+      localStorage.setItem("agents", JSON.stringify(agents));
+      chargerAgents();
+    };
+
+    liste.appendChild(tag);
+  });
+}
+
+chargerAgents();
+</script>
+  
   // SUPPRIMER AU CLIC
   tag.onclick = function() {
     this.remove();
