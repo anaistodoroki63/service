@@ -2,289 +2,74 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Affectations</title>
-
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: white;
-  min-height: 100vh;
-}
-
-header {
-  background: #1e293b;
-  padding: 15px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 3px solid #3b82f6;
-}
-
-header h1 {
-  font-size: 24px;
-}
-
-.btn {
-  background: #374151;
-  border: none;
-  padding: 10px 20px;
-  color: white;
-  cursor: pointer;
-  border-radius: 8px;
-  font-size: 14px;
-  transition: background 0.3s;
-}
-
-.btn:hover {
-  background: #4b5563;
-}
-
-.btn-primary {
-  background: #3b82f6;
-}
-
-.btn-primary:hover {
-  background: #2563eb;
-}
-
-.container {
-  display: flex;
-  min-height: calc(100vh - 60px);
-}
-
-.sidebar {
-  width: 250px;
-  background: #111827;
-  padding: 20px;
-  border-right: 1px solid #374151;
-}
-
-.sidebar-title {
-  font-size: 14px;
-  color: #64748b;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-
-.menu-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 15px;
-  margin: 5px 0;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.menu-item:hover {
-  background: #1e293b;
-}
-
-.menu-item.active {
-  background: #3b82f6;
-}
-
-.content {
-  flex: 1;
-  padding: 30px;
-}
-
-.section {
-  display: none;
-}
-
-.section.active {
-  display: block;
-}
-
-.box {
-  background: #1e293b;
-  border-radius: 15px;
-  padding: 25px;
-  margin-bottom: 25px;
-}
-
-.box-title {
-  background: #2563eb;
-  padding: 12px 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.tag {
-  display: inline-block;
-  background: #22c55e;
-  color: black;
-  padding: 10px 15px;
-  margin: 5px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.tag:hover {
-  background: #ef4444;
-  color: white;
-}
-
-.tag-garde {
-  background: #f59e0b;
-  color: black;
-}
-
-.tag-garde:hover {
-  background: #dc2626;
-  color: white;
-}
-
-.planning-item {
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.2s;
-}
-
-.dispo {
-  background: #064e3b;
-  border-left: 4px solid #22c55e;
-}
-
-.service {
-  background: #1e3a8a;
-  border-left: 4px solid #3b82f6;
-}
-
-.repos {
-  background: #7f1d1d;
-  border-left: 4px solid #ef4444;
-}
-
-.stats-row {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.stat {
-  background: #374151;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  flex: 1;
-}
-
-.stat .number {
-  font-size: 40px;
-  font-weight: bold;
-  color: #3b82f6;
-}
-
-.stat .label {
-  font-size: 14px;
-  color: #94a3b8;
-}
-
-.vehicule-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 15px;
-}
-
-.vehicule-card {
-  background: #374151;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.vehicule-card .type {
-  font-size: 30px;
-  margin-bottom: 10px;
-}
-
-.vehicule-card .nom {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.vehicule-card .status {
-  margin-top: 10px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 12px;
-}
-
-.status-dispo {
-  background: #22c55e;
-  color: black;
-}
-
-.status-indispo {
-  background: #ef4444;
-  color: white;
-}
-
-.status-intervention {
-  background: #f59e0b;
-  color: black;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #0f172a; color: white; min-height: 100vh; }
+header { background: #1e293b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #3b82f6; }
+h1 { font-size: 20px; }
+.btn { background: #374151; border: none; padding: 10px 20px; color: white; cursor: pointer; border-radius: 8px; font-size: 14px; }
+.btn:hover { background: #4b5563; }
+.btn-primary { background: #3b82f6; }
+.btn-primary:hover { background: #2563eb; }
+.container { display: flex; min-height: calc(100vh - 60px); }
+.sidebar { width: 220px; background: #111827; padding: 20px; border-right: 1px solid #374151; }
+.sidebar-title { font-size: 12px; color: #64748b; margin-bottom: 10px; text-transform: uppercase; }
+.menu-item { display: flex; align-items: center; gap: 10px; padding: 12px 15px; margin: 5px 0; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+.menu-item:hover { background: #1e293b; }
+.menu-item.active { background: #3b82f6; }
+.content { flex: 1; padding: 30px; overflow-y: auto; }
+.section { display: none; }
+.section.active { display: block; }
+.box { background: #1e293b; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
+.box-title { background: #2563eb; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 16px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+.tag { display: inline-block; background: #22c55e; color: black; padding: 10px 15px; margin: 5px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+.tag:hover { background: #ef4444; color: white; }
+.tag-garde { background: #f59e0b; color: black; }
+.tag-garde:hover { background: #dc2626; color: white; }
+.planning-item { padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.dispo { background: #064e3b; border-left: 4px solid #22c55e; }
+.service { background: #1e3a8a; border-left: 4px solid #3b82f6; }
+.repos { background: #7f1d1d; border-left: 4px solid #ef4444; }
+.stats-row { display: flex; gap: 20px; }
+.stat { background: #374151; padding: 20px; border-radius: 10px; text-align: center; flex: 1; }
+.stat .number { font-size: 36px; font-weight: bold; color: #3b82f6; }
+.stat .label { font-size: 12px; color: #94a3b8; }
+.vehicule-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+.vehicule-card { background: #374151; padding: 20px; border-radius: 10px; text-align: center; }
+.vehicule-card .type { font-size: 30px; margin-bottom: 10px; }
+.vehicule-card .nom { font-size: 16px; font-weight: bold; }
+.empty-msg { color: #94a3b8; font-size: 14px; }
 </style>
 </head>
-
 <body>
-
 <header>
   <div>🔵 MODULE OPS</div>
   <h1>Affectations</h1>
   <div>
-    <button class="btn" onclick="window.location.href='index.html'">🏠 Accueil</button>
-    <button class="btn btn-primary" onclick="window.location.href='alertes.html'">🚨 Alertes</button>
+    <button class="btn" onclick="location.href='index.html'">🏠 Accueil</button>
+    <button class="btn btn-primary" onclick="location.href='alertes.html'">🚨 Alertes</button>
   </div>
 </header>
 
 <div class="container">
-
   <div class="sidebar">
     <div class="sidebar-title">Navigation</div>
-    
-    <div class="menu-item" onclick="showSection('accueil')">
-      <span>🏠</span> Accueil
-    </div>
-    <div class="menu-item" onclick="showSection('service')">
-      <span>📋</span> Personnel en service
-    </div>
-    <div class="menu-item" onclick="showSection('garde')">
-      <span>🚨</span> Liste de garde
-    </div>
-    <div class="menu-item" onclick="showSection('planning')">
-      <span>📅</span> Planning
-    </div>
-    <div class="menu-item" onclick="showSection('vehicules')">
-      <span>🚗</span> Véhicules
-    </div>
+    <div class="menu-item active" onclick="showSection('accueil', this)">🏠 Accueil</div>
+    <div class="menu-item" onclick="showSection('service', this)">📋 Personnel en service</div>
+    <div class="menu-item" onclick="showSection('garde', this)">🚨 Liste de garde</div>
+    <div class="menu-item" onclick="showSection('planning', this)">📅 Planning</div>
+    <div class="menu-item" onclick="showSection('vehicules', this)">🚗 Véhicules</div>
   </div>
 
   <div class="content">
-
-    <!-- ACCUEIL -->
     <div id="accueil" class="section active">
       <div class="box">
-        <div class="box-title">Tableau de bord</div>
+        <div class="box-title">
+          <span>Tableau de bord</span>
+          <button class="btn btn-primary" onclick="location.href='prise-de-service.html'">+ Prise de service</button>
+        </div>
         <div class="stats-row">
           <div class="stat">
             <div class="number" id="stat-service">0</div>
@@ -295,41 +80,36 @@ header h1 {
             <div class="label">En garde</div>
           </div>
           <div class="stat">
-            <div class="number" id="stat-vehicules">6</div>
-            <div class="label">Véhicules dispo</div>
+            <div class="number">6</div>
+            <div class="label">Véhicules</div>
           </div>
         </div>
       </div>
-
       <div class="box">
         <div class="box-title">Actions rapides</div>
-        <button class="btn btn-primary" onclick="window.location.href='prise-de-service.html'">
-          📋 Prise de service
-        </button>
-        <button class="btn" onclick="window.location.href='alertes.html'">
-          🚨 Déclencher alerte
-        </button>
+        <button class="btn btn-primary" onclick="location.href='prise-de-service.html'">📋 Prise de service</button>
+        <button class="btn" onclick="location.href='alertes.html'">🚨 Déclencher alerte</button>
       </div>
     </div>
 
-    <!-- SERVICE -->
     <div id="service" class="section">
       <div class="box">
-        <div class="box-title">Agents en service</div>
+        <div class="box-title">
+          <span>Agents en service</span>
+          <button class="btn" onclick="location.href='prise-de-service.html'">+ Ajouter</button>
+        </div>
         <div id="liste-service"></div>
       </div>
     </div>
 
-    <!-- GARDE -->
     <div id="garde" class="section">
       <div class="box">
         <div class="box-title">Liste de garde</div>
-        <p style="color: #94a3b8; margin-bottom: 15px;">Cliquez sur un agent pour le retirer de la garde</p>
+        <p class="empty-msg" style="margin-bottom: 15px;">Cliquez sur un agent pour le retirer de la garde</p>
         <div id="liste-garde"></div>
       </div>
     </div>
 
-    <!-- PLANNING -->
     <div id="planning" class="section">
       <div class="box">
         <div class="box-title">Planning hebdomadaire</div>
@@ -337,129 +117,117 @@ header h1 {
       </div>
     </div>
 
-    <!-- VEHICULES -->
     <div id="vehicules" class="section">
       <div class="box">
         <div class="box-title">État des véhicules</div>
         <div class="vehicule-grid" id="vehicules-list"></div>
       </div>
     </div>
-
   </div>
-
 </div>
 
 <script>
-// Navigation
-function showSection(section) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+var jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
+function showSection(section, el) {
+  var sections = document.querySelectorAll('.section');
+  var items = document.querySelectorAll('.menu-item');
+  for (var i = 0; i < sections.length; i++) {
+    sections[i].classList.remove('active');
+    items[i].classList.remove('active');
+  }
   document.getElementById(section).classList.add('active');
-  event.target.closest('.menu-item').classList.add('active');
+  el.classList.add('active');
+  if (section === 'service') chargerService();
+  if (section === 'garde') chargerGarde();
 }
 
-// Agents en service
 function chargerService() {
-  let agents = JSON.parse(localStorage.getItem('agents')) || [];
-  let container = document.getElementById('liste-service');
-
+  var agents = JSON.parse(localStorage.getItem('agents')) || [];
+  var container = document.getElementById('liste-service');
+  
   if (agents.length === 0) {
-    container.innerHTML = '<p style="color: #94a3b8;">Aucun agent en service. <a href="prise-de-service.html" style="color: #3b82f6;">Ajouter</a></p>';
+    container.innerHTML = '<p class="empty-msg">Aucun agent en service. <a href="prise-de-service.html" style="color: #3b82f6;">Ajouter des agents</a></p>';
     return;
   }
-
+  
   container.innerHTML = '';
-  agents.forEach(nom => {
-    let tag = document.createElement('span');
-    tag.className = 'tag';
-    tag.innerText = nom;
-    tag.onclick = function() {
-      ajouterEnGarde(nom);
-    };
-    container.appendChild(tag);
-  });
+  for (var i = 0; i < agents.length; i++) {
+    (function(index) {
+      var tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.innerHTML = agents[index];
+      tag.onclick = function() { ajouterEnGarde(agents[index]); };
+      container.appendChild(tag);
+    })(i);
+  }
 }
 
-// Ajouter en garde
 function ajouterEnGarde(nom) {
-  let garde = JSON.parse(localStorage.getItem('garde')) || [];
-  if (!garde.includes(nom)) {
+  var garde = JSON.parse(localStorage.getItem('garde')) || [];
+  if (garde.indexOf(nom) === -1) {
     garde.push(nom);
     localStorage.setItem('garde', JSON.stringify(garde));
-    alert(nom + ' ajouté à la garde');
-  } else {
-    alert(nom + ' est déjà en garde');
+    majStats();
   }
   chargerGarde();
 }
 
-// Liste de garde
 function chargerGarde() {
-  let garde = JSON.parse(localStorage.getItem('garde')) || [];
-  let container = document.getElementById('liste-garde');
-
+  var garde = JSON.parse(localStorage.getItem('garde')) || [];
+  var container = document.getElementById('liste-garde');
+  
   if (garde.length === 0) {
-    container.innerHTML = '<p style="color: #94a3b8;">Aucun agent en garde</p>';
+    container.innerHTML = '<p class="empty-msg">Aucun agent en garde</p>';
     return;
   }
-
+  
   container.innerHTML = '';
-  garde.forEach((nom, index) => {
-    let tag = document.createElement('span');
-    tag.className = 'tag tag-garde';
-    tag.innerText = nom + ' ✕';
-    tag.onclick = function() {
-      if (confirm('Retirer ' + nom + ' de la garde ?')) {
-        garde.splice(index, 1);
-        localStorage.setItem('garde', JSON.stringify(garde));
-        chargerGarde();
-        majStats();
-      }
-    };
-    container.appendChild(tag);
-  });
+  for (var i = 0; i < garde.length; i++) {
+    (function(index) {
+      var tag = document.createElement('span');
+      tag.className = 'tag tag-garde';
+      tag.innerHTML = garde[index] + ' ✕';
+      tag.onclick = function() {
+        if (confirm('Retirer ' + garde[index] + ' de la garde ?')) {
+          garde.splice(index, 1);
+          localStorage.setItem('garde', JSON.stringify(garde));
+          chargerGarde();
+          majStats();
+        }
+      };
+      container.appendChild(tag);
+    })(i);
+  }
 }
 
-// Planning
 function chargerPlanning() {
-  let jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-  let container = document.getElementById('planning-list');
-
+  var container = document.getElementById('planning-list');
   container.innerHTML = '';
-
-  jours.forEach(jour => {
-    let planning = JSON.parse(localStorage.getItem('planning_' + jour)) || 'dispo';
-    let div = document.createElement('div');
-    div.className = 'planning-item ' + planning;
-    div.innerHTML = '<span>' + jour + '</span><span>' + getStatusText(planning) + '</span>';
-    div.onclick = function() {
-      cyclePlanning(jour, div);
-    };
-    container.appendChild(div);
-  });
+  for (var i = 0; i < jours.length; i++) {
+    (function(jour, idx) {
+      var status = localStorage.getItem('planning_' + jours[idx]) || 'dispo';
+      var div = document.createElement('div');
+      div.className = 'planning-item ' + status;
+      var icon = status === 'dispo' ? '🟢' : status === 'service' ? '🔵' : '🔴';
+      var text = status === 'dispo' ? 'Disponible' : status === 'service' ? 'En service' : 'Repos';
+      div.innerHTML = '<span>' + jour + '</span><span>' + icon + ' ' + text + '</span>';
+      div.onclick = function() {
+        var current = localStorage.getItem('planning_' + jour) || 'dispo';
+        var next = current === 'dispo' ? 'service' : current === 'service' ? 'repos' : 'dispo';
+        localStorage.setItem('planning_' + jour, next);
+        var nIcon = next === 'dispo' ? '🟢' : next === 'service' ? '🔵' : '🔴';
+        var nText = next === 'dispo' ? 'Disponible' : next === 'service' ? 'En service' : 'Repos';
+        div.className = 'planning-item ' + next;
+        div.innerHTML = '<span>' + jour + '</span><span>' + nIcon + ' ' + nText + '</span>';
+      };
+      container.appendChild(div);
+    })(jours[i], i);
+  }
 }
 
-function getStatusText(status) {
-  if (status === 'dispo') return '🟢 Disponible';
-  if (status === 'service') return '🔵 En service';
-  return '🔴 Repos';
-}
-
-function cyclePlanning(jour, element) {
-  let current = JSON.parse(localStorage.getItem('planning_' + jour)) || 'dispo';
-  let next;
-  if (current === 'dispo') next = 'service';
-  else if (current === 'service') next = 'repos';
-  else next = 'dispo';
-
-  localStorage.setItem('planning_' + jour, JSON.stringify(next));
-  element.className = 'planning-item ' + next;
-  element.innerHTML = '<span>' + jour + '</span><span>' + getStatusText(next) + '</span>';
-}
-
-// Véhicules
 function chargerVehicules() {
-  let vehicules = [
+  var vehicules = [
     { nom: 'VSAV 403', type: '🚑' },
     { nom: 'VSAV 527', type: '🚑' },
     { nom: 'FPT 201', type: '🚒' },
@@ -467,31 +235,23 @@ function chargerVehicules() {
     { nom: 'VSR 101', type: '🚗' },
     { nom: 'CCF 201', type: '🚒' }
   ];
-
-  let container = document.getElementById('vehicules-list');
+  var container = document.getElementById('vehicules-list');
   container.innerHTML = '';
-
-  vehicules.forEach(v => {
-    let card = document.createElement('div');
+  for (var i = 0; i < vehicules.length; i++) {
+    var card = document.createElement('div');
     card.className = 'vehicule-card';
-    card.innerHTML = `
-      <div class="type">${v.type}</div>
-      <div class="nom">${v.nom}</div>
-      <div class="status status-dispo">Disponible</div>
-    `;
+    card.innerHTML = '<div class="type">' + vehicules[i].type + '</div><div class="nom">' + vehicules[i].nom + '</div>';
     container.appendChild(card);
-  });
+  }
 }
 
-// Stats
 function majStats() {
-  let agents = JSON.parse(localStorage.getItem('agents')) || [];
-  let garde = JSON.parse(localStorage.getItem('garde')) || [];
-  document.getElementById('stat-service').innerText = agents.length;
-  document.getElementById('stat-garde').innerText = garde.length;
+  var agents = JSON.parse(localStorage.getItem('agents')) || [];
+  var garde = JSON.parse(localStorage.getItem('garde')) || [];
+  document.getElementById('stat-service').innerHTML = agents.length;
+  document.getElementById('stat-garde').innerHTML = garde.length;
 }
 
-// Init
 chargerService();
 chargerGarde();
 chargerPlanning();
