@@ -2,290 +2,301 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Alertes - Intervention</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Alertes</title>
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: white;
-  min-height: 100vh;
-}
-
-header {
-  background: #1e293b;
-  padding: 15px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 3px solid #ef4444;
-}
-
-header h1 {
-  font-size: 24px;
-  color: #ef4444;
-}
-
-.btn {
-  background: #374151;
-  border: none;
-  padding: 10px 20px;
-  color: white;
-  cursor: pointer;
-  border-radius: 8px;
-  font-size: 14px;
-  transition: background 0.3s;
-}
-
-.btn:hover {
-  background: #4b5563;
-}
-
-.container {
-  display: flex;
-  height: calc(100vh - 60px);
-}
-
-.left {
-  width: 50%;
-  padding: 30px;
-  overflow-y: auto;
-}
-
-.right {
-  width: 50%;
-  background: #000;
-  position: relative;
-}
-
-.right img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.right .camera-overlay {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  background: rgba(0,0,0,0.7);
-  padding: 10px 20px;
-  border-radius: 8px;
-}
-
-.box {
-  background: #1e293b;
-  border-radius: 15px;
-  padding: 25px;
-  margin-bottom: 25px;
-}
-
-.box-title {
-  background: #ef4444;
-  padding: 12px 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.vehicule-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
-
-.vehicule-btn {
-  background: #22c55e;
-  color: black;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
-  transition: all 0.2s;
-  border: 3px solid transparent;
-}
-
-.vehicule-btn:hover {
-  transform: scale(1.05);
-  border-color: white;
-}
-
-.vehicule-btn:active {
-  background: #ef4444;
-  color: white;
-}
-
-.vehicule-btn .icon {
-  font-size: 30px;
-  display: block;
-  margin-bottom: 5px;
-}
-
-.alert-log {
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.alert-item {
-  background: #ef4444;
-  color: white;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  animation: flash 0.5s;
-}
-
-@keyframes flash {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0.5; }
-}
-
-.alert-item .temps {
-  color: #fca5a5;
-  font-size: 12px;
-}
-
-.garde-section {
-  margin-top: 20px;
-}
-
-.garde-title {
-  color: #94a3b8;
-  margin-bottom: 10px;
-}
-
-.tag {
-  display: inline-block;
-  background: #f59e0b;
-  color: black;
-  padding: 8px 12px;
-  margin: 5px;
-  border-radius: 8px;
-  font-size: 14px;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #0f172a; color: white; min-height: 100vh; }
+header { background: #1e293b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #ef4444; }
+h1 { font-size: 20px; color: #ef4444; }
+.btn { background: #374151; border: none; padding: 10px 20px; color: white; cursor: pointer; border-radius: 8px; font-size: 14px; }
+.btn:hover { background: #4b5563; }
+.container { display: flex; height: calc(100vh - 60px); }
+.left { width: 50%; padding: 30px; overflow-y: auto; }
+.right { width: 50%; background: #000; display: flex; align-items: center; justify-content: center; flex-direction: column; color: #64748b; }
+.box { background: #1e293b; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
+.box-title { background: #ef4444; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 16px; font-weight: bold; }
+.box-title.blue { background: #3b82f6; }
+.vehicule-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.vehicule-btn { background: #22c55e; color: black; padding: 20px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.2s; border: 3px solid transparent; }
+.vehicule-btn:hover { transform: scale(1.05); border-color: white; }
+.vehicule-btn:active { background: #ef4444; color: white; }
+.vehicule-btn .icon { font-size: 28px; display: block; margin-bottom: 5px; }
+.vehicule-btn.selected { border-color: #fff; background: #16a34a; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; color: #94a3b8; font-size: 13px; }
+.form-group select, .form-group input { width: 100%; padding: 12px 15px; border: none; border-radius: 8px; background: #374151; color: white; font-size: 14px; }
+.btn-engager { width: 100%; background: #ef4444; padding: 15px; border: none; border-radius: 10px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+.btn-engager:hover { background: #dc2626; }
+.btn-engager:disabled { background: #64748b; cursor: not-allowed; }
+.alert-log { max-height: 250px; overflow-y: auto; }
+.alert-item { background: #ef4444; padding: 15px; margin: 10px 0; border-radius: 8px; animation: flash 0.5s; }
+@keyframes flash { 0%, 50%, 100% { opacity: 1; } 25%, 75% { opacity: 0.5; } }
+.alert-item .header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; }
+.alert-item .details { font-size: 13px; color: #fca5a5; }
+.alert-item .temps { font-size: 12px; color: #fca5a5; margin-top: 5px; }
+.section-title { color: #94a3b8; margin-bottom: 10px; font-size: 13px; }
+.tag { display: inline-block; background: #f59e0b; color: black; padding: 8px 12px; margin: 5px; border-radius: 8px; font-size: 14px; }
+.tag.service { background: #22c55e; color: black; }
+.camera-text { text-align: center; font-size: 18px; }
+.empty-msg { color: #64748b; font-size: 13px; }
 </style>
 </head>
-
 <body>
-
 <header>
   <div>🔵 MODULE OPS</div>
   <h1>🚨 ALERTES INTERVENTION</h1>
   <div>
-    <button class="btn" onclick="window.location.href='index.html'">🏠 Accueil</button>
-    <button class="btn" onclick="window.location.href='affectations.html'">→ Affectations</button>
+    <button class="btn" onclick="location.href='index.html'">🏠 Accueil</button>
+    <button class="btn" onclick="location.href='affectations.html'">→ Affectations</button>
   </div>
 </header>
 
 <div class="container">
-
   <div class="left">
-
     <div class="box">
       <div class="box-title">🚒 Sélectionner un véhicule</div>
       <div class="vehicule-grid">
-        <div class="vehicule-btn" onclick="declencherAlerte('VSAV 403')">
-          <span class="icon">🚑</span>
-          VSAV 403
+        <div class="vehicule-btn" onclick="selectVehicule('VSAV 403', '🚑')">
+          <span class="icon">🚑</span>VSAV 403
         </div>
-        <div class="vehicule-btn" onclick="declencherAlerte('VSAV 527')">
-          <span class="icon">🚑</span>
-          VSAV 527
+        <div class="vehicule-btn" onclick="selectVehicule('VSAV 527', '🚑')">
+          <span class="icon">🚑</span>VSAV 527
         </div>
-        <div class="vehicule-btn" onclick="declencherAlerte('FPT 201')">
-          <span class="icon">🚒</span>
-          FPT 201
+        <div class="vehicule-btn" onclick="selectVehicule('FPT 201', '🚒')">
+          <span class="icon">🚒</span>FPT 201
         </div>
-        <div class="vehicule-btn" onclick="declencherAlerte('EPA 301')">
-          <span class="icon">🚛</span>
-          EPA 301
+        <div class="vehicule-btn" onclick="selectVehicule('EPA 301', '🚛')">
+          <span class="icon">🚛</span>EPA 301
         </div>
-        <div class="vehicule-btn" onclick="declencherAlerte('VSR 101')">
-          <span class="icon">🚗</span>
-          VSR 101
+        <div class="vehicule-btn" onclick="selectVehicule('VSR 101', '🚗')">
+          <span class="icon">🚗</span>VSR 101
         </div>
-        <div class="vehicule-btn" onclick="declencherAlerte('CCF 201')">
-          <span class="icon">🚒</span>
-          CCF 201
+        <div class="vehicule-btn" onclick="selectVehicule('CCF 201', '🚒')">
+          <span class="icon">🚒</span>CCF 201
         </div>
       </div>
     </div>
 
     <div class="box">
-      <div class="box-title">📋 Personnel en garde</div>
-      <div id="garde-liste" class="garde-section"></div>
+      <div class="box-title">📝 Motif de départ</div>
+      <div class="form-group">
+        <label>Véhicule sélectionné</label>
+        <input type="text" id="selected-vehicule" placeholder="Cliquez sur un véhicule" readonly>
+      </div>
+      <div class="form-group">
+        <label>Motif</label>
+        <select id="motif">
+          <option value="">-- Sélectionner un motif --</option>
+          <option value="Incendie">Incendie</option>
+          <option value="Accident de la route">Accident de la route</option>
+          <option value="Secours à personne">Secours à personne</option>
+          <option value="Intoxication">Intoxication</option>
+          <option value="Accident domestique">Accident domestique</option>
+          <option value="Feu de forêt">Feu de forêt</option>
+          <option value="Accident industriel">Accident industriel</option>
+          <option value="Inondation">Inondation</option>
+          <option value="Intervention technique">Intervention technique</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+      <div class="form-group" id="autre-group" style="display:none;">
+        <label>Préciser</label>
+        <input type="text" id="motif-autre" placeholder="Décrivez le motif">
+      </div>
+      <div class="form-group">
+        <label>Localisation</label>
+        <input type="text" id="localisation" placeholder="Adresse ou lieu">
+      </div>
+      <button class="btn-engager" id="btn-engager" onclick="declencherAlerte()" disabled>🚨 ENGAGER LE VÉHICULE</button>
+    </div>
+
+    <div class="box">
+      <div class="box-title blue">📋 Personnel en service</div>
+      <div class="section-title">Cliquez pour ajouter en garde</div>
+      <div id="liste-service" style="margin-bottom: 20px;"></div>
+    </div>
+
+    <div class="box">
+      <div class="box-title">🚨 Personnel en garde</div>
+      <div id="garde-liste"></div>
     </div>
 
     <div class="box">
       <div class="box-title">📜 Historique des alertes</div>
       <div id="alert-log" class="alert-log"></div>
     </div>
+  </div>
 
+  <div class="right">
+    <div class="camera-text">
+      📹 Caméra N°1<br>
+      <span style="font-size:14px;">Caserne</span>
+    </div>
   </div>
 </div>
 
-<!-- Audio beep -->
-<audio id="beep-sound" preload="auto">
-  <source src="beep-01a.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-let beepAudio = document.getElementById('beep-sound');
+var selectedVehicule = null;
+var selectedIcon = null;
 
-function declencherAlerte(vehicule) {
-  // Jouer le son
-  beepAudio.currentTime = 0;
-  beepAudio.play().catch(e => console.log('Audio non disponible'));
+function selectVehicule(nom, icon) {
+  selectedVehicule = nom;
+  selectedIcon = icon;
+  document.getElementById('selected-vehicule').value = icon + ' ' + nom;
+  document.getElementById('btn-engager').disabled = false;
+  
+  var btns = document.querySelectorAll('.vehicule-btn');
+  btns.forEach(function(btn) {
+    btn.classList.remove('selected');
+  });
+  event.target.closest('.vehicule-btn').classList.add('selected');
+}
 
-  // Ajouter à l'historique
-  let log = document.getElementById('alert-log');
-  let now = new Date();
-  let heure = now.getHours().toString().padStart(2, '0') + ':' + 
+document.getElementById('motif').addEventListener('change', function() {
+  var autreGroup = document.getElementById('autre-group');
+  if (this.value === 'Autre') {
+    autreGroup.style.display = 'block';
+  } else {
+    autreGroup.style.display = 'none';
+  }
+});
+
+function playBeep() {
+  try {
+    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    for (var i = 0; i < 3; i++) {
+      (function(index) {
+        setTimeout(function() {
+          var osc = audioCtx.createOscillator();
+          var gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.frequency.value = 800;
+          osc.type = 'square';
+          gain.gain.value = 0.3;
+          osc.start(audioCtx.currentTime);
+          osc.stop(audioCtx.currentTime + 0.15);
+        }, index * 250);
+      })(i);
+    }
+  } catch(e) {}
+}
+
+function declencherAlerte() {
+  if (!selectedVehicule) {
+    alert('Veuillez sélectionner un véhicule');
+    return;
+  }
+  
+  var motif = document.getElementById('motif').value;
+  if (!motif) {
+    alert('Veuillez sélectionner un motif');
+    return;
+  }
+  
+  if (motif === 'Autre') {
+    motif = document.getElementById('motif-autre').value;
+    if (!motif) {
+      alert('Veuillez préciser le motif');
+      return;
+    }
+  }
+  
+  var localisation = document.getElementById('localisation').value || 'Non précisée';
+  
+  playBeep();
+  
+  var log = document.getElementById('alert-log');
+  var now = new Date();
+  var heure = now.getHours().toString().padStart(2, '0') + ':' + 
               now.getMinutes().toString().padStart(2, '0') + ':' + 
               now.getSeconds().toString().padStart(2, '0');
-
-  let item = document.createElement('div');
-  item.className = 'alert-item';
-  item.innerHTML = '<span>🚨 ' + vehicule + ' ENGAGÉ !</span><span class="temps">' + heure + '</span>';
   
-  log.prepend(item);
+  var item = document.createElement('div');
+  item.className = 'alert-item';
+  item.innerHTML = 
+    '<div class="header">' +
+      '<span>' + selectedIcon + ' ' + selectedVehicule + '</span>' +
+      '<span>' + heure + '</span>' +
+    '</div>' +
+    '<div class="details">🚨 ' + motif + '</div>' +
+    '<div class="details">📍 ' + localisation + '</div>';
+  
+  log.insertBefore(item, log.firstChild);
+  
+  document.getElementById('selected-vehicule').value = '';
+  document.getElementById('motif').value = '';
+  document.getElementById('motif-autre').value = '';
+  document.getElementById('localisation').value = '';
+  document.getElementById('autre-group').style.display = 'none';
+  document.getElementById('btn-engager').disabled = true;
+  selectedVehicule = null;
+  selectedIcon = null;
+  
+  setTimeout(function() {
+    if (item.parentNode) {
+      item.parentNode.removeChild(item);
+    }
+  }, 60000);
+}
 
-  // Supprimer après 30 sec
-  setTimeout(() => {
-    item.remove();
-  }, 30000);
+function chargerService() {
+  var agents = JSON.parse(localStorage.getItem('agents')) || [];
+  var container = document.getElementById('liste-service');
+  
+  if (agents.length === 0) {
+    container.innerHTML = '<p class="empty-msg">Aucun agent en service. <a href="prise-de-service.html" style="color:#3b82f6;">Ajouter</a></p>';
+    return;
+  }
+  
+  container.innerHTML = '';
+  for (var i = 0; i < agents.length; i++) {
+    (function(nom) {
+      var tag = document.createElement('span');
+      tag.className = 'tag service';
+      tag.innerHTML = nom;
+      tag.onclick = function() { ajouterEnGarde(nom); };
+      container.appendChild(tag);
+    })(agents[i]);
+  }
+}
+
+function ajouterEnGarde(nom) {
+  var garde = JSON.parse(localStorage.getItem('garde')) || [];
+  if (garde.indexOf(nom) === -1) {
+    garde.push(nom);
+    localStorage.setItem('garde', JSON.stringify(garde));
+    chargerGarde();
+  }
 }
 
 function chargerGarde() {
-  let garde = JSON.parse(localStorage.getItem('garde')) || [];
-  let container = document.getElementById('garde-liste');
-
+  var garde = JSON.parse(localStorage.getItem('garde')) || [];
+  var container = document.getElementById('garde-liste');
+  
   if (garde.length === 0) {
-    container.innerHTML = '<p style="color: #64748b;">Aucun agent en garde</p>';
+    container.innerHTML = '<p class="empty-msg">Aucun agent en garde</p>';
     return;
   }
-
-  container.innerHTML = '<div class="garde-title">Agents disponibles:</div>';
-  garde.forEach(nom => {
-    let tag = document.createElement('span');
-    tag.className = 'tag';
-    tag.innerText = nom;
-    container.appendChild(tag);
-  });
+  
+  container.innerHTML = '';
+  for (var i = 0; i < garde.length; i++) {
+    (function(nom, idx) {
+      var tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.innerHTML = nom + ' ✕';
+      tag.onclick = function() {
+        garde.splice(idx, 1);
+        localStorage.setItem('garde', JSON.stringify(garde));
+        chargerGarde();
+      };
+      container.appendChild(tag);
+    })(garde[i], i);
+  }
 }
 
+chargerService();
 chargerGarde();
 </script>
 
