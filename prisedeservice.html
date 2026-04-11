@@ -13,20 +13,22 @@ h1 { font-size: 20px; }
 .btn:hover { background: #4b5563; }
 .btn-primary { background: #3b82f6; }
 .btn-primary:hover { background: #2563eb; }
-.container { padding: 30px; max-width: 800px; margin: 0 auto; }
+.container { padding: 30px; max-width: 900px; margin: 0 auto; }
 .box { background: #1e293b; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
 .box-title { background: #2563eb; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 18px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-.input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+.input-group { display: flex; gap: 10px; margin-bottom: 15px; }
 .input-group input { flex: 1; padding: 12px 15px; border: none; border-radius: 8px; font-size: 16px; background: #374151; color: white; }
 .input-group input::placeholder { color: #9ca3af; }
 .tag { display: inline-block; background: #22c55e; color: black; padding: 10px 15px; margin: 5px; border-radius: 8px; cursor: pointer; font-size: 14px; }
 .tag:hover { background: #ef4444; color: white; }
+.tag.en-garde { background: #f59e0b; color: black; }
 .compteur { font-size: 20px; color: #22c55e; margin-bottom: 15px; }
 .stats { display: flex; gap: 20px; margin-top: 20px; }
 .stat { background: #374151; padding: 15px 25px; border-radius: 10px; text-align: center; }
 .stat .number { font-size: 30px; font-weight: bold; color: #3b82f6; }
 .stat .label { font-size: 12px; color: #94a3b8; }
-.actions { display: flex; gap: 10px; margin-top: 15px; }
+.agents-list { min-height: 50px; }
+.empty-msg { color: #94a3b8; font-size: 14px; padding: 20px; text-align: center; }
 </style>
 </head>
 <body>
@@ -41,12 +43,14 @@ h1 { font-size: 20px; }
 
 <div class="container">
   <div class="box">
-    <div class="box-title">Ajouter un agent en service</div>
+    <div class="box-title">
+      <span>Ajouter un agent en service</span>
+    </div>
     <div class="input-group">
       <input type="text" id="agent-input" placeholder="Nom de l'agent..." onkeypress="if(event.key==='Enter') ajouterAgent()">
       <button class="btn btn-primary" onclick="ajouterAgent()">Ajouter</button>
     </div>
-    <div class="actions">
+    <div style="margin-top:10px;">
       <button class="btn" onclick="location.href='effectif.html'">👥 Voir effectif</button>
       <button class="btn" onclick="location.href='alertes.html'">🚨 Alertes</button>
     </div>
@@ -57,7 +61,12 @@ h1 { font-size: 20px; }
       <span>Agents en service</span>
       <span id="compteur">0 agent(s)</span>
     </div>
-    <div id="liste-agents"></div>
+    <div id="liste-agents" class="agents-list"></div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Agents en garde</div>
+    <div id="liste-garde" class="agents-list"></div>
   </div>
 
   <div class="stats">
@@ -75,7 +84,10 @@ h1 { font-size: 20px; }
 <script>
 function ajouterAgent() {
   var nom = document.getElementById('agent-input').value.trim();
-  if (!nom) return;
+  if (!nom) {
+    alert('Veuillez entrer un nom');
+    return;
+  }
   
   var agents = JSON.parse(localStorage.getItem('agents')) || [];
   if (agents.indexOf(nom) === -1) {
@@ -83,6 +95,9 @@ function ajouterAgent() {
     localStorage.setItem('agents', JSON.stringify(agents));
     document.getElementById('agent-input').value = '';
     document.getElementById('agent-input').focus();
+  } else {
+    alert('Cet agent est déjà en service');
+    return;
   }
   afficherAgents();
 }
@@ -94,34 +109,103 @@ function supprimerAgent(index) {
   afficherAgents();
 }
 
+function retirerDeGarde(nom) {
+  var garde = JSON.parse(localStorage.getItem('garde')) || [];
+  var idx = garde.indexOf(nom);
+  if (idx !== -1) {
+    garde.splice(idx, 1);
+    localStorage.setItem('garde', JSON.stringify(garde));
+  }
+  afficherAgents();
+}
+
+function mettreEnGarde(nom) {
+  var garde = JSON.parse(localStorage.getItem('garde')) || [];
+  if (garde.indexOf(nom) === -1) {
+    garde.push(nom);
+    localStorage.setItem('garde', JSON.stringify(garde));
+  }
+  afficherAgents();
+}
+
 function afficherAgents() {
   var agents = JSON.parse(localStorage.getItem('agents')) || [];
   var garde = JSON.parse(localStorage.getItem('garde')) || [];
+  
   var container = document.getElementById('liste-agents');
+  var gardeContainer = document.getElementById('liste-garde');
   
   document.getElementById('compteur').innerHTML = agents.length + ' agent(s)';
   document.getElementById('total-service').innerHTML = agents.length;
   document.getElementById('total-garde').innerHTML = garde.length;
   
-  container.innerHTML = '';
-  
+  // Agents en service
   if (agents.length === 0) {
-    container.innerHTML = '<p style="color:#94a3b8;">Aucun agent en service. Ajoutez un agent ci-dessus.</p>';
-    return;
+    container.innerHTML = '<div class="empty-msg">Aucun agent en service.<br>Ajoutez un agent ci-dessus.</div>';
+  } else {
+    container.innerHTML = '';
+    for (var i = 0; i < agents.length; i++) {
+      (function(index, nom) {
+        var tag = document.createElement('span');
+        tag.className = 'tag';
+        if (garde.indexOf(nom) !== -1) {
+          tag.className = 'tag en-garde';
+          tag.innerHTML = nom + ' ✓ En garde ✕';
+        } else {
+          tag.innerHTML = nom + ' ✕';
+        }
+        tag.onclick = function() {
+          if (garde.indexOf(nom) !== -1) {
+            if (confirm('Retirer ' + nom + ' du service et de la garde ?')) {
+              agents.splice(index, 1);
+              localStorage.setItem('agents', JSON.stringify(agents));
+              retirerDeGarde(nom);
+            }
+          } else {
+            if (confirm('Retirer ' + nom + ' du service ?')) {
+              agents.splice(index, 1);
+              localStorage.setItem('agents', JSON.stringify(agents));
+              afficherAgents();
+            }
+          }
+        };
+        container.appendChild(tag);
+        
+        // Ajouter aussi en garde si pas déjà
+        if (garde.indexOf(nom) === -1) {
+          var gardeTag = document.createElement('span');
+          gardeTag.className = 'tag';
+          gardeTag.innerHTML = nom + ' → Garde';
+          gardeTag.style.marginLeft = '10px';
+          gardeTag.onclick = function() {
+            mettreEnGarde(nom);
+          };
+          container.appendChild(gardeTag);
+        }
+      })(i, agents[i]);
+    }
   }
   
-  for (var i = 0; i < agents.length; i++) {
-    (function(index) {
-      var tag = document.createElement('span');
-      tag.className = 'tag';
-      tag.innerHTML = agents[index] + ' ✕';
-      tag.onclick = function() {
-        if (confirm('Retirer ' + agents[index] + ' du service ?')) {
-          supprimerAgent(index);
-        }
-      };
-      container.appendChild(tag);
-    })(i);
+  // Agents en garde
+  if (garde.length === 0) {
+    gardeContainer.innerHTML = '<div class="empty-msg">Aucun agent en garde</div>';
+  } else {
+    gardeContainer.innerHTML = '';
+    for (var j = 0; j < garde.length; j++) {
+      (function(nom, idx) {
+        var tag = document.createElement('span');
+        tag.className = 'tag en-garde';
+        tag.innerHTML = nom + ' ✕';
+        tag.onclick = function() {
+          if (confirm('Retirer ' + nom + ' de la garde ?')) {
+            garde.splice(idx, 1);
+            localStorage.setItem('garde', JSON.stringify(garde));
+            afficherAgents();
+          }
+        };
+        gardeContainer.appendChild(tag);
+      })(garde[j], j);
+    }
   }
 }
 
