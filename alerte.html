@@ -2,50 +2,66 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Gestion des alertes</title>
+<title>Alertes - Intervention</title>
 
 <style>
-body {
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   font-family: Arial, sans-serif;
   background: #0f172a;
   color: white;
+  min-height: 100vh;
 }
 
-/* HEADER */
 header {
   background: #1e293b;
-  padding: 15px;
+  padding: 15px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 3px solid #ef4444;
 }
 
 header h1 {
-  font-size: 18px;
-  margin: 0;
+  font-size: 24px;
+  color: #ef4444;
 }
 
-.logo {
-  font-weight: bold;
+.btn {
+  background: #374151;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: background 0.3s;
 }
 
-/* LAYOUT */
+.btn:hover {
+  background: #4b5563;
+}
+
 .container {
   display: flex;
   height: calc(100vh - 60px);
 }
 
-/* LEFT PANEL */
 .left {
   width: 50%;
-  padding: 20px;
+  padding: 30px;
+  overflow-y: auto;
 }
 
-/* RIGHT PANEL (MAP) */
 .right {
   width: 50%;
-  background: black;
+  background: #000;
+  position: relative;
 }
 
 .right img {
@@ -54,75 +70,232 @@ header h1 {
   object-fit: cover;
 }
 
-/* BUTTONS */
-.btn {
-  background: #3b82f6;
-  border: none;
-  padding: 8px 15px;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-  margin: 5px 0;
+.right .camera-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0,0,0,0.7);
+  padding: 10px 20px;
+  border-radius: 8px;
 }
 
-.btn:hover {
-  background: #2563eb;
+.box {
+  background: #1e293b;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 25px;
 }
 
-/* ALERT LIST */
-.alert-box {
-  margin-top: 20px;
-  background: #9ca3af;
+.box-title {
+  background: #ef4444;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.vehicule-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.vehicule-btn {
+  background: #22c55e;
   color: black;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.2s;
+  border: 3px solid transparent;
 }
 
+.vehicule-btn:hover {
+  transform: scale(1.05);
+  border-color: white;
+}
+
+.vehicule-btn:active {
+  background: #ef4444;
+  color: white;
+}
+
+.vehicule-btn .icon {
+  font-size: 30px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.alert-log {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.alert-item {
+  background: #ef4444;
+  color: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: flash 0.5s;
+}
+
+@keyframes flash {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.5; }
+}
+
+.alert-item .temps {
+  color: #fca5a5;
+  font-size: 12px;
+}
+
+.garde-section {
+  margin-top: 20px;
+}
+
+.garde-title {
+  color: #94a3b8;
+  margin-bottom: 10px;
+}
+
+.tag {
+  display: inline-block;
+  background: #f59e0b;
+  color: black;
+  padding: 8px 12px;
+  margin: 5px;
+  border-radius: 8px;
+  font-size: 14px;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo">🔵 MODULE OPS</div>
-  <h1>SYSTÈME DE GESTION DES ALERTES</h1>
+  <div>🔵 MODULE OPS</div>
+  <h1>🚨 ALERTES INTERVENTION</h1>
+  <div>
+    <button class="btn" onclick="window.location.href='index.html'">🏠 Accueil</button>
+    <button class="btn" onclick="window.location.href='affectations.html'">→ Affectations</button>
+  </div>
 </header>
 
 <div class="container">
 
-  <!-- GAUCHE -->
   <div class="left">
-    <button class="btn" onclick="history.back()">← Retour au module</button><br>
- <button class="btn" onclick="creerAlerte()">Créer une alerte</button>
 
-   <div id="liste-alertes" class="alert-box">
-  </div>
+    <div class="box">
+      <div class="box-title">🚒 Sélectionner un véhicule</div>
+      <div class="vehicule-grid">
+        <div class="vehicule-btn" onclick="declencherAlerte('VSAV 403')">
+          <span class="icon">🚑</span>
+          VSAV 403
+        </div>
+        <div class="vehicule-btn" onclick="declencherAlerte('VSAV 527')">
+          <span class="icon">🚑</span>
+          VSAV 527
+        </div>
+        <div class="vehicule-btn" onclick="declencherAlerte('FPT 201')">
+          <span class="icon">🚒</span>
+          FPT 201
+        </div>
+        <div class="vehicule-btn" onclick="declencherAlerte('EPA 301')">
+          <span class="icon">🚛</span>
+          EPA 301
+        </div>
+        <div class="vehicule-btn" onclick="declencherAlerte('VSR 101')">
+          <span class="icon">🚗</span>
+          VSR 101
+        </div>
+        <div class="vehicule-btn" onclick="declencherAlerte('CCF 201')">
+          <span class="icon">🚒</span>
+          CCF 201
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-title">📋 Personnel en garde</div>
+      <div id="garde-liste" class="garde-section"></div>
+    </div>
+
+    <div class="box">
+      <div class="box-title">📜 Historique des alertes</div>
+      <div id="alert-log" class="alert-log"></div>
+    </div>
+
   </div>
 
-  <!-- DROITE (CARTE) -->
   <div class="right">
-    <img src="https://i.imgur.com/8Qf6R6G.jpg">
+    <img src="https://images.unsplash.com/photo-1592656094267-764a45160876?w=800" alt="caméra">
+    <div class="camera-overlay">
+      📹 Caméra N°1 - Caserne
+    </div>
   </div>
 
 </div>
+
+<!-- Audio beep -->
+<audio id="beep-sound" preload="auto">
+  <source src="beep-01a.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-function creerAlerte() {
-  let texte = prompt("Entrer le nom de l'alerte :");
+let beepAudio = document.getElementById('beep-sound');
 
-  if (!texte) return;
+function declencherAlerte(vehicule) {
+  // Jouer le son
+  beepAudio.currentTime = 0;
+  beepAudio.play().catch(e => console.log('Audio non disponible'));
 
-  let div = document.createElement("div");
-  div.className = "alert-item";
-  div.innerText = texte;
+  // Ajouter à l'historique
+  let log = document.getElementById('alert-log');
+  let now = new Date();
+  let heure = now.getHours().toString().padStart(2, '0') + ':' + 
+              now.getMinutes().toString().padStart(2, '0') + ':' + 
+              now.getSeconds().toString().padStart(2, '0');
 
-  // supprimer au clic
-  div.onclick = function() {
-    this.remove();
-  };
-
-  document.getElementById("liste-alertes").appendChild(div);
-}
-</script>
+  let item = document.createElement('div');
+  item.className = 'alert-item';
+  item.innerHTML = '<span>🚨 ' + vehicule + ' ENGAGÉ !</span><span class="temps">' + heure + '</span>';
   
+  log.prepend(item);
+
+  // Supprimer après 30 sec
+  setTimeout(() => {
+    item.remove();
+  }, 30000);
+}
+
+function chargerGarde() {
+  let garde = JSON.parse(localStorage.getItem('garde')) || [];
+  let container = document.getElementById('garde-liste');
+
+  if (garde.length === 0) {
+    container.innerHTML = '<p style="color: #64748b;">Aucun agent en garde</p>';
+    return;
+  }
+
+  container.innerHTML = '<div class="garde-title">Agents disponibles:</div>';
+  garde.forEach(nom => {
+    let tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.innerText = nom;
+    container.appendChild(tag);
+  });
+}
+
+chargerGarde();
+</script>
+
 </body>
 </html>
