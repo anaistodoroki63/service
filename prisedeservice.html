@@ -2,59 +2,41 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>systeme de service</title>
+<title>Prise de service</title>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   background: #0f172a;
   color: white;
 }
 
-/* HEADER */
 header {
   background: #1e293b;
   padding: 15px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
-header h1 {
-  font-size: 18px;
-  margin: 0;
-}
-
-.logo {
-  font-weight: bold;
-}
-
-/* LAYOUT */
 .container {
   display: flex;
   height: calc(100vh - 60px);
 }
 
-/* LEFT PANEL */
 .left {
   width: 50%;
   padding: 20px;
 }
 
-/* RIGHT PANEL (MAP) */
-.right {
-  width: 50%;
-  background: black;
+.alert-box {
+  margin-top: 20px;
+  background: #9ca3af;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
 }
 
-.right img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* BUTTONS */
 .btn {
   background: #3b82f6;
   border: none;
@@ -65,17 +47,13 @@ header h1 {
   margin: 5px 0;
 }
 
-.btn:hover {
-  background: #2563eb;
-}
-
-/* ALERT LIST */
-.alert-box {
-  margin-top: 20px;
-  background: #9ca3af;
-  color: black;
-  padding: 10px;
+.tag {
+  display: inline-block;
+  background: #22c55e;
+  padding: 8px;
+  margin: 5px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 </style>
@@ -84,19 +62,27 @@ header h1 {
 <body>
 
 <header>
-  <div class="logo">🔵 MODULE OPS</div>
-  <h1>prise de service</h1>
+  <div>🔵 MODULE OPS</div>
+  <h1>PRISE DE SERVICE</h1>
 </header>
 
 <div class="container">
 
-  <!-- GAUCHE -->
-  <input type="text" id="agent" placeholder="Nom de l'agent">
-<button onclick="ajouterService()">Prendre service</button>
   <div class="left">
-    <button class="btn" onclick="history.back()">← Retour au module</button><br>
- <button class="btn" onclick="creerAlerte()">commencer son service</button>
-    <script>
+
+    <button class="btn" onclick="history.back()">← Retour</button>
+
+    <h3>Ajouter un agent</h3>
+    <input type="text" id="agent" placeholder="Nom de l'agent">
+    <button class="btn" onclick="ajouterService()">Prendre service</button>
+
+    <div class="alert-box" id="service"></div>
+
+  </div>
+
+</div>
+
+<script>
 function ajouterService() {
   let nom = document.getElementById("agent").value;
   if (!nom) return;
@@ -106,32 +92,35 @@ function ajouterService() {
 
   localStorage.setItem("agents", JSON.stringify(agents));
 
-  alert("Agent ajouté !");
+  afficherAgents();
   document.getElementById("agent").value = "";
 }
-</script>
-   <div id="service" class="alert-box">
-  </div>
-    </div>
-  
-<script>
-function priseservice() {
-  let texte = prompt("bon service :");
 
-  if (!texte) return;
+function afficherAgents() {
+  let agents = JSON.parse(localStorage.getItem("agents")) || [];
+  let container = document.getElementById("service");
 
-  let div = document.createElement("div");
-  div.className = "service";
-  div.innerText = texte;
+  container.innerHTML = "";
 
-  // supprimer au clic
-  div.onclick = function() {
-    this.remove();
-  };
+  agents.forEach((nom, index) => {
+    let tag = document.createElement("span");
+    tag.className = "tag";
+    tag.innerText = nom;
 
-  document.getElementById("service").appendChild(div);
+    // supprimer agent
+    tag.onclick = function() {
+      agents.splice(index, 1);
+      localStorage.setItem("agents", JSON.stringify(agents));
+      afficherAgents();
+    };
+
+    container.appendChild(tag);
+  });
 }
+
+// charger au démarrage
+afficherAgents();
 </script>
-  
+
 </body>
 </html>
