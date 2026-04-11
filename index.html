@@ -2,152 +2,137 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Module OPS - Accueil</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module OPS - Connexion</title>
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #0f172a; color: white; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
 
-body {
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: white;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+.login-container { background: #1e293b; padding: 50px; border-radius: 20px; width: 400px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+.login-logo { font-size: 60px; margin-bottom: 20px; }
+.login-title { font-size: 28px; margin-bottom: 10px; color: #3b82f6; }
+.login-subtitle { color: #94a3b8; margin-bottom: 40px; font-size: 14px; }
 
-header {
-  background: #1e293b;
-  padding: 20px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 3px solid #3b82f6;
-}
+.input-group { margin-bottom: 20px; text-align: left; }
+.input-group label { display: block; margin-bottom: 8px; color: #94a3b8; font-size: 14px; }
+.input-group input { width: 100%; padding: 15px; border: none; border-radius: 10px; background: #374151; color: white; font-size: 16px; }
+.input-group input:focus { outline: 2px solid #3b82f6; }
 
-header h1 {
-  font-size: 28px;
-}
+.btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+.btn-login { background: #3b82f6; color: white; }
+.btn-login:hover { background: #2563eb; transform: translateY(-2px); }
 
-header .logo {
-  font-size: 24px;
-}
+.error { background: #ef4444; color: white; padding: 10px; border-radius: 8px; margin-bottom: 20px; display: none; font-size: 14px; }
 
-.container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-}
+.hint { margin-top: 30px; color: #64748b; font-size: 12px; }
+.hint span { color: #94a3b8; }
 
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 250px);
-  gap: 25px;
-}
+/* Main Menu - Hidden by default */
+.main-menu { display: none; }
+.main-menu.active { display: block; }
+.login-page { display: block; }
+.login-page.hidden { display: none; }
 
-.menu-card {
-  background: #1e293b;
-  border-radius: 15px;
-  padding: 40px 30px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s;
-  border: 2px solid transparent;
-}
+header { background: #1e293b; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #3b82f6; }
+header h1 { font-size: 24px; }
+header .logo { font-size: 24px; font-weight: bold; }
+header .user-info { display: flex; align-items: center; gap: 15px; }
+header .btn-logout { background: #ef4444; padding: 8px 15px; border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 14px; }
+header .btn-logout:hover { background: #dc2626; }
 
-.menu-card:hover {
-  transform: translateY(-5px);
-  border-color: #3b82f6;
-  background: #334155;
-}
+.menu-grid { display: grid; grid-template-columns: repeat(3, 250px); gap: 25px; justify-content: center; padding: 40px; }
+.menu-card { background: #1e293b; border-radius: 15px; padding: 40px 30px; text-align: center; cursor: pointer; transition: all 0.3s; border: 2px solid transparent; }
+.menu-card:hover { transform: translateY(-5px); border-color: #3b82f6; background: #334155; }
+.menu-card .icon { font-size: 50px; margin-bottom: 15px; }
+.menu-card h2 { font-size: 18px; margin-bottom: 10px; }
+.menu-card p { color: #94a3b8; font-size: 13px; }
 
-.menu-card .icon {
-  font-size: 60px;
-  margin-bottom: 15px;
-}
+footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b; font-size: 12px; margin-top: auto; }
 
-.menu-card h2 {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.menu-card p {
-  color: #94a3b8;
-  font-size: 14px;
-}
-
-footer {
-  background: #1e293b;
-  padding: 15px;
-  text-align: center;
-  color: #64748b;
-  font-size: 12px;
-}
+.container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px; }
 </style>
 </head>
-
 <body>
 
-<header>
-  <div class="logo">🔵 MODULE OPS</div>
-  <h1>Centre de Secours</h1>
-</header>
-
-<div class="container">
-
-  <div class="menu-grid">
-
-    <div class="menu-card" onclick="window.location.href='affectation.html'">
-      <div class="icon">🚒</div>
-      <h2>Affectations</h2>
-      <p>Gestion des affectations et gardes</p>
-    </div>
-
-    <div class="menu-card" onclick="window.location.href='alerte.html'">
-      <div class="icon">🚨</div>
-      <h2>Alertes</h2>
-      <p>Déclencher les interventions</p>
-    </div>
-
-    <div class="menu-card" onclick="window.location.href='planning.html'">
-      <div class="icon">📅</div>
-      <h2>Planning</h2>
-      <p>Calendrier des services</p>
-    </div>
-
-    <div class="menu-card" onclick="window.location.href='effectif.html'">
-      <div class="icon">👥</div>
-      <h2>Effectif</h2>
-      <p>Liste complète du personnel</p>
-    </div>
-
-    <div class="menu-card" onclick="window.location.href='vehicule.html'">
-      <div class="icon">🚗</div>
-      <h2>Véhicules</h2>
-      <p>État des véhicules</p>
-    </div>
-
-        <div class="menu-card" onclick="window.location.href='prisedeservice.html'">
-      <div class="icon">📋</div>
-      <h2>prise de service</h2>
-      <p>enregistrer les agents en service</p>
+<!-- PAGE DE CONNEXION -->
+<div class="login-page" id="loginPage">
+  <div class="login-container">
+    <div class="login-logo">🔵</div>
+    <h1 class="login-title">MODULE OPS</h1>
+    <p class="login-subtitle">Centre de Secours - Authentification</p>
+    
+    <div class="error" id="loginError">Identifiants incorrects</div>
+    
+    <div class="input-group">
+      <label>Nom d'utilisateur</label>
+      <input type="text" id="username" placeholder="Entrez votre nom">
     </div>
     
+    <div class="input-group">
+      <label>Mot de passe</label>
+      <input type="password" id="password" placeholder="Entrez votre mot de passe" onkeypress="if(event.key==='Enter') doLogin()">
+    </div>
+    
+    <button class="btn btn-login" onclick="doLogin()">Se connecter</button>
+    
+    <p class="hint">
+      Identifiants par défaut:<br>
+      <span>admin / admin</span><br>
+      <span>operateur / operateur</span>
+    </p>
   </div>
-
 </div>
 
-<footer>
-  Module OPS v1.0 - Centre de Secours
-</footer>
+<!-- MENU PRINCIPAL -->
+<div class="main-menu" id="mainMenu">
+  <header>
+    <div class="logo">🔵 MODULE OPS</div>
+    <h1>Centre de Secours</h1>
+    <div class="user-info">
+      <span id="userDisplay"></span>
+      <button class="btn-logout" onclick="doLogout()">Déconnexion</button>
+    </div>
+  </header>
 
-  <script>
+  <div class="container">
+    <div class="menu-grid">
+      <div class="menu-card" onclick="location.href='prisedeservice.html'">
+        <div class="icon">📋</div>
+        <h2>Prise de Service</h2>
+        <p>Enregistrer les agents en service</p>
+      </div>
+      <div class="menu-card" onclick="location.href='affectation.html'">
+        <div class="icon">🚒</div>
+        <h2>Affectations</h2>
+        <p>Gestion des affectations et gardes</p>
+      </div>
+      <div class="menu-card" onclick="location.href='alerte.html'">
+        <div class="icon">🚨</div>
+        <h2>Alertes</h2>
+        <p>Déclencher les interventions</p>
+      </div>
+      <div class="menu-card" onclick="location.href='planning.html'">
+        <div class="icon">📅</div>
+        <h2>Planning</h2>
+        <p>Calendrier des services</p>
+      </div>
+      <div class="menu-card" onclick="location.href='effectif.html'">
+        <div class="icon">👥</div>
+        <h2>Effectif</h2>
+        <p>Liste complète du personnel</p>
+      </div>
+      <div class="menu-card" onclick="location.href='vehicule.html'">
+        <div class="icon">🚗</div>
+        <h2>Véhicules</h2>
+        <p>État des véhicules</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>Module OPS v1.0 - Centre de Secours</footer>
+</div>
+
+<script>
 // Utilisateurs autorisés
 var users = [
   { username: 'admin', password: 'admin', role: 'Administrateur' },
