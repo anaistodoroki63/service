@@ -12,34 +12,38 @@ h1 { font-size: 20px; color: #ef4444; }
 .btn { background: #374151; border: none; padding: 10px 20px; color: white; cursor: pointer; border-radius: 8px; font-size: 14px; }
 .btn:hover { background: #4b5563; }
 .container { display: flex; height: calc(100vh - 60px); }
-.left { width: 50%; padding: 30px; overflow-y: auto; }
+.left { width: 50%; padding: 25px; overflow-y: auto; }
 .right { width: 50%; background: #000; display: flex; align-items: center; justify-content: center; flex-direction: column; color: #64748b; }
-.box { background: #1e293b; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
-.box-title { background: #ef4444; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 16px; font-weight: bold; }
+.box { background: #1e293b; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
+.box-title { background: #ef4444; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; font-size: 15px; font-weight: bold; }
 .box-title.blue { background: #3b82f6; }
-.vehicule-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-.vehicule-btn { background: #22c55e; color: black; padding: 20px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.2s; border: 3px solid transparent; }
+.vehicule-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.vehicule-btn { background: #22c55e; color: black; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 14px; font-weight: bold; transition: all 0.2s; border: 3px solid transparent; }
 .vehicule-btn:hover { transform: scale(1.05); border-color: white; }
 .vehicule-btn:active { background: #ef4444; color: white; }
-.vehicule-btn .icon { font-size: 28px; display: block; margin-bottom: 5px; }
+.vehicule-btn .icon { font-size: 24px; display: block; margin-bottom: 5px; }
 .vehicule-btn.selected { border-color: #fff; background: #16a34a; }
-.form-group { margin-bottom: 15px; }
-.form-group label { display: block; margin-bottom: 5px; color: #94a3b8; font-size: 13px; }
-.form-group select, .form-group input { width: 100%; padding: 12px 15px; border: none; border-radius: 8px; background: #374151; color: white; font-size: 14px; }
-.btn-engager { width: 100%; background: #ef4444; padding: 15px; border: none; border-radius: 10px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+.vehicule-btn.engaged { background: #ef4444; color: white; animation: pulse 0.5s infinite; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; margin-bottom: 5px; color: #94a3b8; font-size: 12px; }
+.form-group select, .form-group input { width: 100%; padding: 10px 12px; border: none; border-radius: 6px; background: #374151; color: white; font-size: 13px; }
+.btn-engager { width: 100%; background: #ef4444; padding: 12px; border: none; border-radius: 8px; color: white; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 10px; }
 .btn-engager:hover { background: #dc2626; }
 .btn-engager:disabled { background: #64748b; cursor: not-allowed; }
-.alert-log { max-height: 250px; overflow-y: auto; }
-.alert-item { background: #ef4444; padding: 15px; margin: 10px 0; border-radius: 8px; animation: flash 0.5s; }
+.alert-log { max-height: 200px; overflow-y: auto; }
+.alert-item { background: #ef4444; padding: 12px; margin: 8px 0; border-radius: 8px; animation: flash 0.5s; }
 @keyframes flash { 0%, 50%, 100% { opacity: 1; } 25%, 75% { opacity: 0.5; } }
-.alert-item .header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; }
-.alert-item .details { font-size: 13px; color: #fca5a5; }
-.alert-item .temps { font-size: 12px; color: #fca5a5; margin-top: 5px; }
-.section-title { color: #94a3b8; margin-bottom: 10px; font-size: 13px; }
-.tag { display: inline-block; background: #f59e0b; color: black; padding: 8px 12px; margin: 5px; border-radius: 8px; font-size: 14px; }
+.alert-item .header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+.alert-item .agents { background: rgba(0,0,0,0.3); padding: 8px; border-radius: 5px; margin: 5px 0; font-size: 12px; }
+.alert-item .details { font-size: 12px; color: #fca5a5; }
+.alert-item .temps { font-size: 11px; color: #fca5a5; margin-top: 5px; }
+.section-title { color: #94a3b8; margin-bottom: 8px; font-size: 12px; }
+.tag { display: inline-block; background: #f59e0b; color: black; padding: 6px 10px; margin: 3px; border-radius: 6px; font-size: 12px; }
 .tag.service { background: #22c55e; color: black; }
+.tag.assigned { background: #3b82f6; color: white; }
 .camera-text { text-align: center; font-size: 18px; }
-.empty-msg { color: #64748b; font-size: 13px; }
+.empty-msg { color: #64748b; font-size: 12px; }
 </style>
 </head>
 <body>
@@ -57,22 +61,22 @@ h1 { font-size: 20px; color: #ef4444; }
     <div class="box">
       <div class="box-title">🚒 Sélectionner un véhicule</div>
       <div class="vehicule-grid">
-        <div class="vehicule-btn" onclick="selectVehicule('VSAV 403', '🚑')">
+        <div class="vehicule-btn" onclick="selectVehicule('VSAV403', 'VSAV 403', '🚑')">
           <span class="icon">🚑</span>VSAV 403
         </div>
-        <div class="vehicule-btn" onclick="selectVehicule('VSAV 527', '🚑')">
+        <div class="vehicule-btn" onclick="selectVehicule('VSAV527', 'VSAV 527', '🚑')">
           <span class="icon">🚑</span>VSAV 527
         </div>
-        <div class="vehicule-btn" onclick="selectVehicule('FPT 201', '🚒')">
+        <div class="vehicule-btn" onclick="selectVehicule('FPT201', 'FPT 201', '🚒')">
           <span class="icon">🚒</span>FPT 201
         </div>
-        <div class="vehicule-btn" onclick="selectVehicule('EPA 301', '🚛')">
+        <div class="vehicule-btn" onclick="selectVehicule('EPA301', 'EPA 301', '🚛')">
           <span class="icon">🚛</span>EPA 301
         </div>
-        <div class="vehicule-btn" onclick="selectVehicule('VSR 101', '🚗')">
+        <div class="vehicule-btn" onclick="selectVehicule('VSR101', 'VSR 101', '🚗')">
           <span class="icon">🚗</span>VSR 101
         </div>
-        <div class="vehicule-btn" onclick="selectVehicule('CCF 201', '🚒')">
+        <div class="vehicule-btn" onclick="selectVehicule('CCF201', 'CCF 201', '🚒')">
           <span class="icon">🚒</span>CCF 201
         </div>
       </div>
@@ -84,10 +88,14 @@ h1 { font-size: 20px; color: #ef4444; }
         <label>Véhicule sélectionné</label>
         <input type="text" id="selected-vehicule" placeholder="Cliquez sur un véhicule" readonly>
       </div>
+      <div class="form-group" id="agents-section" style="display:none;">
+        <label>Agents affectés à ce véhicule</label>
+        <div id="vehicule-agents"></div>
+      </div>
       <div class="form-group">
         <label>Motif</label>
         <select id="motif">
-          <option value="">-- Sélectionner un motif --</option>
+          <option value="">-- Sélectionner --</option>
           <option value="Incendie">Incendie</option>
           <option value="Accident de la route">Accident de la route</option>
           <option value="Secours à personne">Secours à personne</option>
@@ -114,7 +122,7 @@ h1 { font-size: 20px; color: #ef4444; }
     <div class="box">
       <div class="box-title blue">📋 Personnel en service</div>
       <div class="section-title">Cliquez pour ajouter en garde</div>
-      <div id="liste-service" style="margin-bottom: 20px;"></div>
+      <div id="liste-service"></div>
     </div>
 
     <div class="box">
@@ -137,29 +145,48 @@ h1 { font-size: 20px; color: #ef4444; }
 </div>
 
 <script>
-var selectedVehicule = null;
+var selectedId = null;
+var selectedNom = null;
 var selectedIcon = null;
 
-function selectVehicule(nom, icon) {
-  selectedVehicule = nom;
+function selectVehicule(id, nom, icon) {
+  selectedId = id;
+  selectedNom = nom;
   selectedIcon = icon;
+  
   document.getElementById('selected-vehicule').value = icon + ' ' + nom;
   document.getElementById('btn-engager').disabled = false;
+  
+  // Afficher les agents affectés
+  var affectations = JSON.parse(localStorage.getItem('vehicule_affectations')) || {};
+  var agents = affectations[id] || [];
+  var container = document.getElementById('vehicule-agents');
+  var agentsSection = document.getElementById('agents-section');
+  
+  if (agents.length > 0) {
+    agentsSection.style.display = 'block';
+    container.innerHTML = '';
+    for (var i = 0; i < agents.length; i++) {
+      var tag = document.createElement('span');
+      tag.className = 'tag assigned';
+      tag.innerHTML = agents[i];
+      container.appendChild(tag);
+    }
+  } else {
+    agentsSection.style.display = 'block';
+    container.innerHTML = '<span class="empty-msg">Aucun agent affecté à ce véhicule</span>';
+  }
   
   var btns = document.querySelectorAll('.vehicule-btn');
   btns.forEach(function(btn) {
     btn.classList.remove('selected');
+    btn.classList.remove('engaged');
   });
   event.target.closest('.vehicule-btn').classList.add('selected');
 }
 
 document.getElementById('motif').addEventListener('change', function() {
-  var autreGroup = document.getElementById('autre-group');
-  if (this.value === 'Autre') {
-    autreGroup.style.display = 'block';
-  } else {
-    autreGroup.style.display = 'none';
-  }
+  document.getElementById('autre-group').style.display = this.value === 'Autre' ? 'block' : 'none';
 });
 
 function playBeep() {
@@ -174,17 +201,29 @@ function playBeep() {
           gain.connect(audioCtx.destination);
           osc.frequency.value = 800;
           osc.type = 'square';
-          gain.gain.value = 0.3;
+          gain.gain.value = 0.4;
           osc.start(audioCtx.currentTime);
-          osc.stop(audioCtx.currentTime + 0.15);
-        }, index * 250);
+          osc.stop(audioCtx.currentTime + 0.2);
+        }, index * 300);
       })(i);
     }
+    // Bip final plus long
+    setTimeout(function() {
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = 1000;
+      osc.type = 'square';
+      gain.gain.value = 0.5;
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.5);
+    }, 1000);
   } catch(e) {}
 }
 
 function declencherAlerte() {
-  if (!selectedVehicule) {
+  if (!selectedId) {
     alert('Veuillez sélectionner un véhicule');
     return;
   }
@@ -204,6 +243,8 @@ function declencherAlerte() {
   }
   
   var localisation = document.getElementById('localisation').value || 'Non précisée';
+  var affectations = JSON.parse(localStorage.getItem('vehicule_affectations')) || {};
+  var agents = affectations[selectedId] || [];
   
   playBeep();
   
@@ -213,31 +254,47 @@ function declencherAlerte() {
               now.getMinutes().toString().padStart(2, '0') + ':' + 
               now.getSeconds().toString().padStart(2, '0');
   
+  var agentsHtml = '';
+  if (agents.length > 0) {
+    agentsHtml = '<div class="agents">👥 ' + agents.join(', ') + '</div>';
+  } else {
+    agentsHtml = '<div class="agents">⚠️ Aucun agent affecté</div>';
+  }
+  
   var item = document.createElement('div');
   item.className = 'alert-item';
   item.innerHTML = 
     '<div class="header">' +
-      '<span>' + selectedIcon + ' ' + selectedVehicule + '</span>' +
+      '<span>' + selectedIcon + ' ' + selectedNom + '</span>' +
       '<span>' + heure + '</span>' +
     '</div>' +
+    agentsHtml +
     '<div class="details">🚨 ' + motif + '</div>' +
     '<div class="details">📍 ' + localisation + '</div>';
   
   log.insertBefore(item, log.firstChild);
   
+  // Marquer le véhicule comme engagé
+  event.target.closest('.container').querySelectorAll('.vehicule-btn').forEach(function(btn) {
+    if (btn.innerHTML.indexOf(selectedNom) !== -1) {
+      btn.classList.add('engaged');
+    }
+  });
+  
+  // Reset
   document.getElementById('selected-vehicule').value = '';
   document.getElementById('motif').value = '';
   document.getElementById('motif-autre').value = '';
   document.getElementById('localisation').value = '';
   document.getElementById('autre-group').style.display = 'none';
+  document.getElementById('agents-section').style.display = 'none';
   document.getElementById('btn-engager').disabled = true;
-  selectedVehicule = null;
+  selectedId = null;
+  selectedNom = null;
   selectedIcon = null;
   
   setTimeout(function() {
-    if (item.parentNode) {
-      item.parentNode.removeChild(item);
-    }
+    if (item.parentNode) item.parentNode.removeChild(item);
   }, 60000);
 }
 
@@ -246,7 +303,7 @@ function chargerService() {
   var container = document.getElementById('liste-service');
   
   if (agents.length === 0) {
-    container.innerHTML = '<p class="empty-msg">Aucun agent en service. <a href="prise-de-service.html" style="color:#3b82f6;">Ajouter</a></p>';
+    container.innerHTML = '<p class="empty-msg">Aucun agent en service</p>';
     return;
   }
   
@@ -267,8 +324,8 @@ function ajouterEnGarde(nom) {
   if (garde.indexOf(nom) === -1) {
     garde.push(nom);
     localStorage.setItem('garde', JSON.stringify(garde));
-    chargerGarde();
   }
+  chargerGarde();
 }
 
 function chargerGarde() {
