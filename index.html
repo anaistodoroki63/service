@@ -3,44 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module OPS - Connexion</title>
+<title>Module OPS - Centre de Secours</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: Arial, sans-serif; background: #0f172a; color: white; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
 
+/* LOGIN */
 .login-container { background: #1e293b; padding: 50px; border-radius: 20px; width: 400px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
 .login-logo { font-size: 60px; margin-bottom: 20px; }
 .login-title { font-size: 28px; margin-bottom: 10px; color: #3b82f6; }
 .login-subtitle { color: #94a3b8; margin-bottom: 40px; font-size: 14px; }
-
 .input-group { margin-bottom: 20px; text-align: left; }
 .input-group label { display: block; margin-bottom: 8px; color: #94a3b8; font-size: 14px; }
 .input-group input { width: 100%; padding: 15px; border: none; border-radius: 10px; background: #374151; color: white; font-size: 16px; }
 .input-group input:focus { outline: 2px solid #3b82f6; }
-
 .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
 .btn-login { background: #3b82f6; color: white; }
 .btn-login:hover { background: #2563eb; transform: translateY(-2px); }
-
 .error { background: #ef4444; color: white; padding: 10px; border-radius: 8px; margin-bottom: 20px; display: none; font-size: 14px; }
 .success { background: #22c55e; color: black; padding: 10px; border-radius: 8px; margin-bottom: 20px; display: none; font-size: 14px; }
-
 .hint { margin-top: 30px; color: #64748b; font-size: 12px; }
 .hint span { color: #94a3b8; }
+.forgot-link { margin-top: 15px; }
+.forgot-link a { color: #3b82f6; text-decoration: none; font-size: 14px; }
+.forgot-link a:hover { text-decoration: underline; }
+.back-link { margin-top: 20px; }
+.back-link a { color: #94a3b8; text-decoration: none; font-size: 14px; }
+.back-link a:hover { color: white; }
+.password-strength { height: 5px; border-radius: 3px; margin-top: 5px; background: #374151; }
+.password-strength.weak { background: #ef4444; width: 33%; }
+.password-strength.medium { background: #f59e0b; width: 66%; }
+.password-strength.strong { background: #22c55e; width: 100%; }
 
-/* Main Menu - Hidden by default */
-.main-menu { display: none; }
-.main-menu.active { display: block; }
-.login-page { display: block; }
-.login-page.hidden { display: none; }
+/* PAGES */
+.login-page, .main-menu { display: none; }
+.login-page.active, .main-menu.active { display: block; }
+.login-page { width: 100%; }
 
+/* HEADER */
 header { background: #1e293b; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #3b82f6; }
 header h1 { font-size: 24px; }
 header .logo { font-size: 24px; font-weight: bold; }
 header .user-info { display: flex; align-items: center; gap: 15px; }
-header .btn-logout { background: #ef4444; padding: 8px 15px; border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 14px; }
-header .btn-logout:hover { background: #dc2626; }
+.btn-logout { background: #ef4444; padding: 8px 15px; border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 14px; }
+.btn-logout:hover { background: #dc2626; }
 
+/* MENU */
 .menu-grid { display: grid; grid-template-columns: repeat(3, 250px); gap: 25px; justify-content: center; padding: 40px; }
 .menu-card { background: #1e293b; border-radius: 15px; padding: 40px 30px; text-align: center; cursor: pointer; transition: all 0.3s; border: 2px solid transparent; }
 .menu-card:hover { transform: translateY(-5px); border-color: #3b82f6; background: #334155; }
@@ -48,27 +56,23 @@ header .btn-logout:hover { background: #dc2626; }
 .menu-card h2 { font-size: 18px; margin-bottom: 10px; }
 .menu-card p { color: #94a3b8; font-size: 13px; }
 
+/* FOOTER */
 footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b; font-size: 12px; margin-top: auto; }
 
+/* CONTAINER */
 .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px; }
-
-.password-strength { height: 5px; border-radius: 3px; margin-top: 5px; background: #374151; }
-.password-strength.weak { background: #ef4444; width: 33%; }
-.password-strength.medium { background: #f59e0b; width: 66%; }
-.password-strength.strong { background: #22c55e; width: 100%; }
 </style>
 </head>
 <body>
 
-<!-- PAGE DE CONNEXION -->
-<div class="login-page" id="loginPage">
+<!-- PAGE CONNEXION -->
+<div class="login-page active" id="loginPage">
   <div class="login-container">
     <div class="login-logo">🔵</div>
     <h1 class="login-title">MODULE OPS</h1>
     <p class="login-subtitle">Centre de Secours - Authentification</p>
     
     <div class="error" id="loginError">Identifiants incorrects</div>
-    <div class="success" id="loginSuccess">Mot de passe modifié avec succès!</div>
     
     <div class="input-group">
       <label>Nom d'utilisateur</label>
@@ -80,32 +84,67 @@ footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b;
       <input type="password" id="password" placeholder="Entrez votre mot de passe" onkeypress="if(event.key==='Enter') doLogin()">
     </div>
     
-    <button class="btn btn-login" id="btnLogin" onclick="doLogin()">Se connecter</button>
+    <button class="btn btn-login" onclick="doLogin()">Se connecter</button>
     
+    <div class="forgot-link">
+      <a href="#" onclick="showForgot()">Mot de passe oublié ?</a>
+    </div>
+    
+    <p class="hint">
+      Comptes disponibles:<br>
+      <span>admin / admin</span><br>
+      <span>operateur / operateur</span><br>
+      <span>chef / chef</span><br>
+      <span>andy / andyno</span><br>
+      <span>rafael / Rafaelneko</span>
+    </p>
+  </div>
+</div>
+
+<!-- PAGE MOT DE PASSE OUBLIÉ -->
+<div class="login-page" id="forgotPage">
+  <div class="login-container">
+    <div class="login-logo">🔑</div>
+    <h1 class="login-title">Mot de passe oublié</h1>
+    <p class="login-subtitle">Entrez votre nom d'utilisateur</p>
+    
+    <div class="error" id="forgotError"></div>
+    <div class="success" id="forgotSuccess"></div>
+    
+    <div class="input-group">
+      <label>Nom d'utilisateur</label>
+      <input type="text" id="forgotUsername" placeholder="Votre nom d'utilisateur">
+    </div>
+    
+    <button class="btn btn-login" onclick="doResetPassword()">Réinitialiser</button>
+    
+    <div class="back-link">
+      <a href="#" onclick="showLogin()">← Retour à la connexion</a>
+    </div>
   </div>
 </div>
 
 <!-- PAGE CHANGEMENT MOT DE PASSE -->
-<div class="login-page hidden" id="changePasswordPage">
+<div class="login-page" id="changePwdPage">
   <div class="login-container">
     <div class="login-logo">🔑</div>
     <h1 class="login-title">Nouveau mot de passe</h1>
-    <p class="login-subtitle">Bienvenue <span id="welcomeUser"></span> - Veuillez définir votre mot de passe</p>
+    <p class="login-subtitle">Bienvenue <span id="welcomeUser"></span></p>
     
     <div class="error" id="changeError"></div>
     
     <div class="input-group">
-      <label> Nouveau mot de passe</label>
-      <input type="password" id="newPassword" placeholder="Nouveau mot de passe" oninput="checkPasswordStrength()">
-      <div class="password-strength" id="passwordStrength"></div>
+      <label>Nouveau mot de passe</label>
+      <input type="password" id="newPassword" placeholder="Nouveau mot de passe" oninput="checkStrength()">
+      <div class="password-strength" id="pwdStrength"></div>
     </div>
     
     <div class="input-group">
-      <label>Confirmer le mot de passe</label>
-      <input type="password" id="confirmPassword" placeholder="Confirmer le mot de passe" onkeypress="if(event.key==='Enter') changePassword()">
+      <label>Confirmer</label>
+      <input type="password" id="confirmPassword" placeholder="Confirmer le mot de passe" onkeypress="if(event.key==='Enter') doChangePassword()">
     </div>
     
-    <button class="btn btn-login" onclick="changePassword()">Valider</button>
+    <button class="btn btn-login" onclick="doChangePassword()">Valider</button>
   </div>
 </div>
 
@@ -145,7 +184,7 @@ footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b;
       <div class="menu-card" onclick="location.href='effectif.html'">
         <div class="icon">👥</div>
         <h2>Effectif</h2>
-        <p>Liste complète du personnel</p>
+        <p>Liste du personnel</p>
       </div>
       <div class="menu-card" onclick="location.href='vehicule.html'">
         <div class="icon">🚗</div>
@@ -155,7 +194,7 @@ footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b;
       <div class="menu-card" onclick="location.href='compte.html'">
         <div class="icon">🔐</div>
         <h2>Comptes</h2>
-        <p>Gestion des comptes utilisateurs</p>
+        <p>Gestion des comptes</p>
       </div>
     </div>
   </div>
@@ -164,21 +203,37 @@ footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b;
 </div>
 
 <script>
-// Utilisateurs par défaut
+// COMPTES PAR DÉFAUT
 var defaultUsers = [
   { username: 'admin', password: 'admin', role: 'Administrateur', firstLogin: true },
   { username: 'operateur', password: 'operateur', role: 'Opérateur', firstLogin: true },
   { username: 'chef', password: 'chef', role: 'Chef de garde', firstLogin: true },
-  { username: 'andy', password: 'andyno', role: 'Medecien en chef', firstLogin: true },
-  { username: 'Rafael', password: 'Rafaelneko', role: 'ADJ', firstLogin: true },
-  { username: 'yassin anderson', password: 'yassin', role: 'SAP', firstLogin: true },
+  { username: 'andy', password: 'andyno', role: 'Médecin en chef', firstLogin: true },
+  { username: 'rafael', password: 'Rafaelneko', role: 'ADJ', firstLogin: true }
 ];
 
-// Charger les utilisateurs depuis localStorage ou utiliser les默认值
+var currentUser = null;
+
+// CHARGER LES UTILISATEURS
 function loadUsers() {
   var saved = localStorage.getItem('ops_users');
   if (saved) {
-    return JSON.parse(saved);
+    var users = JSON.parse(saved);
+    // Ajouter les nouveaux comptes par défaut
+    for (var i = 0; i < defaultUsers.length; i++) {
+      var exists = false;
+      for (var j = 0; j < users.length; j++) {
+        if (users[j].username === defaultUsers[i].username) {
+          exists = true;
+          break;
+        }
+      }
+      if (!exists) {
+        users.push(defaultUsers[i]);
+      }
+    }
+    localStorage.setItem('ops_users', JSON.stringify(users));
+    return users;
   }
   localStorage.setItem('ops_users', JSON.stringify(defaultUsers));
   return defaultUsers;
@@ -188,29 +243,52 @@ function saveUsers(users) {
   localStorage.setItem('ops_users', JSON.stringify(users));
 }
 
-var currentUser = null;
-
-// Vérifier si déjà connecté
-function checkLogin() {
-  var session = sessionStorage.getItem('ops_session');
-  if (session) {
-    var user = JSON.parse(session);
-    if (user.firstLogin) {
-      showChangePassword(user);
-    } else {
-      showMainMenu(user);
-    }
-  }
+// NAVIGATION ENTRE LES PAGES
+function showLogin() {
+  document.getElementById('loginPage').classList.add('active');
+  document.getElementById('forgotPage').classList.remove('active');
+  document.getElementById('changePwdPage').classList.remove('active');
+  document.getElementById('username').value = '';
+  document.getElementById('password').value = '';
+  document.getElementById('loginError').style.display = 'none';
 }
 
+function showForgot() {
+  document.getElementById('loginPage').classList.remove('active');
+  document.getElementById('forgotPage').classList.add('active');
+  document.getElementById('forgotUsername').value = '';
+  document.getElementById('forgotError').style.display = 'none';
+  document.getElementById('forgotSuccess').style.display = 'none';
+}
+
+function showChangePassword(user) {
+  currentUser = user;
+  document.getElementById('loginPage').classList.remove('active');
+  document.getElementById('forgotPage').classList.remove('active');
+  document.getElementById('changePwdPage').classList.add('active');
+  document.getElementById('welcomeUser').innerHTML = user.username;
+  document.getElementById('newPassword').value = '';
+  document.getElementById('confirmPassword').value = '';
+  document.getElementById('changeError').style.display = 'none';
+}
+
+function showMainMenu(user) {
+  document.getElementById('loginPage').classList.remove('active');
+  document.getElementById('forgotPage').classList.remove('active');
+  document.getElementById('changePwdPage').classList.remove('active');
+  document.getElementById('mainMenu').classList.add('active');
+  document.getElementById('userDisplay').innerHTML = '👤 ' + user.username + ' (' + user.role + ')';
+}
+
+// CONNEXION
 function doLogin() {
   var username = document.getElementById('username').value.trim().toLowerCase();
   var password = document.getElementById('password').value;
   var error = document.getElementById('loginError');
   
   if (!username || !password) {
-    error.style.display = 'block';
     error.innerHTML = 'Veuillez remplir tous les champs';
+    error.style.display = 'block';
     return;
   }
   
@@ -226,37 +304,68 @@ function doLogin() {
   
   if (found) {
     error.style.display = 'none';
-    
     if (found.firstLogin) {
-      currentUser = found;
       showChangePassword(found);
     } else {
       sessionStorage.setItem('ops_session', JSON.stringify(found));
       showMainMenu(found);
     }
   } else {
-    error.style.display = 'block';
     error.innerHTML = 'Identifiants incorrects';
+    error.style.display = 'block';
     document.getElementById('password').value = '';
   }
 }
 
-function showChangePassword(user) {
-  document.getElementById('loginPage').classList.add('hidden');
-  document.getElementById('mainMenu').classList.remove('active');
-  document.getElementById('changePasswordPage').classList.remove('hidden');
-  document.getElementById('welcomeUser').innerHTML = user.username;
-  document.getElementById('newPassword').value = '';
-  document.getElementById('confirmPassword').value = '';
-  document.getElementById('changeError').style.display = 'none';
+// MOT DE PASSE OUBLIÉ
+function doResetPassword() {
+  var username = document.getElementById('forgotUsername').value.trim().toLowerCase();
+  var error = document.getElementById('forgotError');
+  var success = document.getElementById('forgotSuccess');
+  
+  if (!username) {
+    error.innerHTML = 'Veuillez entrer un nom d\'utilisateur';
+    error.style.display = 'block';
+    return;
+  }
+  
+  var users = loadUsers();
+  var found = false;
+  
+  for (var i = 0; i < users.length; i++) {
+    if (users[i].username === username) {
+      var defaultPwd = username + '123';
+      for (var j = 0; j < defaultUsers.length; j++) {
+        if (defaultUsers[j].username === username) {
+          defaultPwd = defaultUsers[j].password;
+          break;
+        }
+      }
+      
+      users[i].password = defaultPwd;
+      users[i].firstLogin = true;
+      saveUsers(users);
+      
+      success.innerHTML = 'Mot de passe réinitialisé !<br><br>Nouveau mot de passe : <strong>' + defaultPwd + '</strong>';
+      success.style.display = 'block';
+      error.style.display = 'none';
+      found = true;
+      break;
+    }
+  }
+  
+  if (!found) {
+    error.innerHTML = 'Utilisateur non trouvé';
+    error.style.display = 'block';
+    success.style.display = 'none';
+  }
 }
 
-function checkPasswordStrength() {
+// CHANGER MOT DE PASSE
+function checkStrength() {
   var pwd = document.getElementById('newPassword').value;
-  var strength = document.getElementById('passwordStrength');
-  
+  var strength = document.getElementById('pwdStrength');
   strength.className = 'password-strength';
-  
   if (pwd.length === 0) return;
   
   var score = 0;
@@ -264,37 +373,35 @@ function checkPasswordStrength() {
   if (pwd.length >= 10) score++;
   if (/[A-Z]/.test(pwd)) score++;
   if (/[0-9]/.test(pwd)) score++;
-  if (/[^A-Za-z0-9]/.test(pwd)) score++;
   
   if (score <= 2) strength.classList.add('weak');
   else if (score <= 3) strength.classList.add('medium');
   else strength.classList.add('strong');
 }
 
-function changePassword() {
+function doChangePassword() {
   var newPwd = document.getElementById('newPassword').value;
   var confirmPwd = document.getElementById('confirmPassword').value;
   var error = document.getElementById('changeError');
   
   if (!newPwd || !confirmPwd) {
-    error.style.display = 'block';
     error.innerHTML = 'Veuillez remplir tous les champs';
+    error.style.display = 'block';
     return;
   }
   
   if (newPwd.length < 4) {
-    error.style.display = 'block';
     error.innerHTML = 'Le mot de passe doit contenir au moins 4 caractères';
+    error.style.display = 'block';
     return;
   }
   
   if (newPwd !== confirmPwd) {
-    error.style.display = 'block';
     error.innerHTML = 'Les mots de passe ne correspondent pas';
+    error.style.display = 'block';
     return;
   }
   
-  // Mettre à jour le mot de passe
   var users = loadUsers();
   for (var i = 0; i < users.length; i++) {
     if (users[i].username === currentUser.username) {
@@ -307,30 +414,31 @@ function changePassword() {
   
   saveUsers(users);
   sessionStorage.setItem('ops_session', JSON.stringify(currentUser));
-  
-  document.getElementById('changePasswordPage').classList.add('hidden');
   showMainMenu(currentUser);
 }
 
-function showMainMenu(user) {
-  document.getElementById('loginPage').classList.add('hidden');
-  document.getElementById('changePasswordPage').classList.add('hidden');
-  document.getElementById('mainMenu').classList.add('active');
-  document.getElementById('userDisplay').innerHTML = '👤 ' + user.username + ' (' + user.role + ')';
-}
-
+// DÉCONNEXION
 function doLogout() {
   sessionStorage.removeItem('ops_session');
-  document.getElementById('username').value = '';
-  document.getElementById('password').value = '';
-  document.getElementById('loginError').style.display = 'none';
+  currentUser = null;
   document.getElementById('mainMenu').classList.remove('active');
-  document.getElementById('changePasswordPage').classList.add('hidden');
-  document.getElementById('loginPage').classList.remove('hidden');
+  showLogin();
 }
 
-// Vérifier la session au chargement
-checkLogin();
+// VÉRIFIER SESSION AU DÉMARRAGE
+function checkSession() {
+  var session = sessionStorage.getItem('ops_session');
+  if (session) {
+    var user = JSON.parse(session);
+    if (user.firstLogin) {
+      showChangePassword(user);
+    } else {
+      showMainMenu(user);
+    }
+  }
+}
+
+checkSession();
 </script>
 
 </body>
