@@ -103,12 +103,6 @@ footer {
 
   <div class="menu-grid">
 
-    <div class="menu-card" onclick="window.location.href='prise-de-service.html'">
-      <div class="icon">📋</div>
-      <h2>Prise de Service</h2>
-      <p>Enregistrer les agents en service</p>
-    </div>
-
     <div class="menu-card" onclick="window.location.href='affectation.html'">
       <div class="icon">🚒</div>
       <h2>Affectations</h2>
@@ -152,6 +146,72 @@ footer {
 <footer>
   Module OPS v1.0 - Centre de Secours
 </footer>
+
+  <script>
+// Utilisateurs autorisés
+var users = [
+  { username: 'admin', password: 'admin', role: 'Administrateur' },
+  { username: 'operateur', password: 'operateur', role: 'Opérateur' },
+  { username: 'chef', password: 'chef', role: 'Chef de garde' }
+];
+
+// Vérifier si déjà connecté
+function checkLogin() {
+  var session = sessionStorage.getItem('ops_session');
+  if (session) {
+    showMainMenu(JSON.parse(session));
+  }
+}
+
+function doLogin() {
+  var username = document.getElementById('username').value.trim().toLowerCase();
+  var password = document.getElementById('password').value;
+  var error = document.getElementById('loginError');
+  
+  if (!username || !password) {
+    error.style.display = 'block';
+    error.innerHTML = 'Veuillez remplir tous les champs';
+    return;
+  }
+  
+  // Rechercher l'utilisateur
+  var found = null;
+  for (var i = 0; i < users.length; i++) {
+    if (users[i].username === username && users[i].password === password) {
+      found = users[i];
+      break;
+    }
+  }
+  
+  if (found) {
+    // Connexion réussie
+    sessionStorage.setItem('ops_session', JSON.stringify(found));
+    showMainMenu(found);
+  } else {
+    error.style.display = 'block';
+    error.innerHTML = 'Identifiants incorrects';
+    document.getElementById('password').value = '';
+  }
+}
+
+function showMainMenu(user) {
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('mainMenu').classList.add('active');
+  document.getElementById('userDisplay').innerHTML = '👤 ' + user.username + ' (' + user.role + ')';
+}
+
+function doLogout() {
+  sessionStorage.removeItem('ops_session');
+  document.getElementById('username').value = '';
+  document.getElementById('password').value = '';
+  document.getElementById('loginError').style.display = 'none';
+  document.getElementById('mainMenu').classList.remove('active');
+  document.getElementById('loginPage').classList.remove('hidden');
+}
+
+// Vérifier la session au chargement
+checkLogin();
+</script>
 
 </body>
 </html>
