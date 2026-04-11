@@ -161,16 +161,22 @@ function changerEtat(element) {
 
 // charger agents depuis prise de service
 function chargerAgents() {
-  let agents = JSON.parse(localStorage.getItem("agents")) || [];
+  let data = localStorage.getItem("agents");
+
+  if (!data) {
+    console.log("Aucun agent trouvé");
+    return;
+  }
+
+  let agents = JSON.parse(data);
   let container = document.getElementById("liste-service");
 
   container.innerHTML = "";
 
-  agents.forEach((nom, index) => {
+  agents.forEach(nom => {
     let tag = document.createElement("span");
     tag.className = "tag";
     tag.innerText = nom;
-
     container.appendChild(tag);
   });
 }
