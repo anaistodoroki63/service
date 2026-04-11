@@ -126,15 +126,41 @@ button:hover {
 <!-- PLANNING -->
 <div id="planning" class="section-content" style="display:none;">
   <h3>Planning</h3>
+
   <div class="box">
     <div class="box-title">Planning de la semaine</div>
     <div class="box-content">
-      <p>Lundi : Disponible</p>
-      <p>Mardi : En service</p>
-      <p>Mercredi : Repos</p>
+
+      <p onclick="changerEtat(this)" class="dispo">Lundi : Disponible</p>
+      <p onclick="changerEtat(this)" class="service">Mardi : En service</p>
+      <p onclick="changerEtat(this)" class="repos">Mercredi : Repos</p>
+      <p onclick="changerEtat(this)" class="dispo">Jeudi : Disponible</p>
+      <p onclick="changerEtat(this)" class="dispo">Vendredi : Disponible</p>
+      <p onclick="changerEtat(this)" class="repos">Samedi : Repos</p>
+      <p onclick="changerEtat(this)" class="service">Dimanche : En service</p>
+
     </div>
   </div>
 </div>
+  <script>
+function changerEtat(element) {
+  if (element.classList.contains("dispo")) {
+    element.classList.remove("dispo");
+    element.classList.add("service");
+    element.innerText = element.innerText.split(":")[0] + " : En service";
+
+  } else if (element.classList.contains("service")) {
+    element.classList.remove("service");
+    element.classList.add("repos");
+    element.innerText = element.innerText.split(":")[0] + " : Repos";
+
+  } else {
+    element.classList.remove("repos");
+    element.classList.add("dispo");
+    element.innerText = element.innerText.split(":")[0] + " : Disponible";
+  }
+}
+</script>
 
 <!-- LISTE DE GARDE -->
 <div id="garde" class="section-content" style="display:none;">
