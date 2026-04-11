@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Planning</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+  min-height: 100vh;
+}
+
+header {
+  background: #1e293b;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #3b82f6;
+}
+
+header h1 {
+  font-size: 24px;
+}
+
+.btn {
+  background: #374151;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: #4b5563;
+}
+
+.container {
+  padding: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.box {
+  background: #1e293b;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.box-title {
+  background: #2563eb;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.jour-row {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  background: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.jour-row:hover {
+  transform: translateX(5px);
+}
+
+.jour-nom {
+  width: 120px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.jour-status {
+  flex: 1;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-dispo {
+  background: #064e3b;
+  color: #22c55e;
+}
+
+.status-service {
+  background: #1e3a8a;
+  color: #60a5fa;
+}
+
+.status-repos {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+.jour-agents {
+  width: 300px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.week-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.week-nav h2 {
+  font-size: 24px;
+}
+
+.nav-btn {
+  background: #3b82f6;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.nav-btn:hover {
+  background: #2563eb;
+}
+
+.legend {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+}
+
+.legend-color.dispo { background: #22c55e; }
+.legend-color.service { background: #3b82f6; }
+.legend-color.repos { background: #ef4444; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>🔵 MODULE OPS</div>
+  <h1>📅 Planning</h1>
+  <div>
+    <button class="btn" onclick="window.location.href='index.html'">🏠 Accueil</button>
+    <button class="btn" onclick="window.location.href='affectations.html'">→ Affectations</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="week-nav">
+    <button class="nav-btn" onclick="changeWeek(-1)">◀</button>
+    <h2 id="week-title">Semaine du 7 Avril 2025</h2>
+    <button class="nav-btn" onclick="changeWeek(1)">▶</button>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Cliquez sur un jour pour changer son statut</div>
+    <div id="planning-days"></div>
+    
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-color dispo"></div>
+        <span>Disponible</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color service"></div>
+        <span>En service</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color repos"></div>
+        <span>Repos</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+let currentWeekOffset = 0;
+
+function getWeekDates() {
+  let today = new Date();
+  let monday = new Date(today);
+  monday.setDate(today.getDate() - today.getDay() + 1 + (currentWeekOffset * 7));
+  return monday;
+}
+
+function changeWeek(direction) {
+  currentWeekOffset += direction;
+  renderPlanning();
+}
+
+function renderPlanning() {
+  let monday = getWeekDates();
+  let title = document.getElementById('week-title');
+  
+  let day = monday.getDate();
+  let month = monday.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  title.innerText = `Semaine du ${day} ${month.charAt(0).toUpperCase() + month.slice(1)}`;
+
+  let container = document.getElementById('planning-days');
+  container.innerHTML = '';
+
+  jours.forEach((nom, i) => {
+    let date = new Date(monday);
+    date.setDate(monday.getDate() + i);
+    let dateStr = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric' });
+
+    let statusKey = `planning_${currentWeekOffset}_${i}`;
+    let status = localStorage.getItem(statusKey) || 'dispo';
+
+    let row = document.createElement('div');
+    row.className = 'jour-row';
+
+    let statusIcon = status === 'dispo' ? '🟢' : status === 'service' ? '🔵' : '🔴';
+    let statusText = status === 'dispo' ? 'Disponible' : status === 'service' ? 'En service' : 'Repos';
+
+    row.innerHTML = `
+      <div class="jour-nom">${nom}</div>
+      <div class="jour-status status-${status}">
+        <span>${statusIcon}</span>
+        <span>${statusText}</span>
+      </div>
+      <div class="jour-agents">${dateStr}</div>
+    `;
+
+    row.onclick = function() {
+      cycleStatus(statusKey, row);
+    };
+
+    container.appendChild(row);
+  });
+}
+
+function cycleStatus(key, row) {
+  let current = localStorage.getItem(key) || 'dispo';
+  let next = current === 'dispo' ? 'service' : current === 'service' ? 'repos' : 'dispo';
+  
+  localStorage.setItem(key, next);
+
+  let statusIcon = next === 'dispo' ? '🟢' : next === 'service' ? '🔵' : '🔴';
+  let statusText = next === 'dispo' ? 'Disponible' : next === 'service' ? 'En service' : 'Repos';
+
+  let statusEl = row.querySelector('.jour-status');
+  statusEl.className = 'jour-status status-' + next;
+  statusEl.innerHTML = `<span>${statusIcon}</span><span>${statusText}</span>`;
+}
+
+renderPlanning();
+</script>
+
+</body>
+</html>
