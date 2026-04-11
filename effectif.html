@@ -22,7 +22,7 @@ h1 { font-size: 20px; }
 .filter-btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; background: #374151; color: white; }
 .filter-btn:hover, .filter-btn.active { background: #3b82f6; }
 .agent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-.agent-card { background: #1e293b; padding: 20px; border-radius: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: all 0.2s; }
+.agent-card { background: #1e293b; padding: 20px; border-radius: 12px; display: flex; align-items: center; gap: 15px; transition: all 0.2s; }
 .agent-card:hover { background: #334155; }
 .agent-avatar { width: 50px; height: 50px; background: #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; }
 .agent-info { flex: 1; }
@@ -49,7 +49,7 @@ h1 { font-size: 20px; }
   <div class="stats-row">
     <div class="stat-card">
       <div class="number" id="total">0</div>
-      <div class="label">Total</div>
+      <div class="label">Total effectif</div>
     </div>
     <div class="stat-card">
       <div class="number" id="en-service">0</div>
@@ -125,7 +125,7 @@ function setFilter(filter) {
     btns[i].classList.remove('active');
   }
   event.target.classList.add('active');
-  filtrerAgents();
+  afficherListe();
 }
 
 function getStatus(nom, agents, garde) {
@@ -138,49 +138,49 @@ function getInitiales(nom) {
   return nom.substring(0, 2).toUpperCase();
 }
 
-function filtrerAgents() {
+function getStatusText(status) {
+  if (status === 'service') return 'En service';
+  if (status === 'garde') return 'En garde';
+  return 'Au repos';
+}
+
+function afficherListe() {
   var agents = JSON.parse(localStorage.getItem("agents")) || [];
   var garde = JSON.parse(localStorage.getItem("garde")) || [];
-
+  var container = document.getElementById('agent-list');
+  
   var filtered = [];
   for (var i = 0; i < tousAgents.length; i++) {
     var a = tousAgents[i];
     var status = getStatus(a.nom, agents, garde);
     if (currentFilter === 'all' || status === currentFilter) {
-      filtered.push({a: a, status: status});
+      filtered.push({ agent: a, status: status });
     }
   }
 
-  afficherAgents(filtered, agents, garde);
-}
-
-function afficherAgents(liste, agents, garde) {
-  var container = document.getElementById('agent-list');
-  
-  if (liste.length === 0) {
+  if (filtered.length === 0) {
     container.innerHTML = '<div class="empty">Aucun agent trouvé</div>';
-    return;
+  } else {
+    container.innerHTML = '';
+    for (var j = 0; j < filtered.length; j++) {
+      var a = filtered[j].agent;
+      var status = filtered[j].status;
+      var statusText = getStatusText(status);
+
+      var card = document.createElement('div');
+      card.className = 'agent-card';
+      card.innerHTML = 
+        '<div class="agent-avatar">' + getInitiales(a.nom) + '</div>' +
+        '<div class="agent-info">' +
+          '<div class="agent-nom">' + a.nom + '</div>' +
+          '<div class="agent-grade">' + a.grade + '</div>' +
+        '</div>' +
+        '<div class="agent-status status-' + status + '">' + statusText + '</div>';
+      container.appendChild(card);
+    }
   }
 
-  container.innerHTML = '';
-
-  for (var i = 0; i < liste.length; i++) {
-    var a = liste[i].a;
-    var status = liste[i].status;
-    var statusText = status === 'service' ? 'En service' : status === 'garde' ? 'En garde' : 'Au repos';
-
-    var card = document.createElement('div');
-    card.className = 'agent-card';
-    card.innerHTML = 
-      '<div class="agent-avatar">' + getInitiales(a.nom) + '</div>' +
-      '<div class="agent-info">' +
-        '<div class="agent-nom">' + a.nom + '</div>' +
-        '<div class="agent-grade">' + a.grade + '</div>' +
-      '</div>' +
-      '<div class="agent-status status-' + status + '">' + statusText + '</div>';
-    container.appendChild(card);
-  }
-
+  // Stats
   document.getElementById('total').innerHTML = tousAgents.length;
   document.getElementById('en-service').innerHTML = agents.length;
   document.getElementById('en-garde').innerHTML = garde.length;
@@ -188,7 +188,10 @@ function afficherAgents(liste, agents, garde) {
 }
 
 loadUsers();
-filtrerAgents();
+afficherListe();
+
+// Rafraîchir toutes les 2 secondes
+setInterval(afficherListe, 2000);
 </script>
 
 </body>
