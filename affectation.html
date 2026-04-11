@@ -7,7 +7,7 @@
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   background: #0f172a;
   color: white;
 }
@@ -33,10 +33,7 @@ header {
 .menu a {
   display: block;
   padding: 10px;
-  color: white;
-  text-decoration: none;
   margin: 5px 0;
-  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -52,14 +49,11 @@ header {
 .box {
   background: #1e293b;
   margin-bottom: 20px;
-  border-radius: 5px;
-  overflow: hidden;
 }
 
 .box-title {
   background: #2563eb;
   padding: 10px;
-  font-weight: bold;
 }
 
 .box-content {
@@ -70,34 +64,15 @@ header {
   display: inline-block;
   background: #22c55e;
   color: black;
-  padding: 8px 12px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.tag:hover {
-  background: red;
-  color: white;
-}
-
-input {
   padding: 8px;
   margin: 5px;
-}
-
-button {
-  padding: 8px 15px;
-  background: #3b82f6;
-  border: none;
-  color: white;
-  cursor: pointer;
   border-radius: 5px;
+  cursor: pointer;
 }
 
-button:hover {
-  background: #2563eb;
-}
+.dispo { color: #22c55e; cursor: pointer; }
+.service { color: #3b82f6; cursor: pointer; }
+.repos { color: red; cursor: pointer; }
 
 </style>
 </head>
@@ -111,96 +86,49 @@ button:hover {
 
 <div class="container">
 
-  <!-- ACCUEIL -->
-<div id="accueil" class="section-content">
-  <h3>Ajouter un personnel</h3>
-  <input type="text" id="nom" placeholder="Nom">
-  <button onclick="ajouter()">Ajouter</button>
-
-  <div class="box">
-    <div class="box-title">Personnel disponible</div>
-    <div class="box-content" id="liste"></div>
-  </div>
-</div>
-  <div class="box">
-  <div class="box-title">Personnel en service</div>
-  <div class="box-content" id="liste"></div>
-</div>
-
-<!-- PLANNING -->
-<div id="planning" class="section-content" style="display:none;">
-  <h3>Planning</h3>
-
-  <div class="box">
-    <div class="box-title">Planning de la semaine</div>
-    <div class="box-content">
-
-      <p onclick="changerEtat(this)" class="dispo">Lundi : Disponible</p>
-      <p onclick="changerEtat(this)" class="service">Mardi : En service</p>
-      <p onclick="changerEtat(this)" class="repos">Mercredi : Repos</p>
-      <p onclick="changerEtat(this)" class="dispo">Jeudi : Disponible</p>
-      <p onclick="changerEtat(this)" class="dispo">Vendredi : Disponible</p>
-      <p onclick="changerEtat(this)" class="repos">Samedi : Repos</p>
-      <p onclick="changerEtat(this)" class="service">Dimanche : En service</p>
-
-    </div>
-  </div>
-</div>
-  <script>
-function changerEtat(element) {
-  if (element.classList.contains("dispo")) {
-    element.classList.remove("dispo");
-    element.classList.add("service");
-    element.innerText = element.innerText.split(":")[0] + " : En service";
-
-  } else if (element.classList.contains("service")) {
-    element.classList.remove("service");
-    element.classList.add("repos");
-    element.innerText = element.innerText.split(":")[0] + " : Repos";
-
-  } else {
-    element.classList.remove("repos");
-    element.classList.add("dispo");
-    element.innerText = element.innerText.split(":")[0] + " : Disponible";
-  }
-}
-</script>
-
-<!-- LISTE DE GARDE -->
-<div id="garde" class="section-content" style="display:none;">
-  <h3>Liste de garde</h3>
-  <div class="box">
-    <div class="box-title">Agents en garde</div>
-    <div class="box-content" id="garde-liste">
-      <span class="tag">Agent 1</span>
-      <span class="tag">Agent 2</span>
-    </div>
-  </div>
-</div>
-  
   <!-- MENU -->
   <div class="sidebar">
     <button onclick="history.back()">← Retour</button>
 
-<div class="menu">
-  <a onclick="showSection('accueil')">Accueil</a>
-  <a onclick="showSection('planning')">Planning</a>
-  <a onclick="showSection('garde')">Liste de garde</a>
-</div>
+    <div class="menu">
+      <a onclick="showSection('accueil')">Accueil</a>
+      <a onclick="showSection('planning')">Planning</a>
+      <a onclick="showSection('garde')">Liste de garde</a>
+    </div>
+  </div>
 
   <!-- CONTENU -->
   <div class="content">
 
-    <!-- AJOUT PERSONNEL -->
-    <h3>Ajouter un personnel</h3>
-    <input type="text" id="nom" placeholder="Nom">
-    <button onclick="ajouter()">Ajouter</button>
+    <!-- ACCUEIL -->
+    <div id="accueil" class="section-content">
 
-    <!-- LISTE -->
-    <div class="box">
-      <div class="box-title">Personnel disponible</div>
-      <div class="box-content" id="liste">
-        <!-- personnes ici -->
+      <div class="box">
+        <div class="box-title">Personnel en service</div>
+        <div class="box-content" id="liste-service"></div>
+      </div>
+
+    </div>
+
+    <!-- PLANNING -->
+    <div id="planning" class="section-content" style="display:none;">
+      <div class="box">
+        <div class="box-title">Planning</div>
+        <div class="box-content">
+
+          <p onclick="changerEtat(this)" class="dispo">Lundi : Disponible</p>
+          <p onclick="changerEtat(this)" class="service">Mardi : En service</p>
+          <p onclick="changerEtat(this)" class="repos">Mercredi : Repos</p>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- GARDE -->
+    <div id="garde" class="section-content" style="display:none;">
+      <div class="box">
+        <div class="box-title">Liste de garde</div>
+        <div class="box-content" id="garde-liste"></div>
       </div>
     </div>
 
@@ -208,61 +136,84 @@ function changerEtat(element) {
 
 </div>
 
-  <script>
+<script>
+// navigation
 function showSection(section) {
   document.querySelectorAll(".section-content").forEach(div => {
     div.style.display = "none";
   });
-
   document.getElementById(section).style.display = "block";
 }
-</script>
-  
-<script>
-function ajouter() {
-  let nom = document.getElementById("nom").value;
 
-  if (nom === "") return;
+// planning cliquable
+function changerEtat(element) {
+  if (element.classList.contains("dispo")) {
+    element.classList.replace("dispo", "service");
+    element.innerText = element.innerText.split(":")[0] + " : En service";
+  } else if (element.classList.contains("service")) {
+    element.classList.replace("service", "repos");
+    element.innerText = element.innerText.split(":")[0] + " : Repos";
+  } else {
+    element.classList.replace("repos", "dispo");
+    element.innerText = element.innerText.split(":")[0] + " : Disponible";
+  }
+}
 
-  let tag = document.createElement("span");
-  tag.className = "tag";
-  tag.innerText = nom;
-
-
-  <script>
+// charger agents depuis prise de service
 function chargerAgents() {
   let agents = JSON.parse(localStorage.getItem("agents")) || [];
+  let container = document.getElementById("liste-service");
 
-  let liste = document.getElementById("liste");
-  liste.innerHTML = "";
+  container.innerHTML = "";
 
   agents.forEach((nom, index) => {
     let tag = document.createElement("span");
     tag.className = "tag";
     tag.innerText = nom;
 
-    // supprimer
+    // clic = envoyer en garde
     tag.onclick = function() {
-      agents.splice(index, 1);
-      localStorage.setItem("agents", JSON.stringify(agents));
-      chargerAgents();
+      ajouterGarde(nom);
     };
 
-    liste.appendChild(tag);
+    container.appendChild(tag);
   });
 }
 
-chargerAgents();
-</script>
-  
-  // SUPPRIMER AU CLIC
-  tag.onclick = function() {
-    this.remove();
-  };
-
-  document.getElementById("liste").appendChild(tag);
-  document.getElementById("nom").value = "";
+// ajouter en garde
+function ajouterGarde(nom) {
+  let garde = JSON.parse(localStorage.getItem("garde")) || [];
+  garde.push(nom);
+  localStorage.setItem("garde", JSON.stringify(garde));
+  chargerGarde();
 }
+
+// afficher garde
+function chargerGarde() {
+  let garde = JSON.parse(localStorage.getItem("garde")) || [];
+  let container = document.getElementById("garde-liste");
+
+  container.innerHTML = "";
+
+  garde.forEach((nom, index) => {
+    let tag = document.createElement("span");
+    tag.className = "tag";
+    tag.innerText = nom;
+
+    // supprimer
+    tag.onclick = function() {
+      garde.splice(index, 1);
+      localStorage.setItem("garde", JSON.stringify(garde));
+      chargerGarde();
+    };
+
+    container.appendChild(tag);
+  });
+}
+
+// chargement initial
+chargerAgents();
+chargerGarde();
 </script>
 
 </body>
