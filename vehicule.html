@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Véhicules</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+  min-height: 100vh;
+}
+
+header {
+  background: #1e293b;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #3b82f6;
+}
+
+header h1 {
+  font-size: 24px;
+}
+
+.btn {
+  background: #374151;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: #4b5563;
+}
+
+.container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat-card .number {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.stat-card.dispo .number { color: #22c55e; }
+.stat-card.indispo .number { color: #ef4444; }
+.stat-card.intervention .number { color: #f59e0b; }
+
+.stat-card .label {
+  font-size: 14px;
+  color: #94a3b8;
+  margin-top: 5px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.filter-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #374151;
+  color: white;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: #3b82f6;
+}
+
+.vehicule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.vehicule-card {
+  background: #1e293b;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.vehicule-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.vehicule-header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.vehicule-icon {
+  font-size: 50px;
+}
+
+.vehicule-info h3 {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.vehicule-info .type {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.vehicule-status {
+  padding: 15px 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.status-dispo {
+  background: #22c55e;
+  color: black;
+}
+
+.status-indispo {
+  background: #ef4444;
+  color: white;
+}
+
+.status-intervention {
+  background: #f59e0b;
+  color: black;
+}
+
+.vehicule-details {
+  padding: 15px 20px;
+  background: #111827;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.vehicule-details div {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #1e293b;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 15px;
+  min-width: 400px;
+}
+
+.modal-content h3 {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.modal-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-option {
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.modal-option:hover {
+  transform: scale(1.02);
+}
+
+.modal-option.dispo { background: #22c55e; color: black; }
+.modal-option.indispo { background: #ef4444; color: white; }
+.modal-option.intervention { background: #f59e0b; color: black; }
+
+.modal-close {
+  margin-top: 20px;
+  width: 100%;
+  background: #374151;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>🔵 MODULE OPS</div>
+  <h1>🚗 Véhicules</h1>
+  <div>
+    <button class="btn" onclick="window.location.href='index.html'">🏠 Accueil</button>
+    <button class="btn" onclick="window.location.href='affectations.html'">→ Affectations</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="stats-row">
+    <div class="stat-card dispo">
+      <div class="number" id="stat-dispo">6</div>
+      <div class="label">Disponibles</div>
+    </div>
+    <div class="stat-card indispo">
+      <div class="number" id="stat-indispo">0</div>
+      <div class="label">Indisponibles</div>
+    </div>
+    <div class="stat-card intervention">
+      <div class="number" id="stat-intervention">0</div>
+      <div class="label">En intervention</div>
+    </div>
+    <div class="stat-card">
+      <div class="number" id="stat-total">6</div>
+      <div class="label">Total</div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all')">Tous</button>
+    <button class="filter-btn" onclick="setFilter('dispo')">Disponibles</button>
+    <button class="filter-btn" onclick="setFilter('intervention')">En intervention</button>
+    <button class="filter-btn" onclick="setFilter('indispo')">Indisponibles</button>
+  </div>
+
+  <div class="vehicule-grid" id="vehicule-list"></div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal" id="status-modal">
+  <div class="modal-content">
+    <h3 id="modal-title">Véhicule</h3>
+    <div class="modal-options">
+      <button class="modal-option dispo" onclick="setStatus('dispo')">🟢 Disponible</button>
+      <button class="modal-option intervention" onclick="setStatus('intervention')">🟡 En intervention</button>
+      <button class="modal-option indispo" onclick="setStatus('indispo')">🔴 Indisponible</button>
+    </div>
+    <button class="btn modal-close" onclick="closeModal()">Fermer</button>
+  </div>
+</div>
+
+<script>
+let vehicules = [
+  { id: 1, nom: 'VSAV 403', type: 'Ambulance', icon: '🚑', statut: 'dispo', km: 45230, prochainVidange: '12/05/2025' },
+  { id: 2, nom: 'VSAV 527', type: 'Ambulance', icon: '🚑', statut: 'dispo', km: 32100, prochainVidange: '20/04/2025' },
+  { id: 3, nom: 'FPT 201', type: 'Fourgon Pompe Tonne', icon: '🚒', statut: 'dispo', km: 78500, prochainVidange: '01/06/2025' },
+  { id: 4, nom: 'EPA 301', type: 'Emulseur Pulvérisateur', icon: '🚛', statut: 'dispo', km: 12500, prochainVidange: '15/07/2025' },
+  { id: 5, nom: 'VSR 101', type: 'Véhicule de Secours Route', icon: '🚗', statut: 'dispo', km: 67800, prochainVidange: '03/05/2025' },
+  { id: 6, nom: 'CCF 201', type: 'Camion Citerne Feux', icon: '🚒', statut: 'dispo', km: 23400, prochainVidange: '22/08/2025' }
+];
+
+let currentFilter = 'all';
+let currentVehicule = null;
+
+function loadStatus() {
+  let saved = localStorage.getItem('vehicules_status');
+  if (saved) {
+    let statuses = JSON.parse(saved);
+    vehicules.forEach(v => {
+      if (statuses[v.nom]) {
+        v.statut = statuses[v.nom];
+      }
+    });
+  }
+}
+
+function saveStatus() {
+  let statuses = {};
+  vehicules.forEach(v => {
+    statuses[v.nom] = v.statut;
+  });
+  localStorage.setItem('vehicules_status', JSON.stringify(statuses));
+}
+
+function setFilter(filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  renderVehicules();
+}
+
+function renderVehicules() {
+  let filtered = currentFilter === 'all' 
+    ? vehicules 
+    : vehicules.filter(v => v.statut === currentFilter);
+
+  let container = document.getElementById('vehicule-list');
+  container.innerHTML = '';
+
+  filtered.forEach(v => {
+    let card = document.createElement('div');
+    card.className = 'vehicule-card';
+    card.innerHTML = `
+      <div class="vehicule-header">
+        <div class="vehicule-icon">${v.icon}</div>
+        <div class="vehicule-info">
+          <h3>${v.nom}</h3>
+          <div class="type">${v.type}</div>
+        </div>
+      </div>
+      <div class="vehicule-status status-${v.statut}">${getStatusText(v.statut)}</div>
+      <div class="vehicule-details">
+        <div><span>Kilométrage</span><span>${v.km.toLocaleString()} km</span></div>
+        <div><span>Prochaine vidange</span><span>${v.prochainVidange}</span></div>
+      </div>
+    `;
+
+    card.onclick = function() {
+      openModal(v);
+    };
+
+    container.appendChild(card);
+  });
+
+  majStats();
+}
+
+function getStatusText(status) {
+  if (status === 'dispo') return '🟢 Disponible';
+  if (status === 'intervention') return '🟡 En intervention';
+  return '🔴 Indisponible';
+}
+
+function openModal(vehicule) {
+  currentVehicule = vehicule;
+  document.getElementById('modal-title').innerText = vehicule.nom + ' - ' + vehicule.type;
+  document.getElementById('status-modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('status-modal').classList.remove('show');
+  currentVehicule = null;
+}
+
+function setStatus(status) {
+  if (currentVehicule) {
+    currentVehicule.statut = status;
+    saveStatus();
+    renderVehicules();
+    closeModal();
+  }
+}
+
+function majStats() {
+  let dispo = vehicules.filter(v => v.statut === 'dispo').length;
+  let indispo = vehicules.filter(v => v.statut === 'indispo').length;
+  let intervention = vehicules.filter(v => v.statut === 'intervention').length;
+
+  document.getElementById('stat-dispo').innerText = dispo;
+  document.getElementById('stat-indispo').innerText = indispo;
+  document.getElementById('stat-intervention').innerText = intervention;
+  document.getElementById('stat-total').innerText = vehicules.length;
+}
+
+loadStatus();
+renderVehicules();
+</script>
+
+</body>
+</html>
