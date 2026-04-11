@@ -91,10 +91,25 @@ header h1 {
 <div class="container">
 
   <!-- GAUCHE -->
+  <input type="text" id="agent" placeholder="Nom de l'agent">
+<button onclick="ajouterService()">Prendre service</button>
   <div class="left">
     <button class="btn" onclick="history.back()">← Retour au module</button><br>
  <button class="btn" onclick="creerAlerte()">commencer son service</button>
+    <script>
+function ajouterService() {
+  let nom = document.getElementById("agent").value;
+  if (!nom) return;
 
+  let agents = JSON.parse(localStorage.getItem("agents")) || [];
+  agents.push(nom);
+
+  localStorage.setItem("agents", JSON.stringify(agents));
+
+  alert("Agent ajouté !");
+  document.getElementById("agent").value = "";
+}
+</script>
    <div id="service" class="alert-box">
   </div>
     </div>
