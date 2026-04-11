@@ -23,6 +23,7 @@ body { font-family: Arial, sans-serif; background: #0f172a; color: white; min-he
 .btn-login:hover { background: #2563eb; transform: translateY(-2px); }
 
 .error { background: #ef4444; color: white; padding: 10px; border-radius: 8px; margin-bottom: 20px; display: none; font-size: 14px; }
+.success { background: #22c55e; color: black; padding: 10px; border-radius: 8px; margin-bottom: 20px; display: none; font-size: 14px; }
 
 .hint { margin-top: 30px; color: #64748b; font-size: 12px; }
 .hint span { color: #94a3b8; }
@@ -50,6 +51,11 @@ header .btn-logout:hover { background: #dc2626; }
 footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b; font-size: 12px; margin-top: auto; }
 
 .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px; }
+
+.password-strength { height: 5px; border-radius: 3px; margin-top: 5px; background: #374151; }
+.password-strength.weak { background: #ef4444; width: 33%; }
+.password-strength.medium { background: #f59e0b; width: 66%; }
+.password-strength.strong { background: #22c55e; width: 100%; }
 </style>
 </head>
 <body>
@@ -62,6 +68,7 @@ footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b;
     <p class="login-subtitle">Centre de Secours - Authentification</p>
     
     <div class="error" id="loginError">Identifiants incorrects</div>
+    <div class="success" id="loginSuccess">Mot de passe modifié avec succès!</div>
     
     <div class="input-group">
       <label>Nom d'utilisateur</label>
@@ -73,7 +80,38 @@ footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b;
       <input type="password" id="password" placeholder="Entrez votre mot de passe" onkeypress="if(event.key==='Enter') doLogin()">
     </div>
     
-    <button class="btn btn-login" onclick="doLogin()">Se connecter</button>
+    <button class="btn btn-login" id="btnLogin" onclick="doLogin()">Se connecter</button>
+    
+    <p class="hint">
+      Identifiants par défaut:<br>
+      <span>admin / admin</span><br>
+      <span>operateur / operateur</span><br>
+      <span>chef / chef</span>
+    </p>
+  </div>
+</div>
+
+<!-- PAGE CHANGEMENT MOT DE PASSE -->
+<div class="login-page hidden" id="changePasswordPage">
+  <div class="login-container">
+    <div class="login-logo">🔑</div>
+    <h1 class="login-title">Nouveau mot de passe</h1>
+    <p class="login-subtitle">Bienvenue <span id="welcomeUser"></span> - Veuillez définir votre mot de passe</p>
+    
+    <div class="error" id="changeError"></div>
+    
+    <div class="input-group">
+      <label> Nouveau mot de passe</label>
+      <input type="password" id="newPassword" placeholder="Nouveau mot de passe" oninput="checkPasswordStrength()">
+      <div class="password-strength" id="passwordStrength"></div>
+    </div>
+    
+    <div class="input-group">
+      <label>Confirmer le mot de passe</label>
+      <input type="password" id="confirmPassword" placeholder="Confirmer le mot de passe" onkeypress="if(event.key==='Enter') changePassword()">
+    </div>
+    
+    <button class="btn btn-login" onclick="changePassword()">Valider</button>
   </div>
 </div>
 
@@ -127,12 +165,28 @@ footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b;
 </div>
 
 <script>
-// Utilisateurs autorisés
-var users = [
-  { username: 'admin', password: 'admin', role: 'Administrateur' },
-  { username: 'operateur', password: 'operateur', role: 'Opérateur' },
-  { username: 'chef', password: 'chef', role: 'Chef de garde' }
+// Utilisateurs par défaut
+var defaultUsers = [
+  { username: 'admin', password: 'admin', role: 'Administrateur', firstLogin: true },
+  { username: 'operateur', password: 'operateur', role: 'Opérateur', firstLogin: true },
+  { username: 'chef', password: 'chef', role: 'Chef de garde', firstLogin: true }
 ];
+
+// Charger les utilisateurs depuis localStorage ou utiliser les默认值
+function loadUsers() {
+  var saved = localStorage.getItem('ops_users');
+  if (saved) {
+    return JSON.parse(saved);
+  }
+  localStorage.setItem('ops_users', JSON.stringify(defaultUsers));
+  return defaultUsers;
+}
+
+function saveUsers(users) {
+  localStorage.setItem('ops_users', JSON.stringify(users));
+}
+
+var currentUser = null;
 
 // Vérifier si déjà connecté
 function checkLogin() {
