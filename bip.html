@@ -95,37 +95,27 @@ header {
 
   </div>
 
+<!-- DROITE -->
+  <div class="right">
+    <img src="https://images.unsplash.com/photo-1592656094267-764a45160876?w=800" alt="caméra">
+  </div>
+
+</div>
+
 <!-- SON -->
 <audio id="bip" preload="auto">
   <source src="beep-01a.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-  let audio = document.getElementById("bip");
+let audio = document.getElementById("bip");
 
 function declencherBip(vehicule) {
   audio.currentTime = 0;
   audio.play().catch(err => {
     console.log("Erreur lecture audio:", err);
   });
-   let box = document.getElementById("alerte-box");
 
-  let msg = document.createElement("div");
-  msg.style.background = "#f87171";
-  msg.style.padding = "10px";
-  msg.style.margin = "10px 0";
-  msg.style.borderRadius = "5px";
-
-  msg.innerText = "🚨 " + vehicule + " engagé !";
-
-function declencherBip(vehicule) {
-  
-  // 🔊 jouer le son
-  let audio = document.getElementById("bip");
-  audio.currentTime = 0;
-  audio.play();
-
-  // 🚨 afficher message
   let box = document.getElementById("alerte-box");
 
   let msg = document.createElement("div");
@@ -138,7 +128,6 @@ function declencherBip(vehicule) {
 
   box.prepend(msg);
 
-  // supprimer après 5 sec
   setTimeout(() => {
     msg.remove();
   }, 5000);
