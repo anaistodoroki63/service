@@ -138,7 +138,12 @@ var users = [
 function checkLogin() {
   var session = sessionStorage.getItem('ops_session');
   if (session) {
-    showMainMenu(JSON.parse(session));
+    var user = JSON.parse(session);
+    if (user.firstLogin) {
+      showChangePassword(user);
+    } else {
+      showMainMenu(user);
+    }
   }
 }
 
@@ -153,8 +158,9 @@ function doLogin() {
     return;
   }
   
-  // Rechercher l'utilisateur
+  var users = loadUsers();
   var found = null;
+  
   for (var i = 0; i < users.length; i++) {
     if (users[i].username === username && users[i].password === password) {
       found = users[i];
@@ -163,9 +169,15 @@ function doLogin() {
   }
   
   if (found) {
-    // Connexion réussie
-    sessionStorage.setItem('ops_session', JSON.stringify(found));
-    showMainMenu(found);
+    error.style.display = 'none';
+    
+    if (found.firstLogin) {
+      currentUser = found;
+      showChangePassword(found);
+    } else {
+      sessionStorage.setItem('ops_session', JSON.stringify(found));
+      showMainMenu(found);
+    }
   } else {
     error.style.display = 'block';
     error.innerHTML = 'Identifiants incorrects';
@@ -173,8 +185,80 @@ function doLogin() {
   }
 }
 
+function showChangePassword(user) {
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('mainMenu').classList.remove('active');
+  document.getElementById('changePasswordPage').classList.remove('hidden');
+  document.getElementById('welcomeUser').innerHTML = user.username;
+  document.getElementById('newPassword').value = '';
+  document.getElementById('confirmPassword').value = '';
+  document.getElementById('changeError').style.display = 'none';
+}
+
+function checkPasswordStrength() {
+  var pwd = document.getElementById('newPassword').value;
+  var strength = document.getElementById('passwordStrength');
+  
+  strength.className = 'password-strength';
+  
+  if (pwd.length === 0) return;
+  
+  var score = 0;
+  if (pwd.length >= 6) score++;
+  if (pwd.length >= 10) score++;
+  if (/[A-Z]/.test(pwd)) score++;
+  if (/[0-9]/.test(pwd)) score++;
+  if (/[^A-Za-z0-9]/.test(pwd)) score++;
+  
+  if (score <= 2) strength.classList.add('weak');
+  else if (score <= 3) strength.classList.add('medium');
+  else strength.classList.add('strong');
+}
+
+function changePassword() {
+  var newPwd = document.getElementById('newPassword').value;
+  var confirmPwd = document.getElementById('confirmPassword').value;
+  var error = document.getElementById('changeError');
+  
+  if (!newPwd || !confirmPwd) {
+    error.style.display = 'block';
+    error.innerHTML = 'Veuillez remplir tous les champs';
+    return;
+  }
+  
+  if (newPwd.length < 4) {
+    error.style.display = 'block';
+    error.innerHTML = 'Le mot de passe doit contenir au moins 4 caractères';
+    return;
+  }
+  
+  if (newPwd !== confirmPwd) {
+    error.style.display = 'block';
+    error.innerHTML = 'Les mots de passe ne correspondent pas';
+    return;
+  }
+  
+  // Mettre à jour le mot de passe
+  var users = loadUsers();
+  for (var i = 0; i < users.length; i++) {
+    if (users[i].username === currentUser.username) {
+      users[i].password = newPwd;
+      users[i].firstLogin = false;
+      currentUser = users[i];
+      break;
+    }
+  }
+  
+  saveUsers(users);
+  sessionStorage.setItem('ops_session', JSON.stringify(currentUser));
+  
+  document.getElementById('changePasswordPage').classList.add('hidden');
+  showMainMenu(currentUser);
+}
+
 function showMainMenu(user) {
   document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('changePasswordPage').classList.add('hidden');
   document.getElementById('mainMenu').classList.add('active');
   document.getElementById('userDisplay').innerHTML = '👤 ' + user.username + ' (' + user.role + ')';
 }
@@ -185,6 +269,7 @@ function doLogout() {
   document.getElementById('password').value = '';
   document.getElementById('loginError').style.display = 'none';
   document.getElementById('mainMenu').classList.remove('active');
+  document.getElementById('changePasswordPage').classList.add('hidden');
   document.getElementById('loginPage').classList.remove('hidden');
 }
 
