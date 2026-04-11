@@ -2,163 +2,43 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prise de Service</title>
-
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: white;
-  min-height: 100vh;
-}
-
-header {
-  background: #1e293b;
-  padding: 15px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 3px solid #3b82f6;
-}
-
-header h1 {
-  font-size: 24px;
-}
-
-.btn {
-  background: #374151;
-  border: none;
-  padding: 10px 20px;
-  color: white;
-  cursor: pointer;
-  border-radius: 8px;
-  font-size: 14px;
-  transition: background 0.3s;
-}
-
-.btn:hover {
-  background: #4b5563;
-}
-
-.btn-primary {
-  background: #3b82f6;
-}
-
-.btn-primary:hover {
-  background: #2563eb;
-}
-
-.container {
-  padding: 30px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.box {
-  background: #1e293b;
-  border-radius: 15px;
-  padding: 25px;
-  margin-bottom: 25px;
-}
-
-.box-title {
-  background: #2563eb;
-  padding: 12px 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.input-group {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.input-group input {
-  flex: 1;
-  padding: 12px 15px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  background: #374151;
-  color: white;
-}
-
-.input-group input::placeholder {
-  color: #9ca3af;
-}
-
-.tag {
-  display: inline-block;
-  background: #22c55e;
-  color: black;
-  padding: 10px 15px;
-  margin: 5px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.tag:hover {
-  background: #ef4444;
-  color: white;
-  transform: scale(1.05);
-}
-
-.compteur {
-  font-size: 20px;
-  color: #22c55e;
-  margin-bottom: 15px;
-}
-
-.stats {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.stat {
-  background: #374151;
-  padding: 15px 25px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.stat .number {
-  font-size: 30px;
-  font-weight: bold;
-  color: #3b82f6;
-}
-
-.stat .label {
-  font-size: 12px;
-  color: #94a3b8;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #0f172a; color: white; min-height: 100vh; }
+header { background: #1e293b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #3b82f6; }
+h1 { font-size: 20px; }
+.btn { background: #374151; border: none; padding: 10px 20px; color: white; cursor: pointer; border-radius: 8px; font-size: 14px; }
+.btn:hover { background: #4b5563; }
+.btn-primary { background: #3b82f6; }
+.btn-primary:hover { background: #2563eb; }
+.container { padding: 30px; max-width: 800px; margin: 0 auto; }
+.box { background: #1e293b; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
+.box-title { background: #2563eb; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 18px; font-weight: bold; }
+.input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+.input-group input { flex: 1; padding: 12px 15px; border: none; border-radius: 8px; font-size: 16px; background: #374151; color: white; }
+.input-group input::placeholder { color: #9ca3af; }
+.tag { display: inline-block; background: #22c55e; color: black; padding: 10px 15px; margin: 5px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+.tag:hover { background: #ef4444; color: white; }
+.compteur { font-size: 20px; color: #22c55e; margin-bottom: 15px; }
+.stats { display: flex; gap: 20px; margin-top: 20px; }
+.stat { background: #374151; padding: 15px 25px; border-radius: 10px; text-align: center; }
+.stat .number { font-size: 30px; font-weight: bold; color: #3b82f6; }
+.stat .label { font-size: 12px; color: #94a3b8; }
 </style>
 </head>
-
 <body>
-
 <header>
   <div>🔵 MODULE OPS</div>
   <h1>Prise de Service</h1>
   <div>
-    <button class="btn" onclick="window.location.href='index.html'">🏠 Accueil</button>
-    <button class="btn btn-primary" onclick="window.location.href='affectations.html'">→ Affectations</button>
+    <button class="btn" onclick="location.href='index.html'">🏠 Accueil</button>
+    <button class="btn btn-primary" onclick="location.href='affectations.html'">→ Affectations</button>
   </div>
 </header>
 
 <div class="container">
-
   <div class="box">
     <div class="box-title">Ajouter un agent</div>
     <div class="input-group">
@@ -183,55 +63,53 @@ header h1 {
       <div class="label">En garde</div>
     </div>
   </div>
-
 </div>
 
 <script>
 function ajouterAgent() {
-  let nom = document.getElementById('agent-input').value.trim();
+  var nom = document.getElementById('agent-input').value.trim();
   if (!nom) return;
-
-  let agents = JSON.parse(localStorage.getItem('agents')) || [];
   
-  if (!agents.includes(nom)) {
+  var agents = JSON.parse(localStorage.getItem('agents')) || [];
+  if (agents.indexOf(nom) === -1) {
     agents.push(nom);
     localStorage.setItem('agents', JSON.stringify(agents));
     document.getElementById('agent-input').value = '';
     document.getElementById('agent-input').focus();
   }
-
   afficherAgents();
 }
 
 function supprimerAgent(index) {
-  let agents = JSON.parse(localStorage.getItem('agents')) || [];
+  var agents = JSON.parse(localStorage.getItem('agents')) || [];
   agents.splice(index, 1);
   localStorage.setItem('agents', JSON.stringify(agents));
   afficherAgents();
 }
 
 function afficherAgents() {
-  let agents = JSON.parse(localStorage.getItem('agents')) || [];
-  let garde = JSON.parse(localStorage.getItem('garde')) || [];
-  let container = document.getElementById('liste-agents');
-
-  document.getElementById('compteur').innerText = agents.length + ' agent(s) en service';
-  document.getElementById('total-service').innerText = agents.length;
-  document.getElementById('total-garde').innerText = garde.length;
-
+  var agents = JSON.parse(localStorage.getItem('agents')) || [];
+  var garde = JSON.parse(localStorage.getItem('garde')) || [];
+  var container = document.getElementById('liste-agents');
+  
+  document.getElementById('compteur').innerHTML = agents.length + ' agent(s) en service';
+  document.getElementById('total-service').innerHTML = agents.length;
+  document.getElementById('total-garde').innerHTML = garde.length;
+  
   container.innerHTML = '';
-
-  agents.forEach((nom, index) => {
-    let tag = document.createElement('span');
-    tag.className = 'tag';
-    tag.innerText = nom + ' ✕';
-    tag.onclick = function() {
-      if (confirm('Retirer ' + nom + ' du service ?')) {
-        supprimerAgent(index);
-      }
-    };
-    container.appendChild(tag);
-  });
+  for (var i = 0; i < agents.length; i++) {
+    (function(index) {
+      var tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.innerHTML = agents[index] + ' ✕';
+      tag.onclick = function() {
+        if (confirm('Retirer ' + agents[index] + ' du service ?')) {
+          supprimerAgent(index);
+        }
+      };
+      container.appendChild(tag);
+    })(i);
+  }
 }
 
 afficherAgents();
