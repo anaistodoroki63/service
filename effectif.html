@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Effectif</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+  min-height: 100vh;
+}
+
+header {
+  background: #1e293b;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #3b82f6;
+}
+
+header h1 {
+  font-size: 24px;
+}
+
+.btn {
+  background: #374151;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: #4b5563;
+}
+
+.btn-primary {
+  background: #3b82f6;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+}
+
+.container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-box {
+  margin-bottom: 25px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  background: #1e293b;
+  color: white;
+}
+
+.search-box input::placeholder {
+  color: #64748b;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.filter-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #374151;
+  color: white;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: #3b82f6;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat-card .number {
+  font-size: 36px;
+  font-weight: bold;
+  color: #3b82f6;
+}
+
+.stat-card .label {
+  font-size: 14px;
+  color: #94a3b8;
+  margin-top: 5px;
+}
+
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.agent-card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.agent-card:hover {
+  background: #334155;
+  transform: translateY(-2px);
+}
+
+.agent-avatar {
+  width: 50px;
+  height: 50px;
+  background: #3b82f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.agent-info {
+  flex: 1;
+}
+
+.agent-nom {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.agent-grade {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.agent-status {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.status-service {
+  background: #22c55e;
+  color: black;
+}
+
+.status-garde {
+  background: #f59e0b;
+  color: black;
+}
+
+.status-repos {
+  background: #64748b;
+  color: white;
+}
+
+.empty {
+  text-align: center;
+  padding: 50px;
+  color: #64748b;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>🔵 MODULE OPS</div>
+  <h1>👥 Effectif</h1>
+  <div>
+    <button class="btn" onclick="window.location.href='index.html'">🏠 Accueil</button>
+    <button class="btn" onclick="window.location.href='affectations.html'">→ Affectations</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="number" id="total">10</div>
+      <div class="label">Total effectif</div>
+    </div>
+    <div class="stat-card">
+      <div class="number" id="en-service">0</div>
+      <div class="label">En service</div>
+    </div>
+    <div class="stat-card">
+      <div class="number" id="en-garde">0</div>
+      <div class="label">En garde</div>
+    </div>
+    <div class="stat-card">
+      <div class="number" id="au-repos">0</div>
+      <div class="label">Au repos</div>
+    </div>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Rechercher un agent..." onkeyup="filtrerAgents()">
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all')">Tous</button>
+    <button class="filter-btn" onclick="setFilter('service')">En service</button>
+    <button class="filter-btn" onclick="setFilter('garde')">En garde</button>
+    <button class="filter-btn" onclick="setFilter('repos')">Au repos</button>
+  </div>
+
+  <div class="agent-grid" id="agent-list"></div>
+
+</div>
+
+<script>
+const tousAgents = [
+  { nom: 'MARTIN Jean', grade: 'Caporal Chef' },
+  { nom: 'DUPONT Marie', grade: 'Sapeur' },
+  { nom: 'BERNARD Pierre', grade: 'Caporal' },
+  { nom: 'THOMAS Luc', grade: 'Lieutenant' },
+  { nom: 'ROBERT Nathalie', grade: 'Caporal Chef' },
+  { nom: 'RICHARD Alain', grade: 'Sapeur' },
+  { nom: 'PETIT Sophie', grade: 'Sergent' },
+  { nom: 'DURAND Paul', grade: 'Caporal' },
+  { nom: 'MOREAU Jacques', grade: 'Sapeur' },
+  { nom: 'LAURENT Michel', grade: 'Adjudant' }
+];
+
+let currentFilter = 'all';
+
+function setFilter(filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  filtrerAgents();
+}
+
+function filtrerAgents() {
+  let search = document.getElementById('search').value.toLowerCase();
+  let agents = JSON.parse(localStorage.getItem('agents')) || [];
+  let garde = JSON.parse(localStorage.getItem('garde')) || [];
+
+  let filtered = tousAgents.filter(a => {
+    let matchSearch = a.nom.toLowerCase().includes(search);
+    let status = getStatus(a.nom, agents, garde);
+    let matchFilter = currentFilter === 'all' || status === currentFilter;
+    return matchSearch && matchFilter;
+  });
+
+  afficherAgents(filtered, agents, garde);
+}
+
+function getStatus(nom, agents, garde) {
+  if (garde.includes(nom)) return 'garde';
+  if (agents.includes(nom)) return 'service';
+  return 'repos';
+}
+
+function getInitiales(nom) {
+  return nom.split(' ').map(p => p[0]).join('').substring(0, 2);
+}
+
+function afficherAgents(liste, agents, garde) {
+  let container = document.getElementById('agent-list');
+  
+  if (liste.length === 0) {
+    container.innerHTML = '<div class="empty">Aucun agent trouvé</div>';
+    return;
+  }
+
+  container.innerHTML = '';
+
+  liste.forEach(a => {
+    let status = getStatus(a.nom, agents, garde);
+    let statusText = status === 'service' ? 'En service' : status === 'garde' ? 'En garde' : 'Au repos';
+
+    let card = document.createElement('div');
+    card.className = 'agent-card';
+    card.innerHTML = `
+      <div class="agent-avatar">${getInitiales(a.nom)}</div>
+      <div class="agent-info">
+        <div class="agent-nom">${a.nom}</div>
+        <div class="agent-grade">${a.grade}</div>
+      </div>
+      <div class="agent-status status-${status}">${statusText}</div>
+    `;
+    container.appendChild(card);
+  });
+
+  // Stats
+  document.getElementById('en-service').innerText = agents.length;
+  document.getElementById('en-garde').innerText = garde.length;
+  document.getElementById('au-repos').innerText = tousAgents.length - agents.length;
+}
+
+filtrerAgents();
+</script>
+
+</body>
+</html>
