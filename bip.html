@@ -101,7 +101,25 @@ header {
 </audio>
 
 <script>
+  let audio = document.getElementById("bip");
+
 function declencherBip(vehicule) {
+  audio.currentTime = 0;
+  audio.play().catch(err => {
+    console.log("Erreur lecture audio:", err);
+  });
+   let box = document.getElementById("alerte-box");
+
+  let msg = document.createElement("div");
+  msg.style.background = "#f87171";
+  msg.style.padding = "10px";
+  msg.style.margin = "10px 0";
+  msg.style.borderRadius = "5px";
+
+  msg.innerText = "🚨 " + vehicule + " engagé !";
+
+function declencherBip(vehicule) {
+  
   // 🔊 jouer le son
   let audio = document.getElementById("bip");
   audio.currentTime = 0;
