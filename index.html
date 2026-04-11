@@ -89,6 +89,17 @@ footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b;
     <div class="forgot-link">
       <a href="#" onclick="showForgot()">Mot de passe oublié ?</a>
     </div>
+    
+    <p class="hint">
+      Comptes disponibles:<br>
+      <span>admin / admin</span><br>
+      <span>operateur / operateur</span><br>
+      <span>chef / chef</span><br>
+      <span>andy / andyno</span><br>
+      <span>rafael / Rafaelneko</span><br>
+      <span>luc / luc123</span><br>
+      <span>marie / marie123</span>
+    </p>
   </div>
 </div>
 
@@ -152,17 +163,17 @@ footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b;
 
   <div class="container">
     <div class="menu-grid">
-      <div class="menu-card" onclick="location.href='prisedeservice.html'">
+      <div class="menu-card" onclick="location.href='prise-de-service.html'">
         <div class="icon">📋</div>
         <h2>Prise de Service</h2>
         <p>Enregistrer les agents en service</p>
       </div>
-      <div class="menu-card" onclick="location.href='affectation.html'">
+      <div class="menu-card" onclick="location.href='affectations.html'">
         <div class="icon">🚒</div>
         <h2>Affectations</h2>
         <p>Gestion des affectations et gardes</p>
       </div>
-      <div class="menu-card" onclick="location.href='alerte.html'">
+      <div class="menu-card" onclick="location.href='alertes.html'">
         <div class="icon">🚨</div>
         <h2>Alertes</h2>
         <p>Déclencher les interventions</p>
@@ -177,7 +188,7 @@ footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b;
         <h2>Effectif</h2>
         <p>Liste du personnel</p>
       </div>
-      <div class="menu-card" onclick="location.href='vehicule.html'">
+      <div class="menu-card" onclick="location.href='vehicules.html'">
         <div class="icon">🚗</div>
         <h2>Véhicules</h2>
         <p>État des véhicules</p>
@@ -186,11 +197,6 @@ footer { background: #1e293b; padding: 15px; text-align: center; color: #64748b;
         <div class="icon">🔐</div>
         <h2>Comptes</h2>
         <p>Gestion des comptes</p>
-      </div>
-      <div class="menu-card" onclick="location.href='bip.html'">
-        <div class="icon">🔐</div>
-        <h2>bip</h2>
-        <p>depart en interventions</p>
       </div>
     </div>
   </div>
@@ -206,8 +212,8 @@ var defaultUsers = [
   { username: 'chef', password: 'chef', role: 'Chef de garde', firstLogin: true },
   { username: 'andy', password: 'andyno', role: 'Médecin en chef', firstLogin: true },
   { username: 'rafael', password: 'Rafaelneko', role: 'ADJ', firstLogin: true },
-  { username: 'yassin anderson', password: 'yassin', role: 'Sapeur', firstLogin: true },
-  { username: 'clement', password: 'clement', role: 'medecin en chef', firstLogin: true },
+  { username: 'luc', password: 'luc123', role: 'Sapeur', firstLogin: true },
+  { username: 'marie', password: 'marie123', role: 'Caporal', firstLogin: true }
 ];
 
 var currentUser = null;
@@ -217,7 +223,6 @@ function loadUsers() {
   var saved = localStorage.getItem('ops_users');
   if (saved) {
     var users = JSON.parse(saved);
-    // Ajouter les nouveaux comptes par défaut
     for (var i = 0; i < defaultUsers.length; i++) {
       var exists = false;
       for (var j = 0; j < users.length; j++) {
@@ -241,7 +246,7 @@ function saveUsers(users) {
   localStorage.setItem('ops_users', JSON.stringify(users));
 }
 
-// NAVIGATION ENTRE LES PAGES
+// NAVIGATION
 function showLogin() {
   document.getElementById('loginPage').classList.add('active');
   document.getElementById('forgotPage').classList.remove('active');
@@ -271,6 +276,13 @@ function showChangePassword(user) {
 }
 
 function showMainMenu(user) {
+  // AUTO: Ajouter en service
+  var agents = JSON.parse(localStorage.getItem('agents')) || [];
+  if (agents.indexOf(user.username) === -1) {
+    agents.push(user.username);
+    localStorage.setItem('agents', JSON.stringify(agents));
+  }
+  
   document.getElementById('loginPage').classList.remove('active');
   document.getElementById('forgotPage').classList.remove('active');
   document.getElementById('changePwdPage').classList.remove('active');
@@ -406,6 +418,14 @@ function doChangePassword() {
       users[i].password = newPwd;
       users[i].firstLogin = false;
       currentUser = users[i];
+      
+      // AUTO: Ajouter en service
+      var agents = JSON.parse(localStorage.getItem('agents')) || [];
+      if (agents.indexOf(currentUser.username) === -1) {
+        agents.push(currentUser.username);
+        localStorage.setItem('agents', JSON.stringify(agents));
+      }
+      
       break;
     }
   }
