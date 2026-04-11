@@ -2,83 +2,150 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Système RP</title>
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<title>Module OPS - Accueil</title>
 
 <style>
-body {
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   font-family: Arial, sans-serif;
-  background: #111827;
-  color: #9ca3af;
+  background: #0f172a;
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.section {
-  text-align: center;
-  padding: 80px 20px;
-  border-top: 1px solid #374151;
-  border-bottom: 1px solid #374151;
-  background: linear-gradient(to bottom, #1f2937, #111827);
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.section:hover {
+header {
   background: #1e293b;
-  transform: scale(1.02);
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #3b82f6;
 }
 
-.section h2 {
-  letter-spacing: 2px;
+header h1 {
+  font-size: 28px;
+}
+
+header .logo {
+  font-size: 24px;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 250px);
+  gap: 25px;
+}
+
+.menu-card {
+  background: #1e293b;
+  border-radius: 15px;
+  padding: 40px 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.menu-card:hover {
+  transform: translateY(-5px);
+  border-color: #3b82f6;
+  background: #334155;
+}
+
+.menu-card .icon {
+  font-size: 60px;
+  margin-bottom: 15px;
+}
+
+.menu-card h2 {
   font-size: 20px;
+  margin-bottom: 10px;
 }
 
-.icon {
-  font-size: 50px;
-  margin: 20px 0;
-  color: #6b7280;
+.menu-card p {
+  color: #94a3b8;
+  font-size: 14px;
 }
 
-.button {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 10px 20px;
-  background: #38bdf8;
-  color: black;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.button:hover {
-  background: #0ea5e9;
+footer {
+  background: #1e293b;
+  padding: 15px;
+  text-align: center;
+  color: #64748b;
+  font-size: 12px;
 }
 </style>
 </head>
 
 <body>
 
+<header>
+  <div class="logo">🔵 MODULE OPS</div>
+  <h1>Centre de Secours</h1>
+</header>
+
 <div class="container">
 
-  <div class="section" onclick="location.href='alerte.html'">
-    🚨 Alertes
-  </div>
+  <div class="menu-grid">
 
-  <div class="section" onclick="location.href='prisedeservice.html'">
-    ⚙️ Opérations
-  </div>
+    <div class="menu-card" onclick="window.location.href='prise-de-service.html'">
+      <div class="icon">📋</div>
+      <h2>Prise de Service</h2>
+      <p>Enregistrer les agents en service</p>
+    </div>
 
-  <div class="section" onclick="location.href='affectation.html'">
-    👥 Affectations
-  </div>
+    <div class="menu-card" onclick="window.location.href='affectations.html'">
+      <div class="icon">🚒</div>
+      <h2>Affectations</h2>
+      <p>Gestion des affectations et gardes</p>
+    </div>
 
-  <div class="section" onclick="location.href='bip.html'">
-    👥 bip intervention
-  </div>
+    <div class="menu-card" onclick="window.location.href='alertes.html'">
+      <div class="icon">🚨</div>
+      <h2>Alertes</h2>
+      <p>Déclencher les interventions</p>
+    </div>
 
+    <div class="menu-card" onclick="window.location.href='planning.html'">
+      <div class="icon">📅</div>
+      <h2>Planning</h2>
+      <p>Calendrier des services</p>
+    </div>
+
+    <div class="menu-card" onclick="window.location.href='effectif.html'">
+      <div class="icon">👥</div>
+      <h2>Effectif</h2>
+      <p>Liste complète du personnel</p>
+    </div>
+
+    <div class="menu-card" onclick="window.location.href='vehicules.html'">
+      <div class="icon">🚗</div>
+      <h2>Véhicules</h2>
+      <p>État des véhicules</p>
+    </div>
+
+  </div>
 
 </div>
-  
+
+<footer>
+  Module OPS v1.0 - Centre de Secours
+</footer>
+
 </body>
 </html>
