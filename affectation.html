@@ -24,10 +24,13 @@ h1 { font-size: 20px; }
 .section.active { display: block; }
 .box { background: #1e293b; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
 .box-title { background: #2563eb; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 16px; font-weight: bold; }
-.tag { display: inline-block; background: #22c55e; color: black; padding: 8px 12px; margin: 4px; border-radius: 6px; cursor: pointer; font-size: 13px; }
-.tag:hover { background: #ef4444; color: white; }
-.tag-garde { background: #f59e0b; color: black; }
-.tag-garde:hover { background: #dc2626; color: white; }
+.tag { display: inline-block; padding: 8px 12px; margin: 4px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+.tag.green { background: #22c55e; color: black; }
+.tag.red { background: #ef4444; color: white; }
+.tag.blue { background: #3b82f6; color: white; }
+.tag.orange { background: #f59e0b; color: black; }
+.agents-box { min-height: 50px; padding: 10px; background: #111827; border-radius: 8px; display: flex; flex-wrap: wrap; gap: 5px; }
+.empty-msg { color: #64748b; font-size: 14px; padding: 20px; }
 .stats-row { display: flex; gap: 20px; }
 .stat { background: #374151; padding: 20px; border-radius: 10px; text-align: center; flex: 1; }
 .stat .number { font-size: 36px; font-weight: bold; color: #3b82f6; }
@@ -35,26 +38,15 @@ h1 { font-size: 20px; }
 .vehicule-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
 .vehicule-card { background: #374151; padding: 20px; border-radius: 10px; cursor: pointer; transition: all 0.2s; }
 .vehicule-card:hover { background: #4b5563; }
-.vehicule-card.selected { border: 2px solid #3b82f6; }
-.vehicule-card .header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+.vehicule-card .header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
 .vehicule-card .icon { font-size: 35px; }
 .vehicule-card .nom { font-size: 18px; font-weight: bold; }
-.vehicule-card .agents { font-size: 13px; color: #94a3b8; }
-.vehicule-card .agents-list { margin-top: 10px; min-height: 40px; }
+.vehicule-card .count { font-size: 13px; color: #94a3b8; }
 .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; }
 .modal.show { display: flex; }
 .modal-content { background: #1e293b; padding: 30px; border-radius: 15px; width: 500px; max-height: 80vh; overflow-y: auto; }
 .modal-content h3 { margin-bottom: 20px; font-size: 18px; }
-.modal-content h4 { margin: 15px 0 10px; font-size: 14px; color: #94a3b8; }
 .modal-close { margin-top: 20px; width: 100%; }
-.agent-select { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
-.agent-select .tag { background: #4b5563; color: white; }
-.agent-select .tag.selected { background: #22c55e; color: black; }
-.empty-msg { color: #94a3b8; font-size: 14px; }
-.planning-item { padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-.dispo { background: #064e3b; border-left: 4px solid #22c55e; }
-.service { background: #1e3a8a; border-left: 4px solid #3b82f6; }
-.repos { background: #7f1d1d; border-left: 4px solid #ef4444; }
 </style>
 </head>
 <body>
@@ -91,7 +83,7 @@ h1 { font-size: 20px; }
             <div class="label">En garde</div>
           </div>
           <div class="stat">
-            <div class="number" id="stat-vehicules">6</div>
+            <div class="number">6</div>
             <div class="label">Véhicules</div>
           </div>
         </div>
@@ -106,43 +98,38 @@ h1 { font-size: 20px; }
     <div id="service" class="section">
       <div class="box">
         <div class="box-title">Agents en service</div>
-        <div id="liste-service"></div>
+        <div id="liste-service" class="agents-box"></div>
       </div>
     </div>
 
     <div id="garde" class="section">
       <div class="box">
-        <div class="box-title">Liste de garde</div>
-        <p class="empty-msg" style="margin-bottom:15px;">Cliquez sur un agent pour le retirer de la garde</p>
-        <div id="liste-garde"></div>
+        <div class="box-title">Agents en garde</div>
+        <div id="liste-garde" class="agents-box"></div>
       </div>
     </div>
 
     <div id="vehicules" class="section">
       <div class="box">
         <div class="box-title">🚗 Affecter les agents aux véhicules</div>
-        <p class="empty-msg" style="margin-bottom:15px;">Cliquez sur un véhicule pour affecter des agents</p>
         <div class="vehicule-grid" id="vehicules-grid"></div>
       </div>
     </div>
 
     <div id="planning" class="section">
       <div class="box">
-        <div class="box-title">Planning hebdomadaire</div>
+        <div class="box-title">Planning</div>
         <div id="planning-list"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL AFFECTATION -->
+<!-- MODAL -->
 <div class="modal" id="modal-affect">
   <div class="modal-content">
-    <h3 id="modal-vehicule-title">Véhicule</h3>
-    <h4>Agents en service disponibles</h4>
-    <div class="agent-select" id="agents-dispos"></div>
-    <h4>Agents affectés à ce véhicule</h4>
-    <div class="agent-select" id="agents-affectes"></div>
+    <h3 id="modal-title">Véhicule</h3>
+    <div id="modal-content"></div>
     <button class="btn modal-close" onclick="closeModal()">Fermer</button>
   </div>
 </div>
@@ -157,7 +144,7 @@ var vehicules = [
   { id: 'CCF201', nom: 'CCF 201', type: '🚒' }
 ];
 
-var currentVehicule = null;
+var jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
 function showSection(section, el) {
   var sections = document.querySelectorAll('.section');
@@ -175,134 +162,120 @@ function showSection(section, el) {
 }
 
 function chargerService() {
-  var agents = JSON.parse(localStorage.getItem('agents')) || [];
-  var container = document.getElementById('liste-service');
+  var agents = JSON.parse(localStorage.getItem("agents")) || [];
+  var garde = JSON.parse(localStorage.getItem("garde")) || [];
+  var box = document.getElementById("liste-service");
+  box.innerHTML = "";
   
   if (agents.length === 0) {
-    container.innerHTML = '<p class="empty-msg">Aucun agent en service. <a href="prise-de-service.html" style="color:#3b82f6;">Ajouter</a></p>';
+    box.innerHTML = '<div class="empty-msg">Aucun agent en service <a href="prise-de-service.html" style="color:#3b82f6;">Ajouter</a></div>';
     return;
   }
   
-  container.innerHTML = '';
   for (var i = 0; i < agents.length; i++) {
-    (function(nom) {
-      var tag = document.createElement('span');
-      tag.className = 'tag';
-      tag.innerHTML = nom;
-      tag.onclick = function() { ajouterEnGarde(nom); };
-      container.appendChild(tag);
-    })(agents[i]);
+    var nom = agents[i];
+    var tag = document.createElement("span");
+    tag.className = "tag green";
+    tag.innerHTML = nom;
+    tag.onclick = (function(n) {
+      return function() {
+        var g = JSON.parse(localStorage.getItem("garde")) || [];
+        if (g.indexOf(n) === -1) {
+          g.push(n);
+          localStorage.setItem("garde", JSON.stringify(g));
+          chargerGarde();
+          chargerService();
+        }
+      };
+    })(nom);
+    box.appendChild(tag);
   }
-}
-
-function ajouterEnGarde(nom) {
-  var garde = JSON.parse(localStorage.getItem('garde')) || [];
-  if (garde.indexOf(nom) === -1) {
-    garde.push(nom);
-    localStorage.setItem('garde', JSON.stringify(garde));
-  }
-  chargerGarde();
-  majStats();
 }
 
 function chargerGarde() {
-  var garde = JSON.parse(localStorage.getItem('garde')) || [];
-  var container = document.getElementById('liste-garde');
+  var garde = JSON.parse(localStorage.getItem("garde")) || [];
+  var box = document.getElementById("liste-garde");
+  box.innerHTML = "";
   
   if (garde.length === 0) {
-    container.innerHTML = '<p class="empty-msg">Aucun agent en garde</p>';
-    return;
+    box.innerHTML = '<div class="empty-msg">Aucun agent en garde</div>';
   }
   
-  container.innerHTML = '';
-  for (var i = 0; i < garde.length; i++) {
-    (function(nom, idx) {
-      var tag = document.createElement('span');
-      tag.className = 'tag tag-garde';
-      tag.innerHTML = nom + ' ✕';
-      tag.onclick = function() {
-        if (confirm('Retirer ' + nom + ' de la garde ?')) {
-          garde.splice(idx, 1);
-          localStorage.setItem('garde', JSON.stringify(garde));
-          chargerGarde();
-          majStats();
-        }
+  for (var j = 0; j < garde.length; j++) {
+    var nom = garde[j];
+    var tag = document.createElement("span");
+    tag.className = "tag orange";
+    tag.innerHTML = nom + " ✕";
+    tag.onclick = (function(idx) {
+      return function() {
+        garde.splice(idx, 1);
+        localStorage.setItem("garde", JSON.stringify(garde));
+        chargerGarde();
+        chargerService();
       };
-      container.appendChild(tag);
-    })(garde[i], i);
+    })(j);
+    box.appendChild(tag);
   }
 }
 
 function chargerVehicules() {
-  var affectations = JSON.parse(localStorage.getItem('vehicule_affectations')) || {};
-  var agents = JSON.parse(localStorage.getItem('agents')) || [];
-  var container = document.getElementById('vehicules-grid');
+  var affectations = JSON.parse(localStorage.getItem("vehicule_affectations")) || {};
+  var container = document.getElementById("vehicules-grid");
+  container.innerHTML = "";
   
-  document.getElementById('stat-vehicules').innerHTML = vehicules.length;
-  
-  container.innerHTML = '';
   for (var i = 0; i < vehicules.length; i++) {
     var v = vehicules[i];
     var affects = affectations[v.id] || [];
-    var agentsText = affects.length > 0 ? affects.join(', ') : 'Aucun agent';
     
     (function(vId, vNom, vType) {
-      var card = document.createElement('div');
-      card.className = 'vehicule-card';
+      var card = document.createElement("div");
+      card.className = "vehicule-card";
       card.innerHTML = 
         '<div class="header">' +
           '<span class="icon">' + vType + '</span>' +
           '<span class="nom">' + vNom + '</span>' +
         '</div>' +
-        '<div class="agents">' + affects.length + ' agent(s) affecté(s)</div>' +
-        '<div class="agents-list">' + agentsText + '</div>';
-      card.onclick = function() { openAffectModal(vId, vNom, vType); };
+        '<div class="count">' + affects.length + ' agent(s)</div>';
+      card.onclick = function() { openModal(vId, vNom, vType); };
       container.appendChild(card);
     })(v.id, v.nom, v.type);
   }
 }
 
-function openAffectModal(vId, vNom, vType) {
-  currentVehicule = vId;
-  document.getElementById('modal-vehicule-title').innerHTML = vType + ' ' + vNom;
+function openModal(vId, vNom, vType) {
+  document.getElementById('modal-title').innerHTML = vType + ' ' + vNom;
   
-  var agents = JSON.parse(localStorage.getItem('agents')) || [];
-  var affectations = JSON.parse(localStorage.getItem('vehicule_affectations')) || {};
+  var agents = JSON.parse(localStorage.getItem("agents")) || [];
+  var affectations = JSON.parse(localStorage.getItem("vehicule_affectations")) || {};
   var affects = affectations[vId] || [];
   
-  var dispoContainer = document.getElementById('agents-dispos');
-  var affectContainer = document.getElementById('agents-affectes');
-  
-  dispoContainer.innerHTML = '';
-  affectContainer.innerHTML = '';
+  var content = '<h4 style="margin:15px 0 10px;color:#94a3b8;">Agents disponibles</h4>';
+  content += '<div class="agents-box" id="modal-dispos">';
   
   for (var i = 0; i < agents.length; i++) {
-    (function(nom) {
-      var isAffected = affects.indexOf(nom) !== -1;
-      
-      var tag = document.createElement('span');
-      tag.className = 'tag' + (isAffected ? '' : '');
-      tag.innerHTML = nom + (isAffected ? ' ✓' : '');
-      tag.onclick = function() { toggleAgentVehicule(nom); };
-      
-      if (isAffected) {
-        affectContainer.appendChild(tag);
-      } else {
-        dispoContainer.appendChild(tag);
-      }
-    })(agents[i]);
+    var nom = agents[i];
+    var isAssigned = affects.indexOf(nom) !== -1;
+    if (!isAssigned) {
+      content += '<span class="tag blue" onclick="toggleAgent(\'' + vId + '\', \'' + nom + '\')">' + nom + '</span>';
+    }
   }
+  content += '</div>';
   
-  if (agents.length === 0) {
-    dispoContainer.innerHTML = '<p class="empty-msg">Aucun agent en service</p>';
+  content += '<h4 style="margin:15px 0 10px;color:#94a3b8;">Agents affectés</h4>';
+  content += '<div class="agents-box" id="modal-affectes">';
+  
+  for (var j = 0; j < affects.length; j++) {
+    content += '<span class="tag orange" onclick="toggleAgent(\'' + vId + '\', \'' + affects[j] + '\')">' + affects[j] + ' ✕</span>';
   }
+  content += '</div>';
   
+  document.getElementById('modal-content').innerHTML = content;
   document.getElementById('modal-affect').classList.add('show');
 }
 
-function toggleAgentVehicule(nom) {
-  var affectations = JSON.parse(localStorage.getItem('vehicule_affectations')) || {};
-  var affects = affectations[currentVehicule] || [];
+function toggleAgent(vId, nom) {
+  var affectations = JSON.parse(localStorage.getItem("vehicule_affectations")) || {};
+  var affects = affectations[vId] || [];
   
   var idx = affects.indexOf(nom);
   if (idx === -1) {
@@ -311,39 +284,38 @@ function toggleAgentVehicule(nom) {
     affects.splice(idx, 1);
   }
   
-  affectations[currentVehicule] = affects;
-  localStorage.setItem('vehicule_affectations', JSON.stringify(affectations));
+  affectations[vId] = affects;
+  localStorage.setItem("vehicule_affectations", JSON.stringify(affectations));
   
-  openAffectModal(currentVehicule, document.getElementById('modal-vehicule-title').innerHTML.split(' ').slice(1).join(' '), document.getElementById('modal-vehicule-title').innerHTML.charAt(0));
+  var v = vehicules.find(function(x) { return x.id === vId; });
+  openModal(vId, v.nom, v.type);
+  chargerVehicules();
 }
 
 function closeModal() {
   document.getElementById('modal-affect').classList.remove('show');
-  currentVehicule = null;
   chargerVehicules();
 }
 
 function chargerPlanning() {
-  var jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-  var container = document.getElementById('planning-list');
-  container.innerHTML = '';
+  var container = document.getElementById("planning-list");
+  container.innerHTML = "";
   
   for (var i = 0; i < jours.length; i++) {
     (function(jour, idx) {
-      var status = localStorage.getItem('planning_' + jours[idx]) || 'dispo';
-      var div = document.createElement('div');
-      div.className = 'planning-item ' + status;
-      var icon = status === 'dispo' ? '🟢' : status === 'service' ? '🔵' : '🔴';
-      var text = status === 'dispo' ? 'Disponible' : status === 'service' ? 'En service' : 'Repos';
+      var status = localStorage.getItem("planning_" + idx) || "dispo";
+      var icon = status === "dispo" ? "🟢" : status === "service" ? "🔵" : "🔴";
+      var text = status === "dispo" ? "Disponible" : status === "service" ? "En service" : "Repos";
+      
+      var div = document.createElement("div");
+      div.style.cssText = "padding:15px;margin:10px 0;border-radius:8px;cursor:pointer;background:" + 
+        (status === "dispo" ? "#064e3b" : status === "service" ? "#1e3a8a" : "#7f1d1d") +
+        ";border-left:4px solid " + (status === "dispo" ? "#22c55e" : status === "service" ? "#3b82f6" : "#ef4444");
       div.innerHTML = '<span>' + jour + '</span><span>' + icon + ' ' + text + '</span>';
       div.onclick = function() {
-        var current = localStorage.getItem('planning_' + jour) || 'dispo';
-        var next = current === 'dispo' ? 'service' : current === 'service' ? 'repos' : 'dispo';
-        localStorage.setItem('planning_' + jour, next);
-        var nIcon = next === 'dispo' ? '🟢' : next === 'service' ? '🔵' : '🔴';
-        var nText = next === 'dispo' ? 'Disponible' : next === 'service' ? 'En service' : 'Repos';
-        div.className = 'planning-item ' + next;
-        div.innerHTML = '<span>' + jour + '</span><span>' + nIcon + ' ' + nText + '</span>';
+        var next = status === "dispo" ? "service" : status === "service" ? "repos" : "dispo";
+        localStorage.setItem("planning_" + idx, next);
+        chargerPlanning();
       };
       container.appendChild(div);
     })(jours[i], i);
@@ -351,10 +323,10 @@ function chargerPlanning() {
 }
 
 function majStats() {
-  var agents = JSON.parse(localStorage.getItem('agents')) || [];
-  var garde = JSON.parse(localStorage.getItem('garde')) || [];
-  document.getElementById('stat-service').innerHTML = agents.length;
-  document.getElementById('stat-garde').innerHTML = garde.length;
+  var agents = JSON.parse(localStorage.getItem("agents")) || [];
+  var garde = JSON.parse(localStorage.getItem("garde")) || [];
+  document.getElementById("stat-service").innerHTML = agents.length;
+  document.getElementById("stat-garde").innerHTML = garde.length;
 }
 
 chargerService();
