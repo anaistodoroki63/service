@@ -111,16 +111,52 @@ button:hover {
 
 <div class="container">
 
+  <!-- ACCUEIL -->
+<div id="accueil" class="section-content">
+  <h3>Ajouter un personnel</h3>
+  <input type="text" id="nom" placeholder="Nom">
+  <button onclick="ajouter()">Ajouter</button>
+
+  <div class="box">
+    <div class="box-title">Personnel disponible</div>
+    <div class="box-content" id="liste"></div>
+  </div>
+</div>
+
+<!-- PLANNING -->
+<div id="planning" class="section-content" style="display:none;">
+  <h3>Planning</h3>
+  <div class="box">
+    <div class="box-title">Planning de la semaine</div>
+    <div class="box-content">
+      <p>Lundi : Disponible</p>
+      <p>Mardi : En service</p>
+      <p>Mercredi : Repos</p>
+    </div>
+  </div>
+</div>
+
+<!-- LISTE DE GARDE -->
+<div id="garde" class="section-content" style="display:none;">
+  <h3>Liste de garde</h3>
+  <div class="box">
+    <div class="box-title">Agents en garde</div>
+    <div class="box-content" id="garde-liste">
+      <span class="tag">Agent 1</span>
+      <span class="tag">Agent 2</span>
+    </div>
+  </div>
+</div>
+  
   <!-- MENU -->
   <div class="sidebar">
     <button onclick="history.back()">← Retour</button>
 
-    <div class="menu">
-      <a onclick="alert('Accueil')">Accueil</a>
-      <a onclick="alert('Planning')">Planning</a>
-      <a onclick="alert('Liste')">Liste de garde</a>
-    </div>
-  </div>
+<div class="menu">
+  <a onclick="showSection('accueil')">Accueil</a>
+  <a onclick="showSection('planning')">Planning</a>
+  <a onclick="showSection('garde')">Liste de garde</a>
+</div>
 
   <!-- CONTENU -->
   <div class="content">
@@ -142,6 +178,16 @@ button:hover {
 
 </div>
 
+  <script>
+function showSection(section) {
+  document.querySelectorAll(".section-content").forEach(div => {
+    div.style.display = "none";
+  });
+
+  document.getElementById(section).style.display = "block";
+}
+</script>
+  
 <script>
 function ajouter() {
   let nom = document.getElementById("nom").value;
