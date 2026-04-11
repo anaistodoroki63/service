@@ -171,6 +171,9 @@ function chargerAgents() {
     tag.className = "tag";
     tag.innerText = nom;
 
+    container.appendChild(tag);
+  });
+}
     // clic = envoyer en garde
     tag.onclick = function() {
       ajouterGarde(nom);
