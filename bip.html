@@ -3,261 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>depart intervention</title>
+<title>Test BIP - Module OPS</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: Arial, sans-serif; background: #0f172a; color: white; min-height: 100vh; }
-header { background: #1e293b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #ef4444; }
-h1 { font-size: 20px; color: #ef4444; }
-.btn { background: #374151; border: none; padding: 10px 20px; color: white; cursor: pointer; border-radius: 8px; font-size: 14px; }
-.btn:hover { background: #4b5563; }
-.container { display: flex; height: calc(100vh - 60px); }
-.left { width: 50%; padding: 30px; overflow-y: auto; }
-.right { width: 50%; background: #000; display: flex; align-items: center; justify-content: center; flex-direction: column; color: #64748b; }
-.box { background: #1e293b; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
-.box-title { background: #ef4444; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 16px; font-weight: bold; }
-.vehicule-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-.vehicule-btn { background: #22c55e; color: black; padding: 20px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.2s; border: 3px solid transparent; }
-.vehicule-btn:hover { transform: scale(1.05); border-color: white; }
-.vehicule-btn:active { background: #ef4444; color: white; }
-.vehicule-btn .icon { font-size: 28px; display: block; margin-bottom: 5px; }
-.form-group { margin-bottom: 15px; }
-.form-group label { display: block; margin-bottom: 5px; color: #94a3b8; font-size: 13px; }
-.form-group select, .form-group input { width: 100%; padding: 12px 15px; border: none; border-radius: 8px; background: #374151; color: white; font-size: 14px; }
-.btn-engager { width: 100%; background: #ef4444; padding: 15px; border: none; border-radius: 10px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
-.btn-engager:hover { background: #dc2626; }
-.btn-engager:disabled { background: #64748b; cursor: not-allowed; }
-.alert-log { max-height: 300px; overflow-y: auto; }
-.alert-item { background: #ef4444; padding: 15px; margin: 10px 0; border-radius: 8px; animation: flash 0.5s; }
-@keyframes flash { 0%, 50%, 100% { opacity: 1; } 25%, 75% { opacity: 0.5; } }
-.alert-item .header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; }
-.alert-item .details { font-size: 13px; color: #fca5a5; }
-.alert-item .temps { font-size: 12px; color: #fca5a5; margin-top: 5px; }
-.garde-section { margin-top: 20px; }
-.garde-title { color: #94a3b8; margin-bottom: 10px; font-size: 13px; }
-.tag { display: inline-block; background: #f59e0b; color: black; padding: 8px 12px; margin: 5px; border-radius: 8px; font-size: 14px; }
-.camera-text { text-align: center; font-size: 18px; }
+body { font-family: Arial, sans-serif; background: #0f172a; color: white; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+h1 { color: #ef4444; margin-bottom: 30px; }
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 400px; }
+.btn { padding: 30px 20px; border: none; border-radius: 15px; font-size: 24px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+.btn:hover { transform: scale(1.05); }
+.btn:active { transform: scale(0.95); }
+.btn-vsav { background: #3b82f6; color: white; }
+.btn-fpt { background: #ef4444; color: white; }
+.btn-epa { background: #f59e0b; color: black; }
+.btn-vsr { background: #22c55e; color: black; }
+.btn-ccf { background: #dc2626; color: white; }
+.btn-grve { background: #8b5cf6; color: white; }
+.btn-vl { background: #06b6d4; color: black; }
+.btn:hover { box-shadow: 0 0 20px currentColor; }
+.info { margin-top: 30px; color: #64748b; font-size: 14px; }
 </style>
 </head>
 <body>
-<header>
-  <div>🔵 MODULE OPS</div>
-  <h1>🚨 ALERTES INTERVENTION</h1>
-  <div>
-    <button class="btn" onclick="location.href='index.html'">🏠 Accueil</button>
-    <button class="btn" onclick="location.href='affectations.html'">→ Affectations</button>
-  </div>
-</header>
 
-<div class="container">
-  <div class="left">
-    <div class="box">
-      <div class="box-title">🚒 Sélectionner un véhicule</div>
-      <div class="vehicule-grid">
-        <div class="vehicule-btn" onclick="selectVehicule('VSAV 403', '🚑')">
-          <span class="icon">🚑</span>
-          VSAV 403
-        </div>
-        <div class="vehicule-btn" onclick="selectVehicule('VSAV 527', '🚑')">
-          <span class="icon">🚑</span>
-          VSAV 527
-        </div>
-        <div class="vehicule-btn" onclick="selectVehicule('FPT 201', '🚒')">
-          <span class="icon">🚒</span>
-          FPT 201
-        </div>
-        <div class="vehicule-btn" onclick="selectVehicule('EPA 301', '🚛')">
-          <span class="icon">🚛</span>
-          EPA 301
-        </div>
-        <div class="vehicule-btn" onclick="selectVehicule('VSR 101', '🚗')">
-          <span class="icon">🚗</span>
-          VSR 101
-        </div>
-        <div class="vehicule-btn" onclick="selectVehicule('CCF 201', '🚒')">
-          <span class="icon">🚒</span>
-          CCF 201
-        </div>
-      </div>
-    </div>
+<h1>🚨 TEST BIP</h1>
 
-    <div class="box">
-      <div class="box-title">📝 Motif de départ</div>
-      <div class="form-group">
-        <label>Véhicule sélectionné</label>
-        <input type="text" id="selected-vehicule" placeholder="Cliquez sur un véhicule" readonly>
-      </div>
-      <div class="form-group">
-        <label>Motif</label>
-        <select id="motif">
-          <option value="">-- Sélectionner un motif --</option>
-          <option value="Incendie">Incendie</option>
-          <option value="Accident de la route">Accident de la route</option>
-          <option value="Secours à personne">Secours à personne</option>
-          <option value="Intoxication">Intoxication</option>
-          <option value="Accident domestique">Accident domestique</option>
-          <option value="Feu de forêt">Feu de forêt</option>
-          <option value="Accident industriel">Accident industriel</option>
-          <option value="Inondation">Inondation</option>
-          <option value="Intervention technique">Intervention technique</option>
-          <option value="Autre">Autre</option>
-        </select>
-      </div>
-      <div class="form-group" id="autre-group" style="display:none;">
-        <label>Préciser</label>
-        <input type="text" id="motif-autre" placeholder="Décrivez le motif">
-      </div>
-      <div class="form-group">
-        <label>Localisation</label>
-        <input type="text" id="localisation" placeholder="Adresse ou lieu">
-      </div>
-      <button class="btn-engager" id="btn-engager" onclick="declencherAlerte()" disabled>🚨 ENGAGER LE VÉHICULE</button>
-    </div>
+<div class="grid">
+  <button class="btn btn-vsav" onclick="playBip('VSAV')">🚑<br>VSAV</button>
+  <button class="btn btn-fpt" onclick="playBip('FPT')">🚒<br>FPT</button>
+  <button class="btn btn-epa" onclick="playBip('EPA')">🚛<br>EPA</button>
+  <button class="btn btn-vsr" onclick="playBip('VSR')">🚗<br>VSR</button>
+  <button class="btn btn-ccf" onclick="playBip('CCF')">🚒<br>CCF</button>
+  <button class="btn btn-grve" onclick="playBip('GRVE')">🚜<br>GRVE</button>
+  <button class="btn btn-vl" onclick="playBip('VL')">🚙<br>VL</button>
+  <button class="btn" style="background:#374151;color:white;" onclick="playBip('KLaxon')">🔊<br>KLaxon</button>
+</div>
 
-    <div class="box">
-      <div class="box-title">📋 Personnel en garde</div>
-      <div id="garde-liste" class="garde-section"></div>
-    </div>
+<div class="info">Cliquez sur un véhicule pour jouer le signal</div>
 
-    <div class="box">
-      <div class="box-title">📜 Historique des alertes</div>
-      <div id="alert-log" class="alert-log"></div>
-    </div>
-  </div>
-  
 <script>
-var selectedVehicule = null;
-var selectedIcon = null;
-
-function selectVehicule(nom, icon) {
-  selectedVehicule = nom;
-  selectedIcon = icon;
-  document.getElementById('selected-vehicule').value = icon + ' ' + nom;
-  document.getElementById('btn-engager').disabled = false;
+var bipCtx = null;
+function playBip(vehiculeType) {
+  var freq = 600, duree = 0.3;
+  if (vehiculeType === 'VSAV') { freq = 1000; duree = 0.5; }
+  else if (vehiculeType === 'FPT' || vehiculeType === 'CCF') { freq = 600; duree = 0.4; }
+  else if (vehiculeType === 'EPA' || vehiculeType === 'GRVE') { freq = 800; duree = 0.6; }
+  else if (vehiculeType === 'VSR' || vehiculeType === 'VL') { freq = 900; duree = 0.25; }
+  else if (vehiculeType === 'KLaxon') { freq = 440; duree = 0.2; }
   
-  // Highlight selected
-  var btns = document.querySelectorAll('.vehicule-btn');
-  btns.forEach(function(btn) {
-    btn.style.borderColor = 'transparent';
-  });
-  event.target.closest('.vehicule-btn').style.borderColor = '#fff';
+  if (!bipCtx) bipCtx = new (window.AudioContext || window.webkitAudioContext)();
+  var osc = bipCtx.createOscillator();
+  var gain = bipCtx.createGain();
+  osc.connect(gain);
+  gain.connect(bipCtx.destination);
+  osc.frequency.value = freq;
+  osc.type = 'square';
+  gain.gain.value = 0.5;
+  osc.start(bipCtx.currentTime);
+  osc.stop(bipCtx.currentTime + duree);
 }
-
-document.getElementById('motif').addEventListener('change', function() {
-  var autreGroup = document.getElementById('autre-group');
-  if (this.value === 'Autre') {
-    autreGroup.style.display = 'block';
-  } else {
-    autreGroup.style.display = 'none';
-  }
-});
-
-function playBeep() {
-  try {
-    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    // Bip bip bip - son d'alerte
-    for (var i = 0; i < 3; i++) {
-      (function(index) {
-        setTimeout(function() {
-          var osc = audioCtx.createOscillator();
-          var gain = audioCtx.createGain();
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.frequency.value = 800;
-          osc.type = 'square';
-          gain.gain.value = 0.3;
-          osc.start(audioCtx.currentTime);
-          osc.stop(audioCtx.currentTime + 0.15);
-        }, index * 250);
-      })(i);
-    }
-  } catch(e) {
-    console.log('Audio non disponible');
-  }
-}
-
-function declencherAlerte() {
-  if (!selectedVehicule) {
-    alert('Veuillez sélectionner un véhicule');
-    return;
-  }
-  
-  var motif = document.getElementById('motif').value;
-  if (!motif) {
-    alert('Veuillez sélectionner un motif');
-    return;
-  }
-  
-  if (motif === 'Autre') {
-    motif = document.getElementById('motif-autre').value;
-    if (!motif) {
-      alert('Veuillez préciser le motif');
-      return;
-    }
-  }
-  
-  var localisation = document.getElementById('localisation').value || 'Non précisée';
-  
-  // Jouer le bip
-  playBeep();
-  
-  // Ajouter à l'historique
-  var log = document.getElementById('alert-log');
-  var now = new Date();
-  var heure = now.getHours().toString().padStart(2, '0') + ':' + 
-              now.getMinutes().toString().padStart(2, '0') + ':' + 
-              now.getSeconds().toString().padStart(2, '0');
-  
-  var item = document.createElement('div');
-  item.className = 'alert-item';
-  item.innerHTML = 
-    '<div class="header">' +
-      '<span>' + selectedIcon + ' ' + selectedVehicule + '</span>' +
-      '<span>' + heure + '</span>' +
-    '</div>' +
-    '<div class="details">🚨 ' + motif + '</div>' +
-    '<div class="details">📍 ' + localisation + '</div>';
-  
-  log.insertBefore(item, log.firstChild);
-  
-  // Reset form
-  document.getElementById('selected-vehicule').value = '';
-  document.getElementById('motif').value = '';
-  document.getElementById('motif-autre').value = '';
-  document.getElementById('localisation').value = '';
-  document.getElementById('autre-group').style.display = 'none';
-  document.getElementById('btn-engager').disabled = true;
-  selectedVehicule = null;
-  selectedIcon = null;
-  
-  // Supprimer après 60 sec
-  setTimeout(function() {
-    if (item.parentNode) {
-      item.parentNode.removeChild(item);
-    }
-  }, 60000);
-}
-
-function chargerGarde() {
-  var garde = JSON.parse(localStorage.getItem('garde')) || [];
-  var container = document.getElementById('garde-liste');
-  
-  if (garde.length === 0) {
-    container.innerHTML = '<p style="color: #64748b; font-size: 13px;">Aucun agent en garde</p>';
-    return;
-  }
-  
-  container.innerHTML = '<div class="garde-title">Agents disponibles:</div>';
-  for (var i = 0; i < garde.length; i++) {
-    var tag = document.createElement('span');
-    tag.className = 'tag';
-    tag.innerHTML = garde[i];
-    container.appendChild(tag);
-  }
-}
-
-chargerGarde();
 </script>
 
 </body>
