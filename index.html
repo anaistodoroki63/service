@@ -438,6 +438,50 @@ function doChangePassword() {
   showMainMenu(currentUser);
 }
 
+  checkSession();
+
+// BIP D'INTERVENTION PAR VÉHICULE
+function playBip(vehiculeType) {
+  try {
+    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var freq = 600;
+    var duree = 0.3;
+    var type = 'square';
+    
+    if (vehiculeType === 'VSAV') {
+      freq = 1000;
+      duree = 0.5;
+    }
+    else if (vehiculeType === 'FPT' || vehiculeType === 'CCF') {
+      freq = 600;
+      duree = 0.4;
+    }
+    else if (vehiculeType === 'EPA' || vehiculeType === 'GRVE') {
+      freq = 800;
+      duree = 0.6;
+    }
+    else if (vehiculeType === 'VSR' || vehiculeType === 'VL') {
+      freq = 900;
+      duree = 0.25;
+    }
+    
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.frequency.value = freq;
+    osc.type = type;
+    gain.gain.value = 0.5;
+    osc.start(audioCtx.currentTime);
+    osc.stop(audioCtx.currentTime + duree);
+  } catch(e) {}
+}
+
+// BIP STANDARD (FPT par défaut)
+function playBeep() {
+  playBip('FPT');
+}
+
 // DÉCONNEXION
 function doLogout() {
   sessionStorage.removeItem('ops_session');
