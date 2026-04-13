@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestion des Alertes</title>
+<title>Alertes Intervention</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: Arial, sans-serif; background: #0f172a; color: white; min-height: 100vh; }
@@ -35,7 +35,7 @@ h1 { font-size: 20px; color: #ef4444; }
 .alert-item .agents { background: rgba(0,0,0,0.3); padding: 8px; border-radius: 5px; margin: 5px 0; font-size: 12px; }
 .alert-item .details { font-size: 12px; color: #fca5a5; }
 .section-title { color: #94a3b8; margin-bottom: 8px; font-size: 12px; }
-.tag { display: inline-block; padding: 6px 10px; margin: 3px; border-radius: 6px; font-size: 12px; }
+.tag { display: inline-block; padding: 6px 10px; margin: 3px; border-radius: 6px; font-size: 12px; cursor: pointer; }
 .tag.green { background: #22c55e; color: black; }
 .tag.orange { background: #f59e0b; color: black; }
 .tag.blue { background: #3b82f6; color: white; }
@@ -46,7 +46,7 @@ h1 { font-size: 20px; color: #ef4444; }
 <body>
 <header>
   <div>🔵 MODULE OPS</div>
-  <h1>🚨 ALERTES INTERVENTION</h1>
+  <h1>🚨 ALERTES</h1>
   <div>
     <button class="btn" onclick="location.href='index.html'">🏠 Accueil</button>
     <button class="btn" onclick="location.href='affectations.html'">→ Affectations</button>
@@ -56,37 +56,25 @@ h1 { font-size: 20px; color: #ef4444; }
 <div class="container">
   <div class="left">
     <div class="box">
-      <div class="box-title">🚒 Sélectionner un véhicule</div>
+      <div class="box-title">🚒 Véhicules</div>
       <div class="vehicule-grid">
-        <div class="vehicule-btn" onclick="selectVehicule('VSAV403', 'VSAV 403', '🚑')">
-          <span class="icon">🚑</span>VSAV 403
-        </div>
-        <div class="vehicule-btn" onclick="selectVehicule('VSAV527', 'VSAV 527', '🚑')">
-          <span class="icon">🚑</span>VSAV 527
-        </div>
-        <div class="vehicule-btn" onclick="selectVehicule('FPT201', 'FPT 201', '🚒')">
-          <span class="icon">🚒</span>FPT 201
-        </div>
-        <div class="vehicule-btn" onclick="selectVehicule('EPA301', 'EPA 301', '🚛')">
-          <span class="icon">🚛</span>EPA 301
-        </div>
-        <div class="vehicule-btn" onclick="selectVehicule('VSR101', 'VSR 101', '🚗')">
-          <span class="icon">🚗</span>VSR 101
-        </div>
-        <div class="vehicule-btn" onclick="selectVehicule('CCF201', 'CCF 201', '🚒')">
-          <span class="icon">🚒</span>CCF 201
-        </div>
+        <div class="vehicule-btn" onclick="selectVehicule('VSAV403', 'VSAV 403', '🚑')"><span class="icon">🚑</span>VSAV 403</div>
+        <div class="vehicule-btn" onclick="selectVehicule('VSAV527', 'VSAV 527', '🚑')"><span class="icon">🚑</span>VSAV 527</div>
+        <div class="vehicule-btn" onclick="selectVehicule('FPT201', 'FPT 201', '🚒')"><span class="icon">🚒</span>FPT 201</div>
+        <div class="vehicule-btn" onclick="selectVehicule('EPA301', 'EPA 301', '🚛')"><span class="icon">🚛</span>EPA 301</div>
+        <div class="vehicule-btn" onclick="selectVehicule('VSR101', 'VSR 101', '🚗')"><span class="icon">🚗</span>VSR 101</div>
+        <div class="vehicule-btn" onclick="selectVehicule('CCF201', 'CCF 201', '🚒')"><span class="icon">🚒</span>CCF 201</div>
       </div>
     </div>
 
     <div class="box">
-      <div class="box-title">📝 Motif de départ</div>
+      <div class="box-title">📝 Départ</div>
       <div class="form-group">
-        <label>Véhicule sélectionné</label>
+        <label>Véhicule</label>
         <input type="text" id="selected-vehicule" placeholder="Cliquez sur un véhicule" readonly>
       </div>
       <div class="form-group" id="agents-section" style="display:none;">
-        <label>Agents affectés</label>
+        <label>Équipage</label>
         <div id="vehicule-agents"></div>
       </div>
       <div class="form-group">
@@ -94,11 +82,11 @@ h1 { font-size: 20px; color: #ef4444; }
         <select id="motif">
           <option value="">-- Sélectionner --</option>
           <option value="Incendie">Incendie</option>
-          <option value="Accident de la route">Accident de la route</option>
-          <option value="Secours à personne">Secours à personne</option>
+          <option value="Accident route">Accident route</option>
+          <option value="Secours personne">Secours personne</option>
           <option value="Intoxication">Intoxication</option>
           <option value="Accident domestique">Accident domestique</option>
-          <option value="Feu de forêt">Feu de forêt</option>
+          <option value="Feu forêt">Feu forêt</option>
           <option value="Accident industriel">Accident industriel</option>
           <option value="Inondation">Inondation</option>
           <option value="Intervention technique">Intervention technique</option>
@@ -107,54 +95,45 @@ h1 { font-size: 20px; color: #ef4444; }
       </div>
       <div class="form-group" id="autre-group" style="display:none;">
         <label>Préciser</label>
-        <input type="text" id="motif-autre" placeholder="Décrivez le motif">
+        <input type="text" id="motif-autre" placeholder="Motif">
       </div>
       <div class="form-group">
         <label>Localisation</label>
-        <input type="text" id="localisation" placeholder="Adresse ou lieu">
+        <input type="text" id="localisation" placeholder="Adresse">
       </div>
-      <button class="btn-engager" id="btn-engager" onclick="declencherAlerte()" disabled>🚨 ENGAGER LE VÉHICULE</button>
+      <button class="btn-engager" id="btn-engager" onclick="declencherAlerte()" disabled>🚨 ENGAGER</button>
     </div>
 
     <div class="box">
-      <div class="box-title blue">📋 Personnel en service</div>
-      <div class="section-title">Cliquez pour ajouter en garde</div>
+      <div class="box-title blue">👥 Service → Garde</div>
       <div id="liste-service"></div>
     </div>
 
     <div class="box">
-      <div class="box-title">🚨 Personnel en garde</div>
+      <div class="box-title">🚨 Garde</div>
       <div id="garde-liste"></div>
     </div>
 
     <div class="box">
-      <div class="box-title">📜 Historique des alertes</div>
-      <div id="alert-log" class="alert-log"></div>
+      <div class="box-title">📜 Historique</div>
+      <div id="alert-log"></div>
     </div>
   </div>
 
   <div class="right">
-    <div class="camera-text">
-      📹 Caméra N°1<br>
-      <span style="font-size:14px;">Caserne</span>
-    </div>
+    <div class="camera-text">📹 Caméra<br><span style="font-size:14px;">Caserne</span></div>
   </div>
 </div>
 
+<script src="bip.js"></script>
 <script>
-var selectedId = null;
-var selectedNom = null;
-var selectedIcon = null;
+var selectedId = null, selectedNom = null, selectedIcon = null;
 
 function selectVehicule(id, nom, icon) {
-  selectedId = id;
-  selectedNom = nom;
-  selectedIcon = icon;
-  
+  selectedId = id; selectedNom = nom; selectedIcon = icon;
   document.getElementById('selected-vehicule').value = icon + ' ' + nom;
   document.getElementById('btn-engager').disabled = false;
   
-  // Afficher agents affectés
   var affectations = JSON.parse(localStorage.getItem("vehicule_affectations")) || {};
   var agents = affectations[id] || [];
   var container = document.getElementById('vehicule-agents');
@@ -171,10 +150,9 @@ function selectVehicule(id, nom, icon) {
     }
   } else {
     agentsSection.style.display = 'block';
-    container.innerHTML = '<span class="empty-msg">Aucun agent affecté</span>';
+    container.innerHTML = '<span class="empty-msg">Aucun agent</span>';
   }
   
-  // Highlight selected
   var btns = document.querySelectorAll('.vehicule-btn');
   btns.forEach(function(btn) { btn.classList.remove('selected'); });
   event.target.closest('.vehicule-btn').classList.add('selected');
@@ -184,85 +162,31 @@ document.getElementById('motif').addEventListener('change', function() {
   document.getElementById('autre-group').style.display = this.value === 'Autre' ? 'block' : 'none';
 });
 
-function playBeep() {
-  try {
-    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    for (var i = 0; i < 3; i++) {
-      (function(index) {
-        setTimeout(function() {
-          var osc = audioCtx.createOscillator();
-          var gain = audioCtx.createGain();
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.frequency.value = 800;
-          osc.type = 'square';
-          gain.gain.value = 0.4;
-          osc.start(audioCtx.currentTime);
-          osc.stop(audioCtx.currentTime + 0.2);
-        }, index * 300);
-      })(i);
-    }
-    setTimeout(function() {
-      var osc = audioCtx.createOscillator();
-      var gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.frequency.value = 1000;
-      osc.type = 'square';
-      gain.gain.value = 0.5;
-      osc.start(audioCtx.currentTime);
-      osc.stop(audioCtx.currentTime + 0.5);
-    }, 1000);
-  } catch(e) {}
-}
-
 function declencherAlerte() {
-  if (!selectedId) {
-    alert('Sélectionnez un véhicule');
-    return;
-  }
-  
+  if (!selectedId) { alert('Sélectionnez un véhicule'); return; }
   var motif = document.getElementById('motif').value;
-  if (!motif) {
-    alert('Sélectionnez un motif');
-    return;
-  }
-  
+  if (!motif) { alert('Sélectionnez un motif'); return; }
   if (motif === 'Autre') {
     motif = document.getElementById('motif-autre').value;
-    if (!motif) {
-      alert('Précisez le motif');
-      return;
-    }
+    if (!motif) { alert('Précisez le motif'); return; }
   }
   
   var localisation = document.getElementById('localisation').value || 'Non précisée';
   var affectations = JSON.parse(localStorage.getItem("vehicule_affectations")) || {};
   var agents = affectations[selectedId] || [];
   
-  playBeep();
+  playBip(getVehiculeType(selectedId));
   
   var log = document.getElementById('alert-log');
   var now = new Date();
-  var heure = now.getHours().toString().padStart(2, '0') + ':' + 
-              now.getMinutes().toString().padStart(2, '0');
-  
-  var agentsHtml = agents.length > 0 ? '<div class="agents">👥 ' + agents.join(', ') + '</div>' : '<div class="agents">⚠️ Aucun agent affecté</div>';
+  var heure = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+  var agentsHtml = agents.length > 0 ? '<div class="agents">👥 ' + agents.join(', ') + '</div>' : '<div class="agents">⚠️ Aucun agent</div>';
   
   var item = document.createElement('div');
   item.className = 'alert-item';
-  item.innerHTML = 
-    '<div class="header">' +
-      '<span>' + selectedIcon + ' ' + selectedNom + '</span>' +
-      '<span>' + heure + '</span>' +
-    '</div>' +
-    agentsHtml +
-    '<div class="details">🚨 ' + motif + '</div>' +
-    '<div class="details">📍 ' + localisation + '</div>';
-  
+  item.innerHTML = '<div class="header"><span>' + selectedIcon + ' ' + selectedNom + '</span><span>' + heure + '</span></div>' + agentsHtml + '<div class="details">🚨 ' + motif + '</div><div class="details">📍 ' + localisation + '</div>';
   log.insertBefore(item, log.firstChild);
   
-  // Reset
   document.getElementById('selected-vehicule').value = '';
   document.getElementById('motif').value = '';
   document.getElementById('motif-autre').value = '';
@@ -273,25 +197,15 @@ function declencherAlerte() {
   
   var btns = document.querySelectorAll('.vehicule-btn');
   btns.forEach(function(btn) { btn.classList.remove('selected'); });
+  selectedId = null; selectedNom = null; selectedIcon = null;
   
-  selectedId = null;
-  selectedNom = null;
-  selectedIcon = null;
-  
-  setTimeout(function() {
-    if (item.parentNode) item.parentNode.removeChild(item);
-  }, 60000);
+  setTimeout(function() { if (item.parentNode) item.parentNode.removeChild(item); }, 60000);
 }
 
 function chargerService() {
   var agents = JSON.parse(localStorage.getItem("agents")) || [];
   var container = document.getElementById('liste-service');
-  
-  if (agents.length === 0) {
-    container.innerHTML = '<span class="empty-msg">Aucun agent en service</span>';
-    return;
-  }
-  
+  if (agents.length === 0) { container.innerHTML = '<span class="empty-msg">Aucun agent</span>'; return; }
   container.innerHTML = '';
   for (var i = 0; i < agents.length; i++) {
     (function(nom) {
@@ -306,33 +220,21 @@ function chargerService() {
 
 function ajouterEnGarde(nom) {
   var garde = JSON.parse(localStorage.getItem("garde")) || [];
-  if (garde.indexOf(nom) === -1) {
-    garde.push(nom);
-    localStorage.setItem("garde", JSON.stringify(garde));
-  }
+  if (garde.indexOf(nom) === -1) { garde.push(nom); localStorage.setItem("garde", JSON.stringify(garde)); }
   chargerGarde();
 }
 
 function chargerGarde() {
   var garde = JSON.parse(localStorage.getItem("garde")) || [];
   var container = document.getElementById('garde-liste');
-  
-  if (garde.length === 0) {
-    container.innerHTML = '<span class="empty-msg">Aucun agent en garde</span>';
-    return;
-  }
-  
+  if (garde.length === 0) { container.innerHTML = '<span class="empty-msg">Aucun agent en garde</span>'; return; }
   container.innerHTML = '';
   for (var j = 0; j < garde.length; j++) {
     (function(nom, idx) {
       var tag = document.createElement('span');
       tag.className = 'tag orange';
       tag.innerHTML = nom + ' ✕';
-      tag.onclick = function() {
-        garde.splice(idx, 1);
-        localStorage.setItem("garde", JSON.stringify(garde));
-        chargerGarde();
-      };
+      tag.onclick = function() { garde.splice(idx, 1); localStorage.setItem("garde", JSON.stringify(garde)); chargerGarde(); };
       container.appendChild(tag);
     })(garde[j], j);
   }
@@ -341,6 +243,5 @@ function chargerGarde() {
 chargerService();
 chargerGarde();
 </script>
-
 </body>
 </html>
