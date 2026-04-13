@@ -1,1 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bilan Intervention</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #0f172a; color: white; min-height: 100vh; }
+header { background: #1e293b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #3b82f6; }
+h1 { font-size: 20px; }
+.btn { background: #374151; border: none; padding: 10px 20px; color: white; cursor: pointer; border-radius: 8px; font-size: 14px; }
+.btn:hover { background: #4b5563; }
+.btn-primary { background: #3b82f6; }
+.btn-primary:hover { background: #2563eb; }
+.btn-success { background: #22c55e; color: black; }
+.btn-success:hover { background: #16a34a; }
+.container { padding: 30px; max-width: 800px; margin: 0 auto; }
+.box { background: #1e293b; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
+.box-title { background: #3b82f6; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 16px; font-weight: bold; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; color: #94a3b8; font-size: 13px; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 15px; border: none; border-radius: 8px; background: #374151; color: white; font-size: 14px; }
+.form-group textarea { min-height: 100px; resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.bilan-card { background: #374151; padding: 20px; border-radius: 10px; margin-bottom: 15px; }
+.bilan-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.bilan-num { color: #3b82f6; font-weight: bold; }
+.bilan-date { color: #64748b; font-size: 12px; }
+.bilan-vehicule { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+.bilan-info { font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
+.bilan-actions { display: flex; gap: 10px; margin-top: 15px; }
+.bilan-actions button { padding: 8px 15px; font-size: 12px; }
+.statut { display: inline-block; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin-left: 10px; }
+.statut.en-cours { background: #f59e0b; color: black; }
+.statut.termine { background: #22c55e; color: black; }
+.total { font-size: 36px; font-weight: bold; color: #3b82f6; text-align: center; margin-bottom: 5px; }
+.total-label { text-align: center; color: #94a3b8; font-size: 14px; }
+</style>
+</head>
+<body>
+<header>
+  <div>🔵 MODULE OPS</div>
+  <h1>📋 BILAN INTERVENTION</h1>
+  <div>
+    <button class="btn" onclick="location.href='index.html'">🏠 Accueil</button>
+    <button class="btn" onclick="location.href='alertes.html'">← Alertes</button>
+  </div>
+</header>
 
+<div class="container">
+  <div class="box">
+    <div class="box-title">
+      <span>Nouveau Bilan</span>
+      <button class="btn btn-success" onclick="openModal()">+ Nouveau</button>
+    </div>
+    <div class="total" id="totalBilans">0</div>
+    <div class="total-label">bilans</div>
+  </div>
+
+  <div class="box">
+    <div id="bilan-liste"></div>
+  </div>
+</div>
+
+<!-- MODAL NOUVEAU BILAN -->
+<div class="modal" id="bilanModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);justify-content:center;align-items:center;z-index:1000;">
+  <div class="modal-content" style="background:#1e293b;padding:30px;border-radius:15px;width:500px;max-height:90vh;overflow-y:auto;">
+    <h3 style="margin-bottom:20px;font-size:18px;">Nouveau Bilan</h3>
+    <div class="form-group">
+      <label>Véhicule(s) engage(s)</label>
+      <input type="text" id="bilan-vehicule" placeholder="Ex: VSAV 403, FPT 201">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="bilan-date">
+      </div>
+      <div class="form-group">
+        <label>Heure</label>
+        <input type="time" id="bilan-heure">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Motif d'intervention</label>
+      <select id="bilan-motif">
+        <option value="">-- Selectionner --</option>
+        <option value="Incendie">Incendie</option>
+        <option value="Accident de la route">Accident de la route</option>
+        <option value="Secours a personne">Secours a personne</option>
+        <option value="Intoxication">Intoxication</option>
+        <option value="Accident domestique">Accident domestique</option>
+        <option value="Feu de for">Feu de foret</option>
+        <option value="Accident industriel">Accident industriel</option>
+        <option value="Inondation">Inondation</option>
+        <option value="Intervention technique">Intervention technique</option>
+        <option value="Autre">Autre</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Localisation</label>
+      <input type="text" id="bilan-lieu" placeholder="Adresse ou lieu">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre de victimes</label>
+        <input type="number" id="bilan-victimes" placeholder="0" min="0">
+      </div>
+      <div class="form-group">
+        <label>Nombre de victimes graves</label>
+        <input type="number" id="bilan-graves" placeholder="0" min="0">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Victimes transportees vers</label>
+        <input type="text" id="bilan-transport" placeholder="Hopital / Clinique">
+    </div>
+    <div class="form-group">
+      <label>Circonstances</label>
+      <textarea id="bilan-circonstances" placeholder="Decrivez les circonstances de l'intervention..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Soins prodigues</label>
+      <textarea id="bilan-soins" placeholder="Soins prodignes sur les victimes..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Remarques</label>
+      <textarea id="bilan-remarques" placeholder="Remarques diverses..."></textarea>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-success" onclick="saveBilan()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var bilans = JSON.parse(localStorage.getItem('ops_bilans')) || [];
+
+function openModal() {
+  var now = new Date();
+  document.getElementById('bilan-date').value = now.toISOString().split('T')[0];
+  document.getElementById('bilan-heure').value = now.toTimeString().slice(0,5);
+  document.getElementById('bilanModal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('bilanModal').style.display = 'none';
+  document.getElementById('bilan-vehicule').value = '';
+  document.getElementById('bilan-motif').value = '';
+  document.getElementById('bilan-lieu').value = '';
+  document.getElementById('bilan-victimes').value = '';
+  document.getElementById('bilan-graves').value = '';
+  document.getElementById('bilan-transport').value = '';
+  document.getElementById('bilan-circonstances').value = '';
+  document.getElementById('bilan-soins').value = '';
+  document.getElementById('bilan-remarques').value = '';
+}
+
+function saveBilan() {
+  var vehicule = document.getElementById('bilan-vehicule').value;
+  var motif = document.getElementById('bilan-motif').value;
+  
+  if (!veicule || !motif) {
+    alert('Veuillez remplir au minimum le vehicule et le motif');
+    return;
+  }
+  
+  var bilan = {
+    id: Date.now(),
+    vehicule: vehicule,
+    date: document.getElementById('bilan-date').value,
+    heure: document.getElementById('bilan-heure').value,
+    motif: motif,
+    lieu: document.getElementById('bilan-lieu').value,
+    victimes: document.getElementById('bilan-victimes').value || '0',
+    graves: document.getElementById('bilan-graves').value || '0',
+    transport: document.getElementById('bilan-transport').value,
+    circonstances: document.getElementById('bilan-circonstances').value,
+    soins: document.getElementById('bilan-soins').value,
+    remarques: document.getElementById('bilan-remarques').value,
+    statut: 'termine'
+  };
+  
+  bilans.unshift(bilan);
+  localStorage.setItem('ops_bilans', JSON.stringify(bilans));
+  closeModal();
+  renderBilans();
+}
+
+function renderBilans() {
+  var container = document.getElementById('bilan-liste');
+  document.getElementById('totalBilans').innerHTML = bilans.length;
+  container.innerHTML = '';
+  
+  for (var i = 0; i < bilans.length; i++) {
+    var b = bilans[i];
+    var card = document.createElement('div');
+    card.className = 'bilan-card';
+    card.innerHTML = 
+      '<div class="bilan-header">' +
+        '<span class="bilan-num">BILAN #' + (bilans.length - i) + '</span>' +
+        '<span class="bilan-date">' + b.date + ' a ' + b.heure + '</span>' +
+      '</div>' +
+      '<div class="bilan-vehicule">' + b.vehicule + '</div>' +
+      '<div class="bilan-info'>Motif: ' + b.motif + '</div>' +
+      '<div class="bilan-info'>Lieu: ' + (b.lieu || '-') + '</div>' +
+      '<div class="bilan-info'>Victimes: ' + b.victimes + ' | Graves: ' + b.graves + '</div>' +
+      (b.transport ? '<div class="bilan-info">Transporte vers: ' + b.transport + '</div>' : '') +
+      (b.circonstances ? '<div class="bilan-info" style="margin-top:10px;">' + b.circonstances.substring(0,100) + '</div>' : '') +
+      '<div class="bilan-actions">' +
+        '<button class="btn" onclick="voirBilan(' + i + ')">Voir</button>' +
+        '<button class="btn btn-danger" onclick="supprimerBilan(' + i + ')">Supprimer</button>' +
+      '</div>';
+    container.appendChild(card);
+  }
+}
+
+function voirBilan(index) {
+  var b = bilans[index];
+  var texte = 'BILAN D\'INTERVENTION\n\n' +
+    'Vehicule: ' + b.vehicule + '\n' +
+    'Date: ' + b.date + ' a ' + b.heure + '\n' +
+    'Motif: ' + b.motif + '\n' +
+    'Lieu: ' + b.lieu + '\n\n' +
+    'Victimes: ' + b.victimes + '\n' +
+    'Graves: ' + b.graves + '\n' +
+    'transporte vers: ' + (b.transport || '-') + '\n\n' +
+    'Circonstances:\n' + (b.circonstances || '-') + '\n\n' +
+    'Soins:\n' + (b.soins || '-') + '\n\n' +
+    'Remarques:\n' + (b.remarques || '-');
+  alert(texte);
+}
+
+function supprimerBilan(index) {
+  if (confirm('Supprimer ce bilan?')) {
+    bilans.splice(index, 1);
+    localStorage.setItem('ops_bilans', JSON.stringify(bilans));
+    renderBilans();
+  }
+}
+
+renderBilans();
+</script>
+</body>
+</html>
